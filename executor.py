@@ -14,37 +14,47 @@ async def chat_with_tools(user_input: str, user_id):
 
     messages = [{"role": "user", "content": user_input}]
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4-0613",
-        messages=messages,
-        functions=function_schemas,
-        function_call="auto"
-    )
+    if function_schemas:
+        # Llamada con 'functions' y 'function_call'
+        response = openai.chat.completions.create(
+            model="gpt-4",
+            messages=messages,
+            functions=function_schemas,
+            function_call="auto"
+        )
+    else:
+        # Llamada normal sin funciones
+        response = openai.chat.completions.create(
+            model="gpt-4",
+            messages=messages
+        )
 
-    message = response["choices"][0]["message"]
+    message = response.choices[0].message
 
-    if "function_call" in message:
-        func_name = message["function_call"]["name"]
-        arguments = json.loads(message["function_call"]["arguments"])
+    # Manejo de function_call solo si hay tools
+    if function_schemas and hasattr(message, "function_call") and message.function_call:
+        func_name = message.function_call.name
+        arguments = json.loads(message.function_call.arguments)
 
         if func_name in tools:
             result = tools[func_name]["func"](**arguments)
             log_tool_call(func_name, arguments, result)
 
-            messages.append(message)
+            messages.append(message.to_dict())
             messages.append({
                 "role": "function",
                 "name": func_name,
                 "content": result
             })
 
-            second_response = openai.ChatCompletion.create(
-                model="gpt-4-0613",
+            # Segunda llamada
+            second_response = openai.chat.completions.create(
+                model="gpt-4",
                 messages=messages
             )
-
-            return second_response["choices"][0]["message"]["content"]
+            return second_response.choices[0].message.content
         else:
-            return f"No tienes permiso para usar la función '{func_name}'."
+            return f"La función '{func_name}' no existe o no está disponible."
+        
     else:
-        return message["content"]
+        return message.content

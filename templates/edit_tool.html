@@ -3,17 +3,27 @@
 <head>
   <meta charset="utf-8">
   <title>Editar Tool</title>
+  <link rel="stylesheet" href="/static/main.css">
 </head>
 <body>
-  <h1>Editando Tool: {{ name }}</h1>
+<div class="container">
+  <header>
+    <h1>Editar Tool: {{ name }}</h1>
+  </header>
+
   <form method="post" action="/admin/update-tool">
     <input type="hidden" name="name" value="{{ name }}">
+
     <h3>Schema (JSON)</h3>
     <textarea name="json_schema" rows="10" cols="80">{{ schema }}</textarea>
+
     <h3>Código Python</h3>
     <textarea name="func_code" rows="20" cols="80">{{ code }}</textarea><br>
+
     <button type="submit">💾 Guardar Cambios</button>
   </form>
+
   <p><a href="/admin">⬅️ Volver</a></p>
+</div>
 </body>
 </html>

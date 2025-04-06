@@ -3,13 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>Panel de administración</title>
+  <link rel="stylesheet" href="/static/main.css">
 </head>
 <body>
-  <h1>Panel Admin</h1>
-  <p><a href="/">⬅ Volver al chat</a></p>
+<div class="container">
+  <header>
+    <h1>Panel Admin</h1>
+    <p><a href="/">⬅ Volver al chat</a></p>
+  </header>
 
   {% if msg %}
-    <p style="color: green">{{ msg }}</p>
+    <p class="success-msg">{{ msg }}</p>
   {% endif %}
 
   <h2>Usuarios</h2>
@@ -19,8 +23,9 @@
     {% endfor %}
   </ul>
 
+  <!-- Secciones para crear/eliminar usuarios (ahora mismo no tienen lógica real, pero las dejamos para el MVP) -->
   <form method="post" action="/admin/create-user">
-    <h3>Crear usuario</h3>
+    <h3>Crear usuario (MVP sin login real)</h3>
     <input type="text" name="username" placeholder="Usuario">
     <input type="password" name="password" placeholder="Contraseña">
     <input type="text" name="tools" placeholder="tools separadas por coma">
@@ -43,6 +48,8 @@
     <button type="submit">🔄 Recargar tools desde disco</button>
   </form>
 
+  <hr>
+
   <h2>Tools dinámicas (memoria)</h2>
   <ul>
     {% for name, tool in tools.items() %}
@@ -54,10 +61,12 @@
   <ul>
     {% for name, tool in static_tools.items() %}
       <li><strong>{{ name }}</strong>: {{ tool.schema.description }}
+        <!-- Botón eliminar tool -->
         <form method="post" action="/admin/delete-tool" style="display:inline;">
           <input type="hidden" name="name" value="{{ name }}">
           <button type="submit">❌</button>
         </form>
+        <!-- Botón editar tool -->
         <form method="get" action="/admin/edit-tool" style="display:inline;">
           <input type="hidden" name="name" value="{{ name }}">
           <button type="submit">✏️</button>
@@ -65,6 +74,8 @@
       </li>
     {% endfor %}
   </ul>
+
+  <hr>
 
   <h2>Registrar nueva tool</h2>
   <form method="post" action="/admin/create-tool">
@@ -74,6 +85,8 @@
     <textarea name="func_code" placeholder="Código Python de la función" rows="10" cols="80"></textarea><br>
     <button type="submit">Registrar tool</button>
   </form>
+
+  <hr>
 
   <h2>Errores de carga</h2>
   {% if errors %}
@@ -86,11 +99,14 @@
     <p>✅ No hay errores de carga.</p>
   {% endif %}
 
+  <hr>
+
   <h2>Últimos logs</h2>
   <ul>
     {% for log in logs %}
       <li><strong>{{ log.timestamp }}</strong> → {{ log.function }}({{ log.arguments }}) = {{ log.result }}</li>
     {% endfor %}
   </ul>
+</div>
 </body>
 </html>
