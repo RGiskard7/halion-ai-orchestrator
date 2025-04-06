@@ -1,13 +1,11 @@
-from fastapi import FastAPI, Request, Form, Depends, HTTPException, Query
+from fastapi import FastAPI, Request, Form, Query
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from auth import manager, load_user, fake_users_db
 from executor import chat_with_tools
 from logger import load_log_entries
 from tool_manager import get_all_loaded_tools, get_loading_errors, load_all_tools
 from dynamic_tool_registry import get_all_dynamic_tools, register_tool, persist_tool_to_disk
-from passlib.hash import bcrypt
 import json
 import os
 import yaml
@@ -18,53 +16,31 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    try:
-        user = await manager.get_current_user(request)
-        return templates.TemplateResponse("chat.html", {"request": request, "chat": [], "user": user})
-    except Exception:
-        # Usuario no autenticado → mostrar login
-        return templates.TemplateResponse("chat.html", {"request": request, "chat": [], "user": None})
-
-
-@app.post("/login", response_class=HTMLResponse)
-async def login(request: Request, username: str = Form(...), password: str = Form(...)):
-    user = load_user(username)
-    if not user or not bcrypt.verify(password, user["password"]):
-        return templates.TemplateResponse("chat.html", {"request": request, "error": "Credenciales incorrectas"})
-
-    resp = RedirectResponse(url="/", status_code=302)
-    manager.set_cookie(resp, username)
-    return resp
-
-@app.get("/logout")
-def logout():
-    resp = RedirectResponse(url="/", status_code=302)
-    resp.delete_cookie(manager.cookie_name)
-    return resp
+    return templates.TemplateResponse("chat.html", {
+        "request": request,
+        "chat": [],
+        "user": {"name": "anon", "tools": []}
+    })
 
 @app.post("/chat-ui", response_class=HTMLResponse)
-async def chat_ui(request: Request, prompt: str = Form(...), user=Depends(manager)):
-    response = await chat_with_tools(prompt, user_id=user)
+async def chat_ui(request: Request, prompt: str = Form(...)):
+    response = await chat_with_tools(prompt, user_id="anon")
     return templates.TemplateResponse("chat.html", {
         "request": request,
         "chat": [{"user": prompt, "bot": response}],
-        "user": user
+        "user": {"name": "anon", "tools": []}
     })
 
 @app.get("/admin", response_class=HTMLResponse)
-def admin_panel(request: Request, user=Depends(manager), msg: str = Query(default=None)):
-    if user["name"] != "Edu":
-        return RedirectResponse(url="/", status_code=302)
-
-    users = fake_users_db
+async def admin_panel(request: Request, msg: str = Query(default=None)):
+    users = {"anon": {"name": "anon", "tools": []}}  # Dummy data
     logs = load_log_entries(limit=50)
     tools = get_all_dynamic_tools()
     static_tools = get_all_loaded_tools()
     errors = get_loading_errors()
-
     return templates.TemplateResponse("admin.html", {
         "request": request,
-        "user": user,
+        "user": {"name": "anon"},
         "users": users,
         "logs": logs,
         "tools": tools,
@@ -73,40 +49,8 @@ def admin_panel(request: Request, user=Depends(manager), msg: str = Query(defaul
         "msg": msg
     })
 
-@app.post("/admin/create-user")
-def create_user(username: str = Form(...), password: str = Form(...), tools: str = Form(...), user=Depends(manager)):
-    if user["name"] != "Edu":
-        raise HTTPException(status_code=403)
-    if username in fake_users_db:
-        raise HTTPException(status_code=400, detail="Usuario ya existe")
-
-    from passlib.hash import bcrypt
-    fake_users_db[username] = {
-        "name": username,
-        "password": bcrypt.hash(password),
-        "tools": [t.strip() for t in tools.split(",") if t.strip()]
-    }
-    return RedirectResponse(url="/admin?msg=Usuario+creado", status_code=302)
-
-@app.post("/admin/delete-user")
-def delete_user(username: str = Form(...), user=Depends(manager)):
-    if user["name"] != "Edu":
-        raise HTTPException(status_code=403)
-    if username != "edu" and username in fake_users_db:
-        del fake_users_db[username]
-    return RedirectResponse(url="/admin?msg=Usuario+eliminado", status_code=302)
-
-@app.get("/admin/reload-tools")
-def reload_tools(user=Depends(manager)):
-    if user["name"] != "Edu":
-        raise HTTPException(status_code=403)
-    load_all_tools()
-    return RedirectResponse(url="/admin?msg=Tools+recargadas", status_code=302)
-
 @app.post("/admin/create-tool")
-def create_tool(name: str = Form(...), description: str = Form(...), json_schema: str = Form(...), func_code: str = Form(...), user=Depends(manager)):
-    if user["name"] != "Edu":
-        raise HTTPException(status_code=403)
+def create_tool(name: str = Form(...), description: str = Form(...), json_schema: str = Form(...), func_code: str = Form(...)):
     schema = {
         "name": name,
         "description": description,
@@ -120,9 +64,7 @@ def create_tool(name: str = Form(...), description: str = Form(...), json_schema
     return RedirectResponse(url="/admin?msg=Tool+guardada+correctamente", status_code=302)
 
 @app.post("/admin/delete-tool")
-def delete_tool(name: str = Form(...), user=Depends(manager)):
-    if user["name"] != "Edu":
-        raise HTTPException(status_code=403)
+def delete_tool(name: str = Form(...)):
     path = os.path.join("tools", f"{name}.py")
     if os.path.exists(path):
         os.remove(path)
@@ -130,10 +72,7 @@ def delete_tool(name: str = Form(...), user=Depends(manager)):
     return RedirectResponse(url="/admin?msg=Tool+no+encontrada", status_code=302)
 
 @app.get("/admin/edit-tool", response_class=HTMLResponse)
-def edit_tool(name: str, request: Request, user=Depends(manager)):
-    if user["name"] != "Edu":
-        raise HTTPException(status_code=403)
-
+def edit_tool(name: str, request: Request):
     path = os.path.join("tools", f"{name}.py")
     if not os.path.exists(path):
         return RedirectResponse("/admin?msg=Tool+no+encontrada", status_code=302)
@@ -156,9 +95,7 @@ def edit_tool(name: str, request: Request, user=Depends(manager)):
     })
 
 @app.post("/admin/update-tool")
-def update_tool(name: str = Form(...), json_schema: str = Form(...), func_code: str = Form(...), user=Depends(manager)):
-    if user["name"] != "Edu":
-        raise HTTPException(status_code=403)
+def update_tool(name: str = Form(...), json_schema: str = Form(...), func_code: str = Form(...)):
     try:
         ns = {}
         exec(func_code, ns)
@@ -177,3 +114,8 @@ def update_tool(name: str = Form(...), json_schema: str = Form(...), func_code: 
         return HTMLResponse(f"<h1>Error: {str(e)}</h1><p><a href='/admin'>Volver</a></p>", status_code=400)
 
     return RedirectResponse(f"/admin?msg=Tool+{name}+actualizada", status_code=302)
+
+@app.get("/admin/reload-tools")
+def reload_tools():
+    load_all_tools()
+    return RedirectResponse(url="/admin?msg=Tools+recargadas", status_code=302)

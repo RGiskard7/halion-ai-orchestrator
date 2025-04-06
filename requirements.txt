@@ -3,8 +3,5 @@ uvicorn
 openai
 python-dotenv
 jinja2
-passlib[bcrypt]
-fastapi-login
 python-multipart
 pyyaml
-bcrypt==4.0.1
