@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OpenAI Tool Chat</title>
+  <link rel="stylesheet" href="/static/main.css">
+</head>
+<body>
+  <h1>🧠 Chat con herramientas</h1>
+
+  {% if user %}
+    <p>Bienvenido, <strong>{{ user.name }}</strong> | <a href="/logout">Cerrar sesión</a> | <a href="/admin">Panel admin</a></p>
+  {% else %}
+    <form method="post" action="/login">
+      <input type="text" name="username" placeholder="Usuario" required>
+      <input type="password" name="password" placeholder="Contraseña" required>
+      <button type="submit">Iniciar sesión</button>
+    </form>
+  {% endif %}
+
+  {% if chat %}
+    <div class="chatlog">
+      {% for msg in chat %}
+        <p><strong>Tú:</strong> {{ msg.user }}</p>
+        <p><strong>IA:</strong> {{ msg.bot }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if user %}
+    <form method="post" action="/chat-ui">
+      <input type="text" name="prompt" placeholder="Escribe tu mensaje..." required>
+      <button type="submit">Enviar</button>
+    </form>
+  {% endif %}
+
+  {% if error %}
+    <p style="color: red">{{ error }}</p>
+  {% endif %}
+</body>
+</html>

@@ -1,0 +1,20 @@
+[project]
+name = "openai_modular_mcp"
+version = "0.1.0"
+description = "Sistema modular estilo MCP basado en OpenAI con gestión de tools vía API REST y UI."
+authors = [{ name = "Edu", email = "edu@example.com" }]
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "openai",
+    "python-dotenv",
+    "jinja2",
+    "passlib[bcrypt]",
+    "fastapi-login",
+    "python-multipart",
+    "pyyaml"
+]
+requires-python = ">=3.9"
+
+[tool.setuptools]
+packages = ["."]

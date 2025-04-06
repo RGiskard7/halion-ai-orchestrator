@@ -1,0 +1,5 @@
+__pycache__/
+.env
+tool_calls.log
+*.pyc
+tools/*.yaml
