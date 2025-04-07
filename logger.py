@@ -1,5 +1,7 @@
+# logger.py (completo y actualizado)
 import json
 from datetime import datetime
+import os
 
 LOG_FILE = "tool_calls.log"
 
@@ -20,3 +22,14 @@ def load_log_entries(limit: int = 100):
             return [json.loads(line.strip()) for line in lines]
     except FileNotFoundError:
         return []
+
+def clear_log_entries():
+    open(LOG_FILE, "w").close()
+
+def export_logs_json():
+    return json.dumps(load_log_entries(), indent=2, ensure_ascii=False)
+
+def export_logs_csv():
+    import pandas as pd
+    logs = load_log_entries()
+    return pd.DataFrame(logs).to_csv(index=False)

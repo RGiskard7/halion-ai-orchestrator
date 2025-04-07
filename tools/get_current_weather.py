@@ -14,7 +14,7 @@ def get_current_weather(location: str, unit: str = "metric") -> str:
         str: Información del clima actual en formato JSON.
     """
     # Configuración de la API
-    api_key = "dc782a7368ea781210ccdc4aed4c880a"
+    api_key = os.getenv("OPENWEATHERMAP_API_KEY")
     base_url = "https://api.openweathermap.org/data/2.5/weather"
 
     # Parámetros de la solicitud

@@ -1,60 +1,54 @@
 import openai
 import json
-import os
-from dotenv import load_dotenv
-from tool_manager import get_tools_for_user_object
 from logger import log_tool_call
+from tool_manager import get_tools
 
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+def chat_with_tools(prompt: str, user_id="anon", api_key="", model="gpt-4", temperature=0.7):
+    openai.api_key = api_key
+    all_tools = get_tools()
+    schemas = [info["schema"] for info in all_tools.values()]
 
-async def chat_with_tools(user_input: str, user_id):
-    tools = get_tools_for_user_object(user_id)
-    function_schemas = [tools[name]["schema"] for name in tools]
+    messages = [{"role": "user", "content": prompt}]
 
-    messages = [{"role": "user", "content": user_input}]
-
-    if function_schemas:
-        # Llamada con 'functions' y 'function_call'
+    # Primera llamada
+    if schemas:
         response = openai.chat.completions.create(
-            model="gpt-4",
+            model=model,
             messages=messages,
-            functions=function_schemas,
-            function_call="auto"
+            functions=schemas,
+            function_call="auto",
+            temperature=temperature
         )
     else:
-        # Llamada normal sin funciones
+        # Sin tools definidas
         response = openai.chat.completions.create(
-            model="gpt-4",
-            messages=messages
+            model=model,
+            messages=messages,
+            temperature=temperature
         )
 
-    message = response.choices[0].message
+    reply = response.choices[0].message
 
-    # Manejo de function_call solo si hay tools
-    if function_schemas and hasattr(message, "function_call") and message.function_call:
-        func_name = message.function_call.name
-        arguments = json.loads(message.function_call.arguments)
+    if hasattr(reply, "function_call") and reply.function_call:
+        func_name = reply.function_call.name
+        arguments = json.loads(reply.function_call.arguments)
 
-        if func_name in tools:
-            result = tools[func_name]["func"](**arguments)
+        if func_name in all_tools:
+            # Ejecutar tool
+            result = all_tools[func_name]["func"](**arguments)
             log_tool_call(func_name, arguments, result)
 
-            messages.append(message.to_dict())
-            messages.append({
-                "role": "function",
-                "name": func_name,
-                "content": result
-            })
+            # Llamada final con la respuesta de la tool
+            messages.append(reply.to_dict())
+            messages.append({"role": "function", "name": func_name, "content": result})
 
-            # Segunda llamada
-            second_response = openai.chat.completions.create(
-                model="gpt-4",
-                messages=messages
+            final = openai.chat.completions.create(
+                model=model,
+                messages=messages,
+                temperature=temperature
             )
-            return second_response.choices[0].message.content
+            return final.choices[0].message.content
         else:
-            return f"La función '{func_name}' no existe o no está disponible."
-        
+            return f"La función '{func_name}' no existe."
     else:
-        return message.content
+        return reply.content

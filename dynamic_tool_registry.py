@@ -5,17 +5,23 @@ TOOLS_FOLDER = "tools"
 dynamic_tools = {}
 
 def register_tool(name: str, schema: dict, func_code: str):
-    namespace = {}
-    exec(func_code, namespace)
+    try:
+        namespace = {}
+        exec(func_code, namespace)
 
-    if name not in namespace:
-        raise ValueError(f"La función '{name}' no está definida en el código")
+        if name not in namespace:
+            raise ValueError(f"La función '{name}' no está definida en el código")
 
-    dynamic_tools[name] = {
-        "schema": schema,
-        "func": namespace[name],
-        "code": func_code
-    }
+        dynamic_tools[name] = {
+            "schema": schema,
+            "func": namespace[name],
+            "code": func_code
+        }
+        
+    except ModuleNotFoundError as e:
+        raise ImportError(f"Falta un módulo requerido: {e.name}. Instálalo con 'pip install {e.name}'") from e
+    except Exception as e:
+        raise RuntimeError(f"Error al registrar la tool '{name}': {str(e)}") from e
 
 def get_all_dynamic_tools():
     return dynamic_tools
