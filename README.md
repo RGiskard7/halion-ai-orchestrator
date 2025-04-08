@@ -1,209 +1,228 @@
-# OpenAI Modular MCP Framework
+# 🧠 OpenAI Modular MCP Framework
 
-Este proyecto es un sistema modular estilo MCP (Model Context Protocol) como el propuesto por Claude, pero implementado con la API de OpenAI. Está diseñado para gestionar herramientas externas (tools) que GPT puede usar mediante function calling. 
+[![Python 3.9+](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.30+-red.svg)](https://streamlit.io/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-API-green.svg)](https://openai.com/)
 
-Incluye:
-- Gestión dinámica de herramientas (tools) desde archivos o interfaz web.
-- Panel de administración con login y sesiones.
-- Permisos por usuario.
-- Logs de llamadas a tools.
-- Creación, edición y eliminación de tools desde la UI.
-- Guardado de tools en disco como `.py` y `.yaml`.
+Este proyecto implementa un entorno modular estilo MCP (Model-Context-Protocol), diseñado para crear asistentes inteligentes capaces de invocar herramientas externas ("tools") mediante *function calling* de OpenAI, con una interfaz profesional en Streamlit.
+
+> Plataforma extensible para construir, gestionar y desplegar asistentes IA con capacidades personalizadas.
 
 ---
 
-## 📦 Requisitos
+## 🚀 Características Principales
 
-- Python 3.9 o superior
-- Una clave de API de OpenAI
+✅ **Arquitectura Modular**: Carga dinámica y edición en caliente de herramientas Python  
+✅ **Interfaz Dual**: Chat con IA + Panel de administración completo  
+✅ **Sin Reinicios**: Añade, edita y gestiona herramientas sin detener el servidor  
+✅ **Transparencia Total**: Logs detallados, exportables en CSV/JSON  
+✅ **Gestión Integrada**: Variables de entorno editables desde la UI  
+✅ **Compatibilidad con OpenAI**: Soporte para GPT-4 y GPT-3.5-Turbo  
+✅ **Personalización**: Control de temperatura y selección de modelo  
 
 ---
 
-## 🚀 Instalación
+## 📦 Requisitos del Sistema
 
-### 1. Clonar el repositorio
+- **Python**: 3.9 o superior  
+- **API Key**: OpenAI (GPT-4 o GPT-3.5-Turbo)  
+- **Dependencias**: Streamlit, OpenAI, DuckDuckGo-Search (ver `requirements.txt`)  
+- **(Opcional)**: Claves API para servicios externos (OpenWeather, etc.)
+
+---
+
+## 🛠️ Instalación
 
 ```bash
+# Clonar el repositorio
 git clone https://github.com/tuusuario/openai_modular_mcp.git
 cd openai_modular_mcp
-```
 
-### 2. Crear y activar un entorno virtual (recomendado)
+# Crear y activar entorno virtual
+python3 -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
 
-```bash
-# Crear el entorno virtual\python -m venv venv
-
-# Activar en Windows
-venv\Scripts\activate
-
-# Activar en macOS/Linux
-source venv/bin/activate
-```
-
-### 3. Configurar las variables de entorno
-
-```bash
-cp .env.example .env
-```
-
-Edita el archivo `.env` y añade tu clave de OpenAI:
-
-```env
-OPENAI_API_KEY=sk-...
-AUTH_SECRET=supersecret
-```
-
-### 4. Instalar las dependencias
-
-```bash
+# Instalar dependencias
 pip install -r requirements.txt
+
+# Configurar variables de entorno
+cp .env.example .env  # Editar para añadir tu API key de OpenAI
 ```
 
-### 5. Ejecutar el servidor
+---
+
+## 🧪 Ejecución
 
 ```bash
-uvicorn main:app --reload
+# Iniciar la aplicación Streamlit
+streamlit run streamlit_app.py
+
+# La interfaz estará disponible en http://localhost:8501
 ```
 
 ---
 
-## 🧪 Uso básico
+## 🖥️ Interfaz Visual
 
-1. Abre el navegador: [http://localhost:8000](http://localhost:8000)
-2. Inicia sesión como:
-   - **Usuario**: `edu`
-   - **Contraseña**: `clave123`
-3. Escribe un mensaje como “¿Qué clima hace en Madrid?”
-4. GPT responderá invocando la tool `get_weather` si corresponde
+### 💬 Chat IA
+- Soporte para texto
+- Selección de modelo y temperatura
+- Historial de conversación persistente
 
----
-
-## 🔐 Panel de Administración
-
-Accede a [http://localhost:8000/admin](http://localhost:8000/admin)
-
-### Funcionalidades:
-- Ver usuarios y sus tools asignadas
-- Crear y eliminar usuarios
-- Ver tools estáticas y dinámicas
-- Crear nuevas tools desde la web
-- Editar o eliminar tools
-- Ver logs de llamadas a herramientas
-- Ver errores de carga de plugins mal formados
-- Recargar tools sin reiniciar el servidor
+### ⚙️ Panel de Administración
+- **Herramientas**: Cargar, recargar y crear tools dinámicas
+- **Variables**: Gestión del archivo `.env` desde la UI
+- **Logs**: Visualización y exportación de registros
 
 ---
 
-## 🧰 Crear nueva Tool (desde la UI)
+## 🧰 Creación de Herramientas
 
-1. Nombre: `decir_hora`
-2. Descripción: `Devuelve la hora actual`
-3. JSON Schema:
+### Método 1: Desde la UI (Sin código adicional)
+
+1. Navega a la pestaña **Admin > Herramientas**
+2. Define el esquema JSON de parámetros:
 
 ```json
 {
   "type": "object",
-  "properties": {},
-  "required": []
+  "properties": {
+    "ciudad": {"type": "string", "description": "Ciudad a consultar"}
+  },
+  "required": ["ciudad"]
 }
 ```
 
-4. Código Python:
+3. Implementa la función Python:
 
 ```python
-from datetime import datetime
-
-def decir_hora():
-    return f"Son las {datetime.now().strftime('%H:%M:%S')}"
+def obtener_hora(ciudad):
+    from datetime import datetime
+    return f"En {ciudad} son las {datetime.now().strftime('%H:%M:%S')}"
 ```
 
-✅ La tool se guarda automáticamente en `tools/decir_hora.py` y se carga al instante tras hacer clic en “🔄 Recargar tools”.
+### Método 2: Creando un archivo Python
 
----
-
-## 🧹 Eliminar una Tool
-
-1. En la lista de tools del panel admin, haz clic en ❌ Eliminar
-2. Confirma la eliminación
-
-✅ El archivo `.py` será borrado de la carpeta `tools/`
-
----
-
-## ✏️ Editar una Tool existente
-
-1. En la lista de tools del admin, haz clic en ✏️ Editar
-2. Modifica el código o el schema JSON
-3. Haz clic en “💾 Guardar Cambios”
-4. Se sobrescribe el `.py` y se guarda `.yaml` con el schema
-
----
-
-## 📄 Archivos importantes
-
-- `main.py`: servidor FastAPI y rutas
-- `executor.py`: orquestador de llamadas con GPT
-- `tool_manager.py`: carga de tools desde disco y memoria
-- `dynamic_tool_registry.py`: creación/edición dinámica
-- `auth.py`: login y usuarios
-- `templates/`: plantillas HTML para chat y admin
-- `tools/`: carpeta donde viven todas las tools
-- `tool_calls.log`: registro de herramientas usadas
-
----
-
-## 📚 Añadir una tool manualmente (archivo `.py`)
+Crea un archivo en la carpeta `tools/` con la siguiente estructura:
 
 ```python
-# tools/saludar.py
-
-def saludar(nombre: str) -> str:
-    return f"Hola, {nombre}, ¿cómo estás?"
+def mi_nueva_herramienta(param1, param2="valor_default"):
+    # Lógica de la herramienta
+    return f"Resultado: {param1}, {param2}"
 
 schema = {
-    "name": "saludar",
-    "description": "Saluda a una persona por su nombre",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "nombre": {"type": "string", "description": "Nombre de la persona"}
-        },
-        "required": ["nombre"]
-    }
+  "name": "mi_nueva_herramienta",
+  "description": "Descripción de lo que hace la herramienta",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "param1": {"type": "string", "description": "Descripción del parámetro"},
+      "param2": {"type": "string", "description": "Parámetro opcional"}
+    },
+    "required": ["param1"]
+  }
 }
 ```
 
 ---
 
-## ⚠️ Errores de carga
+## 📂 Estructura del Proyecto
 
-- Si un archivo `.py` no contiene `schema` o una función válida, se muestra en el panel de errores.
-- Puedes eliminar, corregir y volver a recargar sin reiniciar el servidor.
-
----
-
-## 🧪 Pruebas rápidas
-
-```bash
-curl -X POST http://localhost:8000/chat-ui -F "prompt=¿Qué clima hace en Madrid?"
+```
+.
+├── tools/                 # Carpeta con herramientas (.py)
+│   ├── buscar_en_internet.py  # Búsqueda web vía DuckDuckGo
+│   ├── get_current_weather.py # Clima con OpenWeatherMap
+│   ├── saludar.py            # Ejemplo simple
+│   └── send_email.py         # Envío de correos
+├── streamlit_app.py       # Interfaz principal Streamlit
+├── executor.py            # Orquestador de llamadas a GPT
+├── tool_manager.py        # Gestión de tools desde disco
+├── dynamic_tool_registry.py # Tools creadas desde la UI
+├── logger.py              # Logging de invocaciones
+├── env_manager.py         # Gestión del archivo .env
+├── .env.example           # Plantilla para variables de entorno
+├── .tool_status.json      # Control de tools activas
+├── requirements.txt       # Dependencias del proyecto
+└── main_context.md        # Documentación de arquitectura
 ```
 
 ---
 
-## 💡 Siguientes pasos sugeridos
+## 🧠 Flujo de Ejecución
 
-- Soporte para tests unitarios de cada tool
-- Permitir toolchains (encadenamiento)
-- Guardar todo en SQLite o PostgreSQL
-- Editor visual de tools sin código
-- CLI para gestionar tools desde terminal
+1. El usuario escribe un mensaje en el chat
+2. El mensaje se envía a la API de OpenAI con la lista de tools disponibles
+3. El modelo decide si usar `function_call` basado en la intención del usuario
+4. Si corresponde, el sistema:
+   - Invoca la tool Python seleccionada con los argumentos extraídos
+   - Registra la ejecución en los logs
+   - Devuelve el resultado como parte de la respuesta
+5. El usuario recibe una respuesta contextualizada que incorpora el resultado
+
+**Ejemplo**: _"¿Qué tiempo hace en Madrid?"_ → usa `get_current_weather` → muestra datos meteorológicos
 
 ---
 
-## 📬 Contacto
+## 📝 Sistema de Registro
 
-Desarrollado por Edu ✨
+Cada llamada a una herramienta se guarda en `tool_calls.log` con:
+- Timestamp de ejecución
+- ID de usuario (para futuras implementaciones multi-usuario)
+- Nombre de la función invocada
+- Argumentos proporcionados
+- Resultado obtenido
+- Tiempo de ejecución
+
+Los logs pueden exportarse desde la interfaz en formato CSV o JSON para análisis posterior.
 
 ---
 
-Listo para usar, extender y convertir en tu entorno modular de IA personal.
+## 🔐 Seguridad y Buenas Prácticas
+
+- Las API Keys se almacenan en `.env` (nunca en el código)
+- Las herramientas deben estar explícitamente activadas para ser utilizadas
+- Validación de parámetros antes de la ejecución
+- Manejo de excepciones para evitar fallos en cascada
+- (Próximamente) Control de acceso basado en usuarios y permisos
+
+---
+
+## 🧭 Roadmap
+
+- **Base de datos**: Soporte a SQLite/PostgreSQL para persistencia de usuarios y logs
+- **Autenticación**: Sistema de login y permisos diferenciados
+- **CLI**: Herramienta de línea de comandos para registrar/editar tools
+- **Editor Visual**: Creación de tools sin escribir código (drag & drop)
+- **Toolchains**: Encadenamiento automático de herramientas para tareas complejas
+- **Multi-LLM**: Compatibilidad con otras APIs (Claude, Gemini, LLaMA, etc.)
+- **Despliegue**: Guías para Docker, Kubernetes y servicios cloud
+
+---
+
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas. Para cambios importantes:
+
+1. Abre un issue para discutir el cambio propuesto
+2. Haz fork del repositorio
+3. Crea una rama para tu feature (`git checkout -b feature/amazing-feature`)
+4. Realiza tus cambios y haz commit (`git commit -m 'Add amazing feature'`)
+5. Push a la rama (`git push origin feature/amazing-feature`)
+6. Abre un Pull Request
+
+---
+
+## 📚 Créditos
+
+Desarrollado por **RGiskard7** ✨ con ❤️ por el poder de lo modular, lo limpio y lo hackeable.
+
+---
+
+## 🧭 Casos de Uso
+
+- **Asistente Personalizado**: Crea un asistente IA con funciones específicas para tu negocio
+- **Laboratorio de Experimentación**: Prueba nuevas ideas de herramientas en tiempo real
+- **Prototipado Rápido**: Base para integraciones con web, apps móviles, bots, etc.
+- **Automatización**: Conecta APIs externas a través de herramientas personalizadas
+- **Educación**: Plataforma para aprender sobre LLMs y function calling
