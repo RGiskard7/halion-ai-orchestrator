@@ -54,35 +54,82 @@ if "tools_loaded" not in st.session_state:
 
 # == SIDEBAR ==
 with st.sidebar:
-    st.title("⚙️ Configuración")
+    st.title("🧠 Control Panel")
     
-    # Sección de API
-    st.subheader("🔑 Configuración API")
-    api_key = st.text_input(
-        "OpenAI API Key",
-        type="password",
-        value=os.getenv("OPENAI_API_KEY", ""),
-        help="Tu clave API de OpenAI"
-    )
-    
-    # Sección de Modelo
-    st.subheader("🤖 Configuración del Modelo")
-    model = st.selectbox(
-        "Modelo a utilizar",
-        ["gpt-4", "gpt-3.5-turbo"],
-        help="Selecciona el modelo de OpenAI a utilizar"
-    )
-    temp = st.slider(
-        "Temperatura",
-        0.0, 1.0, 0.7,
-        help="Controla la creatividad del modelo. Valores más altos = más creativo"
+    # Sección de Navegación Principal
+    st.markdown("### 📍 Navegación")
+    nav = st.radio(
+        "Sección",  # Añadimos una etiqueta descriptiva
+        options=["💬 Chat", "⚙️ Admin"],
+        label_visibility="collapsed",  # La etiqueta seguirá oculta pero existe para accesibilidad
+        key="navigation_radio"  # Añadimos una key única para mejor debugging
     )
     
     st.divider()
     
-    # Navegación
-    st.subheader("📍 Navegación")
-    nav = st.radio("Ir a:", ["💬 Chat", "⚙️ Admin"])
+    # Sección de Configuración de IA
+    st.markdown("### 🤖 Configuración IA")
+    
+    # API Key con mejor formato
+    api_key = st.text_input(
+        "OpenAI API Key",
+        type="password",
+        value=os.getenv("OPENAI_API_KEY", ""),
+        help="Tu clave API de OpenAI",
+        placeholder="sk-..."
+    )
+    
+    # Modelo y Temperatura en la misma sección
+    col1, col2 = st.columns(2)
+    with col1:
+        model = st.selectbox(
+            "Modelo",
+            ["gpt-4", "gpt-3.5-turbo"],
+            help="Selecciona el modelo de OpenAI"
+        )
+    with col2:
+        temp = st.slider(
+            "Temp.",
+            0.0, 1.0, 0.7,
+            help="Creatividad: 0=preciso, 1=creativo"
+        )
+    
+    st.divider()
+    
+    # Sección de Herramientas
+    st.markdown("### 🔧 Herramientas")
+    
+    # Status rápido de herramientas
+    all_tools = {**get_all_loaded_tools(), **get_all_dynamic_tools()}
+    active_tools = [name for name, _ in all_tools.items() if is_tool_active(name)]
+    total_tools = len(all_tools)
+    active_count = len(active_tools)
+    
+    # Mostrar resumen de estado
+    st.markdown(f"**Estado**: {active_count}/{total_tools} activas")
+    
+    # Barra de progreso para visualización rápida
+    if total_tools > 0:
+        st.progress(active_count/total_tools, text="")
+    
+    # Lista expandible de herramientas activas
+    with st.expander("Ver herramientas activas", expanded=False):
+        if active_tools:
+            for tool in sorted(active_tools):  # Ordenadas alfabéticamente
+                st.markdown(f"✅ `{tool}`")
+        else:
+            st.info("ℹ️ No hay herramientas activas")
+    
+    st.divider()
+    
+    # Footer con información del sistema
+    st.markdown(
+        f"<div style='text-align: center; color: #888;'>"
+        f"<small>Sistema MCP v1.0<br>"
+        f"{datetime.now().strftime('%Y-%m-%d %H:%M')}</small>"
+        f"</div>",
+        unsafe_allow_html=True
+    )
 
 # == CHAT ==
 if nav == "💬 Chat":
@@ -141,13 +188,16 @@ elif nav == "⚙️ Admin":
             static_tools = get_all_loaded_tools()
             if static_tools:
                 for k, v in static_tools.items():
-                    col1, col2 = st.columns([4,1])
+                    col1, col2, col3 = st.columns([3,1,1])
                     with col1:
                         st.markdown(f"""
                         **`{k}`**  
-                        {v['schema']['description']}
+                        {v['schema']['description']}  
+                        {'🔄' if v['schema'].get('postprocess', True) else '📤'} {'_Post-procesado activo_' if v['schema'].get('postprocess', True) else '_Salida directa_'}
                         """)
                     with col2:
+                        st.empty()  # Columna vacía para mantener el espaciado
+                    with col3:
                         is_active = is_tool_active(k)
                         if st.toggle("Activa", value=is_active, key=f"toggle_{k}"):
                             if not is_active:  # Si estaba inactiva
@@ -165,13 +215,16 @@ elif nav == "⚙️ Admin":
             dynamic_tools = get_all_dynamic_tools()
             if dynamic_tools:
                 for k, v in dynamic_tools.items():
-                    col1, col2 = st.columns([4,1])
+                    col1, col2, col3 = st.columns([3,1,1])
                     with col1:
                         st.markdown(f"""
                         **`{k}`**  
-                        {v['schema'].get('description', '(sin descripción)')}
+                        {v['schema'].get('description', '(sin descripción)')}  
+                        {'🔄' if v['schema'].get('postprocess', True) else '📤'} {'_Post-procesado activo_' if v['schema'].get('postprocess', True) else '_Salida directa_'}
                         """)
                     with col2:
+                        st.empty()  # Columna vacía para mantener el espaciado
+                    with col3:
                         is_active = is_tool_active(k)
                         if st.toggle("Activa", value=is_active, key=f"toggle_dyn_{k}"):
                             if not is_active:  # Si estaba inactiva
@@ -187,11 +240,17 @@ elif nav == "⚙️ Admin":
         # Nueva Herramienta
         st.subheader("➕ Crear Nueva Herramienta")
         with st.form("new_tool_form"):
-            col1, col2 = st.columns(2)
+            col1, col2, col3 = st.columns([2,2,1])
             with col1:
                 name = st.text_input("Nombre", help="Nombre único para la herramienta")
             with col2:
                 desc = st.text_input("Descripción", help="Breve descripción de su función")
+            with col3:
+                postprocess = st.toggle(
+                    "Post-procesado",
+                    value=True,
+                    help="Si está activado, la IA procesará el resultado. Si está desactivado, se mostrará el resultado directo de la herramienta."
+                )
             
             json_schema = st.text_area(
                 "Esquema JSON (parámetros)",
@@ -228,7 +287,8 @@ elif nav == "⚙️ Admin":
                         schema = {
                             "name": name,
                             "description": desc,
-                            "parameters": params
+                            "parameters": params,
+                            "postprocess": postprocess
                         }
                         register_tool(name, schema, code)
                         persist_tool_to_disk(name, schema, code)
