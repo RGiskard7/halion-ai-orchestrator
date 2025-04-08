@@ -2,5 +2,6 @@
   "get_latest_news": true,
   "get_current_weather": true,
   "fetch_latest_news": true,
-  "send_email": false
+  "send_email": false,
+  "saludar": true
 }

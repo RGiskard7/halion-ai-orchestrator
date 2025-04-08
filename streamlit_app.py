@@ -192,6 +192,24 @@ if "chat" not in st.session_state:
 if "tools_loaded" not in st.session_state:
     st.session_state.tools_loaded = False
 
+# Función para actualizar el resumen de herramientas
+def update_tool_summary():
+    # Status rápido de herramientas
+    all_tools = {**get_all_loaded_tools(), **get_all_dynamic_tools()}
+    active_tools = [name for name, _ in all_tools.items() if is_tool_active(name)]
+    total_tools = len(all_tools)
+    active_count = len(active_tools)
+    
+    # Actualizar en el estado de sesión
+    st.session_state.tool_summary = {
+        "all_tools": all_tools,
+        "active_tools": active_tools,
+        "total_tools": total_tools,
+        "active_count": active_count
+    }
+    
+    return st.session_state.tool_summary
+
 # == SIDEBAR ==
 with st.sidebar:    
     # Sección de Navegación Principal
@@ -243,11 +261,15 @@ with st.sidebar:
     # Sección de Herramientas
     st.markdown("### 🔧 Herramientas")
     
-    # Status rápido de herramientas
-    all_tools = {**get_all_loaded_tools(), **get_all_dynamic_tools()}
-    active_tools = [name for name, _ in all_tools.items() if is_tool_active(name)]
-    total_tools = len(all_tools)
-    active_count = len(active_tools)
+    # Actualizar información de herramientas
+    if "tool_summary" not in st.session_state:
+        update_tool_summary()
+    
+    # Obtener datos del resumen
+    tool_summary = st.session_state.tool_summary
+    active_tools = tool_summary["active_tools"]
+    total_tools = tool_summary["total_tools"]
+    active_count = tool_summary["active_count"]
     
     # Mostrar resumen de estado
     st.markdown(f"**Estado**: {active_count}/{total_tools} activas")
@@ -325,7 +347,12 @@ elif nav == "⚙️ Admin":
                 with st.spinner("Recargando herramientas..."):
                     load_all_tools()
                     st.session_state.tools_loaded = True
-                st.success("✅ Herramientas recargadas exitosamente")
+                    # Actualizar el resumen de herramientas
+                    update_tool_summary()
+                    # Forzar una recarga completa de la página
+                    st.success("✅ Herramientas recargadas exitosamente")
+                    time.sleep(0.5)  # Pequeña pausa para mostrar el mensaje de éxito
+                    st.rerun()
         
         # Herramientas Estáticas
         with st.expander("📁 Herramientas Estáticas", expanded=True):
@@ -368,11 +395,19 @@ elif nav == "⚙️ Admin":
                         if st.toggle("Activa", value=is_active, key=f"toggle_{k}"):
                             if not is_active:  # Si estaba inactiva
                                 set_tool_status(k, True)
+                                # Actualizar el resumen de herramientas y forzar recarga
+                                update_tool_summary()
                                 st.success(f"✅ {k} activada")
+                                time.sleep(0.3)  # Pequeña pausa para mostrar el mensaje
+                                st.rerun()
                         else:
                             if is_active:  # Si estaba activa
                                 set_tool_status(k, False)
+                                # Actualizar el resumen de herramientas y forzar recarga
+                                update_tool_summary()
                                 st.warning(f"⚠️ {k} desactivada")
+                                time.sleep(0.3)  # Pequeña pausa para mostrar el mensaje
+                                st.rerun()
                 
                 # Modal para visualizar código
                 if "view_tool" in st.session_state and "view_tool_code" in st.session_state and st.session_state.view_tool_code:
@@ -459,6 +494,8 @@ elif nav == "⚙️ Admin":
                             
                             # Recargar herramientas
                             load_all_tools()
+                            # Actualizar el resumen de herramientas
+                            update_tool_summary()
                             st.success(f"✅ Herramienta '{tool_name}' actualizada correctamente")
                             
                             # Limpiar estado
@@ -496,6 +533,8 @@ elif nav == "⚙️ Admin":
                                 set_tool_status(tool_name, False)
                                 # Recargar herramientas
                                 load_all_tools()
+                                # Actualizar el resumen de herramientas
+                                update_tool_summary()
                                 st.success(f"✅ Herramienta '{tool_name}' eliminada correctamente")
                                 
                                 # Limpiar estado
@@ -558,11 +597,19 @@ elif nav == "⚙️ Admin":
                         if st.toggle("Activa", value=is_active, key=f"toggle_dyn_{k}"):
                             if not is_active:  # Si estaba inactiva
                                 set_tool_status(k, True)
+                                # Actualizar el resumen de herramientas y forzar recarga
+                                update_tool_summary()
                                 st.success(f"✅ {k} activada")
+                                time.sleep(0.3)  # Pequeña pausa para mostrar el mensaje
+                                st.rerun()
                         else:
                             if is_active:  # Si estaba activa
                                 set_tool_status(k, False)
+                                # Actualizar el resumen de herramientas y forzar recarga
+                                update_tool_summary()
                                 st.warning(f"⚠️ {k} desactivada")
+                                time.sleep(0.3)  # Pequeña pausa para mostrar el mensaje
+                                st.rerun()
             else:
                 st.info("ℹ️ No hay herramientas dinámicas registradas")
 
@@ -646,6 +693,9 @@ elif nav == "⚙️ Admin":
                             
                             # Recargar todas las herramientas para actualizar la interfaz
                             load_all_tools()
+                            
+                            # Actualizar el resumen de herramientas
+                            update_tool_summary()
                             
                             # Mensaje de éxito
                             st.success(f"✅ Herramienta '{name}' creada y activada exitosamente")
@@ -731,6 +781,9 @@ elif nav == "⚙️ Admin":
                             
                             # Recargar todas las herramientas para actualizar la interfaz
                             load_all_tools()
+                            
+                            # Actualizar el resumen de herramientas
+                            update_tool_summary()
                         
                         st.success(f"✅ Herramienta '{name}' creada exitosamente")
                         
