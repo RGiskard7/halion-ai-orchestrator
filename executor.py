@@ -38,13 +38,22 @@ def chat_with_tools(prompt: str, user_id="anon", api_key="", model="gpt-4", temp
             result = all_tools[func_name]["func"](**arguments)
             log_tool_call(func_name, arguments, result)
 
-            # Llamada final con la respuesta de la tool
+            # Siempre pasamos por el modelo, pero con instrucciones específicas
             messages.append(reply.to_dict())
             messages.append({"role": "function", "name": func_name, "content": result})
+
+            # Si la herramienta no requiere post-procesamiento, damos instrucciones específicas
+            if not all_tools[func_name]["schema"].get("postprocess", True):
+                messages.append({
+                    "role": "system",
+                    "content": "Por favor, devuelve el resultado exacto de la herramienta sin modificarlo ni resumirlo, pero evalúa si se necesitan llamadas adicionales a otras herramientas."
+                })
 
             final = openai.chat.completions.create(
                 model=model,
                 messages=messages,
+                functions=schemas,  # Mantenemos la posibilidad de llamadas adicionales
+                function_call="auto",
                 temperature=temperature
             )
             return final.choices[0].message.content

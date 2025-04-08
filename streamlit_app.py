@@ -8,7 +8,10 @@ from dotenv import load_dotenv
 from executor import chat_with_tools
 from logger import load_log_entries, clear_log_entries
 from dynamic_tool_registry import register_tool, persist_tool_to_disk
-from tool_manager import load_all_tools, get_all_loaded_tools, get_loading_errors, get_all_dynamic_tools
+from tool_manager import (
+    load_all_tools, get_all_loaded_tools, get_loading_errors, 
+    get_all_dynamic_tools, set_tool_status, get_tool_status, is_tool_active
+)
 from env_manager import get_env_variables, set_env_variable, delete_env_variable
 
 # Configuración inicial
@@ -138,10 +141,22 @@ elif nav == "⚙️ Admin":
             static_tools = get_all_loaded_tools()
             if static_tools:
                 for k, v in static_tools.items():
-                    st.markdown(f"""
-                    **`{k}`**  
-                    {v['schema']['description']}
-                    """)
+                    col1, col2 = st.columns([4,1])
+                    with col1:
+                        st.markdown(f"""
+                        **`{k}`**  
+                        {v['schema']['description']}
+                        """)
+                    with col2:
+                        is_active = is_tool_active(k)
+                        if st.toggle("Activa", value=is_active, key=f"toggle_{k}"):
+                            if not is_active:  # Si estaba inactiva
+                                set_tool_status(k, True)
+                                st.success(f"✅ {k} activada")
+                        else:
+                            if is_active:  # Si estaba activa
+                                set_tool_status(k, False)
+                                st.warning(f"⚠️ {k} desactivada")
             else:
                 st.info("ℹ️ No hay herramientas estáticas cargadas")
         
@@ -150,10 +165,22 @@ elif nav == "⚙️ Admin":
             dynamic_tools = get_all_dynamic_tools()
             if dynamic_tools:
                 for k, v in dynamic_tools.items():
-                    st.markdown(f"""
-                    **`{k}`**  
-                    {v['schema'].get('description', '(sin descripción)')}
-                    """)
+                    col1, col2 = st.columns([4,1])
+                    with col1:
+                        st.markdown(f"""
+                        **`{k}`**  
+                        {v['schema'].get('description', '(sin descripción)')}
+                        """)
+                    with col2:
+                        is_active = is_tool_active(k)
+                        if st.toggle("Activa", value=is_active, key=f"toggle_dyn_{k}"):
+                            if not is_active:  # Si estaba inactiva
+                                set_tool_status(k, True)
+                                st.success(f"✅ {k} activada")
+                        else:
+                            if is_active:  # Si estaba activa
+                                set_tool_status(k, False)
+                                st.warning(f"⚠️ {k} desactivada")
             else:
                 st.info("ℹ️ No hay herramientas dinámicas registradas")
         

@@ -1,8 +1,9 @@
-from duckduckgo_search import ddg
+from duckduckgo_search import DDGS
 
 def buscar_en_internet(query: str, max_results: int = 5) -> str:
     try:
-        resultados = ddg(query, max_results=max_results)
+        with DDGS() as ddgs:
+            resultados = list(ddgs.text(query, max_results=max_results))
         if not resultados:
             return "No se han encontrado resultados relevantes."
 
