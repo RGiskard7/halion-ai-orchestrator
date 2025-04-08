@@ -2,6 +2,7 @@ import importlib.util
 import os
 import json
 from dynamic_tool_registry import get_all_dynamic_tools
+from datetime import datetime
 
 TOOLS_FOLDER = "tools"
 TOOL_STATUS_FILE = ".tool_status.json"
@@ -39,27 +40,61 @@ def load_all_tools():
     _tool_errors = []
     _load_tool_status()  # Cargamos el estado de las herramientas
 
-    if not os.path.exists(TOOLS_FOLDER):
-        os.makedirs(TOOLS_FOLDER)
+    # Registrar en el log de depuración
+    with open("debug_logs/file_creation_debug.log", "a") as debug_file:
+        debug_file.write(f"\n\n--- FUNCIÓN load_all_tools LLAMADA {datetime.now().isoformat()} ---\n")
+        debug_file.write(f"Ruta de trabajo: {os.getcwd()}\n")
+        debug_file.write(f"Existe TOOLS_FOLDER '{TOOLS_FOLDER}': {os.path.exists(TOOLS_FOLDER)}\n")
+        
+        try:
+            if not os.path.exists(TOOLS_FOLDER):
+                debug_file.write(f"Creando carpeta '{TOOLS_FOLDER}'...\n")
+                os.makedirs(TOOLS_FOLDER)
+                
+            # Listar archivos en la carpeta
+            files = os.listdir(TOOLS_FOLDER)
+            debug_file.write(f"Archivos en '{TOOLS_FOLDER}': {files}\n")
+            
+            for filename in files:
+                if filename.endswith(".py"):
+                    module_name = filename[:-3]
+                    path = os.path.join(TOOLS_FOLDER, filename)
+                    
+                    debug_file.write(f"Procesando archivo: {filename}, ruta: {path}\n")
+                    debug_file.write(f"¿Archivo existe?: {os.path.exists(path)}\n")
+                    
+                    try:
+                        spec = importlib.util.spec_from_file_location(module_name, path)
+                        mod = importlib.util.module_from_spec(spec)
+                        debug_file.write(f"Ejecutando módulo: {module_name}...\n")
+                        spec.loader.exec_module(mod)
+                        
+                        debug_file.write(f"Atributos del módulo: {dir(mod)}\n")
+                        debug_file.write(f"¿Tiene schema?: {hasattr(mod, 'schema')}\n")
+                        debug_file.write(f"¿Tiene función llamable?: {callable(getattr(mod, module_name, None))}\n")
 
-    for filename in os.listdir(TOOLS_FOLDER):
-        if filename.endswith(".py"):
-            module_name = filename[:-3]
-            path = os.path.join(TOOLS_FOLDER, filename)
-            try:
-                spec = importlib.util.spec_from_file_location(module_name, path)
-                mod = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(mod)
-
-                if hasattr(mod, "schema") and callable(getattr(mod, module_name, None)):
-                    _loaded_tools_cache[mod.schema["name"]] = {
-                        "schema": mod.schema,
-                        "func": getattr(mod, module_name)
-                    }
-                else:
-                    raise Exception("Falta 'schema' o función no encontrada")
-            except Exception as e:
-                _tool_errors.append({"file": filename, "error": str(e)})
+                        if hasattr(mod, "schema") and callable(getattr(mod, module_name, None)):
+                            _loaded_tools_cache[mod.schema["name"]] = {
+                                "schema": mod.schema,
+                                "func": getattr(mod, module_name)
+                            }
+                            debug_file.write(f"Herramienta '{mod.schema['name']}' cargada correctamente\n")
+                        else:
+                            error_msg = "Falta 'schema' o función no encontrada"
+                            debug_file.write(f"ERROR: {error_msg}\n")
+                            raise Exception(error_msg)
+                    except Exception as e:
+                        debug_file.write(f"ERROR al cargar {filename}: {str(e)}\n")
+                        import traceback
+                        debug_file.write(f"TRACEBACK: {traceback.format_exc()}\n")
+                        _tool_errors.append({"file": filename, "error": str(e)})
+                        
+            debug_file.write(f"Herramientas cargadas: {list(_loaded_tools_cache.keys())}\n")
+            
+        except Exception as general_e:
+            debug_file.write(f"ERROR GENERAL: {str(general_e)}\n")
+            import traceback
+            debug_file.write(f"TRACEBACK GENERAL: {traceback.format_exc()}\n")
 
     return _loaded_tools_cache
 

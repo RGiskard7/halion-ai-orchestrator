@@ -54,6 +54,7 @@ Interfaz de usuario construida con Streamlit que proporciona:
   - Activación/desactivación individual de herramientas
   - Control de post-procesado por herramienta
   - Generación automática de herramientas con IA
+  - Prompts especializados para function calling
   - Visualización y exportación de logs
   - Administración de variables de entorno
 
@@ -231,6 +232,8 @@ schema = {
 - ✅ Creación dinámica de herramientas
 - ✅ Generación automática con IA
 - ✅ Control de activación y post-procesado
+- ✅ Prompts especializados para function calling
+- ✅ Interfaz mejorada con feedback visual
 - ✅ Logging y exportación
 
 ### En Desarrollo

@@ -1,0 +1,2998 @@
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T15:53:46.920862 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'saludar.py', 'test_tool.py', 'send_email.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'saludar', 'test_tool', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T15:54:31.770519 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'saludar.py', 'test_tool.py', 'send_email.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'saludar', 'test_tool', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T15:54:48.268291 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'saludar.py', 'test_tool.py', 'send_email.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'saludar', 'test_tool', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:00:57.687614 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:02:06.295713 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:03:04.899301 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:06:49.267192 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:07:23.038917 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:07:29.095252 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:09:26.730525 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:12:13.296263 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:12:40.882692 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:14:27.811123 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:15:09.099207 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:36:52.069648 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:37:46.965514 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:42:15.962783 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:47:21.815301 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- NUEVA LLAMADA A register_tool 2025-04-08T16:47:56.385045 ---
+Nombre: get_latest_news
+Schema: {
+  "name": "get_latest_news",
+  "description": "Fetches the latest news for a specific country and category",
+  "postprocess": true,
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "country": {
+        "type": "string",
+        "description": "The country for which to fetch the news"
+      },
+      "category": {
+        "type": "string",
+        "description": "The category of news to fetch"
+      }
+    },
+    "required": [
+      "country",
+      "category"
+    ]
+  }
+}
+Longitud de func_code: 777 caracteres
+Primeras líneas de func_code: ['import requests\nfrom typing import List\n\ndef get_latest_news(country: str, category: str) -> List[dict]:\n    url = f\'https://newsapi.org/v2/top-headlines?country={country}&category={category}&apiKey=YOUR_API_KEY\'\n    response = requests.get(url)\n    return response.json().get(\'articles\', [])\n\nschema = {\n  "name": "get_latest_news",\n  "description": "Fetches the latest news for a specific country and category",\n  "postprocess": True,\n  "parameters": {\n    "type": "object",\n    "properties": {\n      "country": {\n        "type": "string",\n        "description": "The country for which to fetch the news"\n      },\n      "category": {\n        "type": "string",\n        "description": "The category of news to fetch"\n      }\n    },\n    "required": ["country", "category"]\n  }\n}']
+Ejecutando código en namespace...
+Keys en namespace: ['__builtins__', 'requests', 'List', 'get_latest_news', 'schema']
+Función 'get_latest_news' encontrada en el namespace
+Herramienta 'get_latest_news' registrada con éxito en memoria
+
+
+--- NUEVA LLAMADA A persist_tool_to_disk 2025-04-08T16:47:56.386203 ---
+Nombre: get_latest_news
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Carpeta creada/verificada
+Ruta del archivo a crear: tools/get_latest_news.py
+¿El código ya tiene schema?: True
+Guardando archivo con schema existente...
+¿Se creó el archivo?: True
+Tamaño del archivo: 778
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:48:04.451868 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['List', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'get_latest_news', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:48:47.795512 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['List', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'get_latest_news', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:51:08.153939 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['List', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'get_latest_news', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T16:59:29.445842 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['List', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'get_latest_news', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T17:00:36.331752 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'contador_palabras.py', 'prueba_script.py', 'saludar.py', 'test_tool.py', 'send_email.py', 'herramienta_prueba.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['List', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: prueba_script.py, ruta: tools/prueba_script.py
+¿Archivo existe?: True
+Ejecutando módulo: prueba_script...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'prueba_script', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'prueba_script' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: test_tool.py, ruta: tools/test_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: test_tool...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_tool']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'test_tool' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Procesando archivo: herramienta_prueba.py, ruta: tools/herramienta_prueba.py
+¿Archivo existe?: True
+Ejecutando módulo: herramienta_prueba...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'herramienta_prueba', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'herramienta_prueba' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'get_latest_news', 'prueba_script', 'saludar', 'test_tool', 'send_email', 'herramienta_prueba']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T17:01:16.666391 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T17:02:00.775132 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T17:05:39.708302 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T17:06:11.444944 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T17:58:49.038932 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T18:10:28.064788 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T20:52:45.070942 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T21:05:55.847670 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T21:13:45.954802 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'saludar', 'send_email']
+
+
+--- NUEVA LLAMADA A register_tool 2025-04-08T21:17:05.784886 ---
+Nombre: get_latest_news
+Schema: {
+  "name": "get_latest_news",
+  "description": "Fetches the latest news for a given country.",
+  "postprocess": false,
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "country": {
+        "type": "string",
+        "description": "The country for which to fetch the latest news."
+      }
+    },
+    "required": [
+      "country"
+    ]
+  }
+}
+Longitud de func_code: 1206 caracteres
+Primeras líneas de func_code: ['from typing import Dict, Union\nimport requests\n\ndef get_latest_news(country: str) -> Dict[str, Union[str, int]]:\n    """\n    Fetches the latest news for a given country from a free news API.\n\n    Args:\n        country (str): The country for which to fetch the latest news.\n    \n    Returns:\n        Dict[str, Union[str, int]]: A dictionary containing the status, total results and a list of articles.\n    """\n    if not country:\n        raise ValueError("Country cannot be empty.")\n\n    try:\n        url = f"https://newsapi.org/v2/top-headlines?country={country}&category=general&apiKey=YOUR_API_KEY"\n        response = requests.get(url)\n        response.raise_for_status()\n\n        return response.json()\n    except Exception as e:\n        raise Exception(f"Error in get_latest_news: {str(e)}")\n\nschema = {\n    "name": "get_latest_news",\n    "description": "Fetches the latest news for a given country.",\n    "postprocess": False,\n    "parameters": {\n        "type": "object",\n        "properties": {\n            "country": {\n                "type": "string",\n                "description": "The country for which to fetch the latest news."\n            }\n        },\n        "required": ["country"]\n    }\n}']
+Ejecutando código en namespace...
+Keys en namespace: ['__builtins__', 'Dict', 'Union', 'requests', 'get_latest_news', 'schema']
+Función 'get_latest_news' encontrada en el namespace
+Herramienta 'get_latest_news' registrada con éxito en memoria
+
+
+--- NUEVA LLAMADA A persist_tool_to_disk 2025-04-08T21:17:05.785389 ---
+Nombre: get_latest_news
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Carpeta creada/verificada
+Ruta del archivo a crear: tools/get_latest_news.py
+¿El código ya tiene schema?: True
+Guardando archivo con schema existente...
+¿Se creó el archivo?: True
+Tamaño del archivo: 1207
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T21:17:22.070942 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'get_latest_news', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T21:18:40.813589 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'get_latest_news', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T21:18:50.743643 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'get_latest_news', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T21:19:06.904241 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'get_latest_news', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T21:21:20.705756 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'contador_palabras.py', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: contador_palabras.py, ruta: tools/contador_palabras.py
+¿Archivo existe?: True
+Ejecutando módulo: contador_palabras...
+ERROR al cargar contador_palabras.py: unterminated string literal (detected at line 17) (contador_palabras.py, line 17)
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 70, in load_all_tools
+    spec.loader.exec_module(mod)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tools/contador_palabras.py", line 17
+    palabra = palabra.strip('.,;:!?"'()[]{}')
+                                           ^
+SyntaxError: unterminated string literal (detected at line 17)
+
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'get_latest_news', 'saludar', 'send_email']
+
+
+--- NUEVA LLAMADA A register_tool 2025-04-08T21:23:06.273926 ---
+Nombre: fetch_latest_news
+Schema: {
+  "name": "fetch_latest_news",
+  "description": "Fetches the latest news from the specified news source using the GNews API.",
+  "postprocess": false,
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "source": {
+        "type": "string",
+        "description": "The news source to fetch the news from. Defaults to 'techcrunch'."
+      }
+    },
+    "required": []
+  }
+}
+Longitud de func_code: 1583 caracteres
+Primeras líneas de func_code: ['from typing import Dict, List, Optional, Union\nimport requests\n\ndef fetch_latest_news(source: str = "techcrunch") -> Dict[str, Union[str, List[Dict[str, str]]]]:\n    """\n    Fetches the latest news from the specified news source using the GNews API.\n    \n    Args:\n        source (str): The news source to fetch the news from. Defaults to "techcrunch".\n    \n    Returns:\n        Dict[str, Union[str, List[Dict[str, str]]]]: A dictionary containing the status of the request and the articles.\n        \n    Raises:\n        Exception: Raises an exception if any error occurs during the API request.\n    """\n    # Forming the API URL\n    api_url = f"https://gnews.io/api/v4/top-headlines?token=YOUR_API_TOKEN&lang=en&source={source}"\n    \n    try:\n        # Making the API request\n        response = requests.get(api_url)\n        response.raise_for_status()\n\n        # Extracting and returning the news articles\n        news_data = response.json()\n        return {\n            "status": "ok",\n            "articles": news_data["articles"]\n        }\n    except Exception as e:\n        raise Exception(f"Error in fetch_latest_news: {e}")\n\nschema = {\n    "name": "fetch_latest_news",\n    "description": "Fetches the latest news from the specified news source using the GNews API.",\n    "postprocess": False,\n    "parameters": {\n        "type": "object",\n        "properties": {\n            "source": {\n                "type": "string",\n                "description": "The news source to fetch the news from. Defaults to \'techcrunch\'."\n            }\n        },\n        "required": []\n    }\n}']
+Ejecutando código en namespace...
+Keys en namespace: ['__builtins__', 'Dict', 'List', 'Optional', 'Union', 'requests', 'fetch_latest_news', 'schema']
+Función 'fetch_latest_news' encontrada en el namespace
+Herramienta 'fetch_latest_news' registrada con éxito en memoria
+
+
+--- NUEVA LLAMADA A persist_tool_to_disk 2025-04-08T21:23:06.275338 ---
+Nombre: fetch_latest_news
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Carpeta creada/verificada
+Ruta del archivo a crear: tools/fetch_latest_news.py
+¿El código ya tiene schema?: True
+Guardando archivo con schema existente...
+¿Se creó el archivo?: True
+Tamaño del archivo: 1584
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T21:23:12.175529 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'fetch_latest_news.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: fetch_latest_news.py, ruta: tools/fetch_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_latest_news...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_latest_news' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'fetch_latest_news', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T21:25:19.756209 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'saludar', 'send_email']
+
+
+--- NUEVA LLAMADA A register_tool 2025-04-08T21:26:21.442478 ---
+Nombre: fetch_latest_news
+Schema: {
+  "name": "fetch_latest_news",
+  "description": "Fetches the latest news from a specified country using the NewsAPI",
+  "postprocess": false,
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "country": {
+        "type": "string",
+        "description": "The country code for the news source"
+      }
+    },
+    "required": [
+      "country"
+    ]
+  }
+}
+Longitud de func_code: 1578 caracteres
+Primeras líneas de func_code: ['from typing import Dict\nimport requests\n\ndef fetch_latest_news(country: str = \'us\') -> Dict[str, str]:\n    """\n    Fetches the latest news using the NewsAPI. The country parameter determines from which country the news are fetched.\n\n    Args:\n        country (str): The country code for the news source. Defaults to \'us\'.\n    \n    Returns:\n        Dict[str, str]: The title and the URL of the latest news article.\n\n    Raises:\n        ValueError: If the country code is not valid.\n        Exception: If there is an error in fetching the news.\n    """\n    # Validation\n    valid_country_codes = [\'us\', \'ca\', \'de\', \'fr\', \'gb\']\n    if country not in valid_country_codes:\n        raise ValueError(f"Invalid country code. Choose from {valid_country_codes}")\n    \n    try:\n        # Fetching news\n        url = f\'https://newsapi.org/v2/top-headlines?country={country}&apiKey=YOUR_API_KEY\'\n        response = requests.get(url)\n        data = response.json()\n        latest_news = data[\'articles\'][0]\n        return {"title": latest_news[\'title\'], "url": latest_news[\'url\']}\n    except Exception as e:\n        raise Exception(f"Error in fetch_latest_news: {e}")\n\n\nschema = {\n    "name": "fetch_latest_news",\n    "description": "Fetches the latest news from a specified country using the NewsAPI",\n    "postprocess": False,\n    "parameters": {\n        "type": "object",\n        "properties": {\n            "country": {\n                "type": "string",\n                "description": "The country code for the news source"\n            }\n        },\n        "required": ["country"]\n    }\n}']
+Ejecutando código en namespace...
+Keys en namespace: ['__builtins__', 'Dict', 'requests', 'fetch_latest_news', 'schema']
+Función 'fetch_latest_news' encontrada en el namespace
+Herramienta 'fetch_latest_news' registrada con éxito en memoria
+
+
+--- NUEVA LLAMADA A persist_tool_to_disk 2025-04-08T21:26:21.446544 ---
+Nombre: fetch_latest_news
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Carpeta creada/verificada
+Ruta del archivo a crear: tools/fetch_latest_news.py
+¿El código ya tiene schema?: True
+Guardando archivo con schema existente...
+¿Se creó el archivo?: True
+Tamaño del archivo: 1579
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T21:26:21.448866 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'fetch_latest_news.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: fetch_latest_news.py, ruta: tools/fetch_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_latest_news...
+Atributos del módulo: ['Dict', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_latest_news' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'fetch_latest_news', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T21:27:54.211004 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'saludar', 'send_email']
+
+
+--- NUEVA LLAMADA A register_tool 2025-04-08T21:29:36.222340 ---
+Nombre: fetch_latest_news
+Schema: {
+  "name": "fetch_latest_news",
+  "description": "Fetches the latest news for a specific country from NewsAPI",
+  "postprocess": false,
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "country": {
+        "type": "string",
+        "description": "The country for which to fetch the news"
+      }
+    },
+    "required": [
+      "country"
+    ]
+  }
+}
+Longitud de func_code: 1435 caracteres
+Primeras líneas de func_code: ['from typing import Dict, Optional, Union\nimport requests\n\ndef fetch_latest_news(country: str = \'us\') -> Dict[str, Union[str, int]]:\n    """\n    Fetches the latest news from NewsAPI for a specific country.\n\n    Args:\n        country (str, optional): The country for which to fetch the news. Defaults to \'us\'.\n\n    Returns:\n        Dict[str, Union[str, int]]: A dictionary containing the status of the request and the articles.\n\n    Raises:\n        Exception: If the request to the NewsAPI fails.\n    """\n    # Validate country\n    if not isinstance(country, str):\n        raise ValueError("Country must be a string")\n\n    try:\n        # Fetch news\n        response = requests.get(f"https://newsapi.org/v2/top-headlines?country={country}")\n\n        # Check if request was successful\n        if response.status_code != 200:\n            raise Exception(f"Error fetching news: {response.status_code}")\n\n        return response.json()\n    except Exception as e:\n        raise Exception(f"Error in fetch_latest_news: {e}")\n\nschema = {\n    "name": "fetch_latest_news",\n    "description": "Fetches the latest news for a specific country from NewsAPI",\n    "postprocess": False,\n    "parameters": {\n        "type": "object",\n        "properties": {\n            "country": {\n                "type": "string",\n                "description": "The country for which to fetch the news"\n            }\n        },\n        "required": ["country"]\n    }\n}']
+Ejecutando código en namespace...
+Keys en namespace: ['__builtins__', 'Dict', 'Optional', 'Union', 'requests', 'fetch_latest_news', 'schema']
+Función 'fetch_latest_news' encontrada en el namespace
+Herramienta 'fetch_latest_news' registrada con éxito en memoria
+
+
+--- NUEVA LLAMADA A persist_tool_to_disk 2025-04-08T21:29:36.224392 ---
+Nombre: fetch_latest_news
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Carpeta creada/verificada
+Ruta del archivo a crear: tools/fetch_latest_news.py
+¿El código ya tiene schema?: True
+Guardando archivo con schema existente...
+¿Se creó el archivo?: True
+Tamaño del archivo: 1436
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T21:29:36.231437 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'fetch_latest_news.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: fetch_latest_news.py, ruta: tools/fetch_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_latest_news' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'fetch_latest_news', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T21:46:14.364051 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'fetch_latest_news.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: fetch_latest_news.py, ruta: tools/fetch_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_latest_news' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'fetch_latest_news', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T21:50:37.371201 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'fetch_latest_news.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: fetch_latest_news.py, ruta: tools/fetch_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_latest_news' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'fetch_latest_news', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T23:49:57.256687 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'fetch_latest_news.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: fetch_latest_news.py, ruta: tools/fetch_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_latest_news' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'fetch_latest_news', 'saludar', 'send_email']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-08T23:51:49.706038 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'fetch_latest_news.py', '__pycache__', 'saludar.py', 'send_email.py']
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: fetch_latest_news.py, ruta: tools/fetch_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_latest_news', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_latest_news' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: send_email.py, ruta: tools/send_email.py
+¿Archivo existe?: True
+Ejecutando módulo: send_email...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'send_email']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'send_email' cargada correctamente
+Herramientas cargadas: ['buscar_en_internet', 'get_current_weather', 'fetch_latest_news', 'saludar', 'send_email']

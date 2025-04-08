@@ -4,6 +4,10 @@ import json
 import pandas as pd
 from datetime import datetime
 from dotenv import load_dotenv
+import openai
+import re
+import time
+import importlib
 
 from executor import chat_with_tools
 from logger import load_log_entries, clear_log_entries
@@ -13,6 +17,142 @@ from tool_manager import (
     get_all_dynamic_tools, set_tool_status, get_tool_status, is_tool_active
 )
 from env_manager import get_env_variables, set_env_variable, delete_env_variable
+
+def generate_tool_with_ai(description: str, api_key: str, model: str = "gpt-4", temperature: float = 0.7) -> str:
+    """
+    Genera código para una herramienta usando la API de OpenAI.
+    
+    Args:
+        description: Descripción de la herramienta a generar
+        api_key: API key de OpenAI
+        model: Modelo a utilizar (por defecto "gpt-4")
+        temperature: Temperatura para la generación (por defecto 0.7)
+        
+    Returns:
+        str: Código Python de la herramienta generada
+    
+    Raises:
+        ValueError: Si hay algún error en la generación
+    """
+    try:                
+        # Verificar que tenemos una API key válida
+        if not api_key:
+            raise ValueError("No se proporcionó una API key válida")
+            
+        # Configurar cliente OpenAI
+        client = openai.OpenAI(api_key=api_key)
+        
+        # Prompt simplificado para funciones/tools de OpenAI
+        prompt = f"""
+        Crea una herramienta Python con función y schema compatible con GPT (function calling). No des explicaciones, solo el código entre triple comillas.
+
+            TAREA: Crear una herramienta Python para GPT function calling que cumpla con la siguiente descripción:
+            {description}
+
+            1. ESTRUCTURA OBLIGATORIA:
+                - Función principal con nombre descriptivo en snake_case
+                - Docstring detallado
+                - Tipado de parámetros y retorno
+                - Schema JSON que define la herramienta
+                - Manejo de errores apropiado
+
+            2. SCHEMA JSON REQUERIDO:
+                - name: Nombre de la función (debe coincidir)
+                - description: Descripción clara y concisa
+                - postprocess: boolean (si el resultado necesita procesamiento por IA)
+                - parameters: Definición JSON Schema de parámetros
+                - required: Lista de parámetros obligatorios
+
+            3. BUENAS PRÁCTICAS:
+                - Código limpio y comentado
+                - Validaciones de entrada
+                - Mensajes de error descriptivos
+                - Retorno de datos estructurados
+
+            FORMATO:
+            ```python
+            from typing import Dict, Optional, Union
+            import requests  # (si es necesario)
+
+            def nombre_herramienta(param1: str, param2: Optional[int] = None) -> Dict[str, Union[str, int]]:
+                \"\"\"
+                Descripción detallada de la herramienta.
+                
+                Args:
+                    param1 (str): Descripción del primer parámetro
+                    param2 (int, optional): Descripción del segundo parámetro. Defaults to None.
+                
+                Returns:
+                    Dict[str, Union[str, int]]: Descripción del formato de retorno
+                    
+                Raises:
+                    ValueError: Descripción de cuándo se lanza este error
+                \"\"\"
+                # Validaciones
+                if not param1:
+                    raise ValueError("param1 no puede estar vacío")
+                
+                try:
+                    # Lógica principal
+                    return resultado
+                except Exception as e:
+                    raise Exception(f"Error en nombre_herramienta: {{e}}")
+
+            schema = {{
+                "name": "nombre_herramienta",
+                "description": "Descripción concisa de la funcionalidad",
+                "postprocess": true, # o False según necesidad
+                "parameters": {{
+                    "type": "object",
+                    "properties": {{
+                        "param1": {{
+                            "type": "string",
+                            "description": "Descripción detallada del parámetro"
+                        }},
+                        "param2": {{
+                            "type": "integer",
+                            "description": "Descripción detallada del parámetro opcional"
+                        }}
+                    }},
+                    "required": ["param1"]
+                }}
+            }}
+            ```
+            IMPORTANTE:
+            - La herramienta debe ser funcional y segura
+            - Debe ser compatible las tools (antes funtion calling) de OpenAI
+        """
+        
+        # Llamada a la API
+        response = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": "Eres un experto desarrollador de herramientas para GPT function calling."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=temperature
+        )
+        
+        # Obtener el contenido de la respuesta
+        content = response.choices[0].message.content
+        if not content:
+            raise ValueError("La respuesta no contiene contenido")
+            
+        # Extraer el código Python
+        code_match = re.search(r"```python(.*?)```", content, re.DOTALL)
+        if code_match:
+            return code_match.group(1).strip()
+        
+        # Si no encuentra bloques específicos de Python, buscar cualquier bloque de código
+        code_blocks = re.findall(r'```(.*?)```', content, re.DOTALL)
+        if code_blocks:
+            return code_blocks[0].strip()
+        
+        # Si no hay bloques de código, usar todo el contenido
+        return content.strip()
+        
+    except Exception as e:
+        raise ValueError(f"Error al generar código: {str(e)}")
 
 # Configuración inicial
 load_dotenv()
@@ -53,9 +193,7 @@ if "tools_loaded" not in st.session_state:
     st.session_state.tools_loaded = False
 
 # == SIDEBAR ==
-with st.sidebar:
-    st.title("🧠 Control Panel")
-    
+with st.sidebar:    
     # Sección de Navegación Principal
     st.markdown("### 📍 Navegación")
     nav = st.radio(
@@ -78,6 +216,12 @@ with st.sidebar:
         help="Tu clave API de OpenAI",
         placeholder="sk-..."
     )
+    
+    # Guardar la API key en el estado de sesión
+    if api_key:
+        st.session_state.api_key = api_key
+        # También la configuramos como variable de entorno para otras partes de la aplicación
+        os.environ["OPENAI_API_KEY"] = api_key
     
     # Modelo y Temperatura en la misma sección
     col1, col2 = st.columns(2)
@@ -173,7 +317,7 @@ elif nav == "⚙️ Admin":
     
     # === TAB HERRAMIENTAS ===
     with tabs[0]:
-        col1, col2 = st.columns([2,1])
+        col1, col2 = st.columns([3,1])
         with col1:
             st.subheader("🔄 Gestión de Herramientas")
         with col2:
@@ -236,6 +380,8 @@ elif nav == "⚙️ Admin":
                                 st.warning(f"⚠️ {k} desactivada")
             else:
                 st.info("ℹ️ No hay herramientas dinámicas registradas")
+
+        st.divider()
         
         # Nueva Herramienta
         st.subheader("➕ Crear Nueva Herramienta")
@@ -248,129 +394,173 @@ elif nav == "⚙️ Admin":
                 placeholder="Ejemplo: Una herramienta que calcule el IMC dado el peso en kg y la altura en metros..."
             )
             
-            if st.button("🪄 Generar Herramienta", disabled=not ai_prompt):
-                with st.spinner("La IA está generando tu herramienta..."):
+            # Botón para generar el código
+            if st.button("🔍 Generar Código", disabled=not ai_prompt, key="generar_codigo"):
+                with st.spinner("Generando código con IA..."):
                     try:
-                        # Prompt para la IA
-                        generation_prompt = f"""Genera una herramienta Python basada en esta descripción: '{ai_prompt}'
-
-                        Debes proporcionar:
-                        1. Nombre único y descriptivo para la herramienta
-                        2. Descripción clara de su función
-                        3. Schema JSON con los parámetros necesarios
-                        4. Código Python que implemente la funcionalidad
-                        5. Si debe usar post-procesado o no (true/false)
-
-                        Responde en formato JSON exactamente así:
-                        {{
-                            "name": "nombre_herramienta",
-                            "description": "Descripción clara",
-                            "schema": {{
-                                // El schema JSON completo
-                            }},
-                            "code": "// El código Python completo",
-                            "postprocess": true/false
-                        }}"""
-
-                        # Llamada a la IA
-                        response = chat_with_tools(
-                            generation_prompt,
-                            user_id="system",
-                            api_key=api_key,
-                            model="gpt-4",
-                            temperature=0.7
-                        )
-
-                        # Parsear la respuesta
+                        # Verificar API key
+                        if not api_key:
+                            st.error("No hay API Key configurada")
+                            st.stop()
+                            
+                        # Generar código con la IA
+                        code = generate_tool_with_ai(ai_prompt, api_key, model, temp)
+                        
+                        # Guardar el código generado en la sesión para usarlo después
+                        st.session_state.codigo_generado = code
+                        
+                        # Extraer datos para mostrar información
                         try:
-                            tool_data = json.loads(response)
-                            
-                            # Rellenar el formulario con los datos generados
-                            st.session_state.generated_name = tool_data["name"]
-                            st.session_state.generated_desc = tool_data["description"]
-                            st.session_state.generated_schema = json.dumps(tool_data["schema"], indent=2)
-                            st.session_state.generated_code = tool_data["code"]
-                            st.session_state.generated_postprocess = tool_data.get("postprocess", True)
-                            
-                            st.success("✨ Herramienta generada correctamente. Los campos del formulario se han rellenado automáticamente.")
-                        except json.JSONDecodeError:
-                            st.error("❌ La IA no generó un JSON válido. Por favor, intenta de nuevo.")
+                            name, schema, _, _ = extract_code_and_schema(code)
+                            st.session_state.tool_name = name
+                            st.session_state.tool_schema = schema
+                        except Exception as e:
+                            st.warning(f"El código se generó pero hubo un problema al extraer metadatos: {str(e)}")
+                            st.session_state.tool_name = "desconocido"
+                            st.session_state.tool_schema = {"description": "No disponible"}
+                        
+                        # Mostrar el código generado
+                        st.code(code, language="python")
+                        
+                        # Aquí mostramos el botón "Usar Esta Herramienta"
+                        st.success("✅ Código generado correctamente. Revísalo y si te parece correcto, úsalo.")
+                        
+                        # Botón para reiniciar (opcional)
+                        if st.button("🔄 Reiniciar", key="reiniciar_despues_crear"):
+                            # Limpiar estado
+                            if 'codigo_generado' in st.session_state:
+                                del st.session_state.codigo_generado
+                            if 'tool_name' in st.session_state:
+                                del st.session_state.tool_name
+                            if 'tool_schema' in st.session_state:
+                                del st.session_state.tool_schema
+                            st.rerun()
+                        
                     except Exception as e:
-                        st.error(f"❌ Error al generar la herramienta: {str(e)}")
+                        st.error(f"❌ Error al generar código: {str(e)}")
+                        import traceback
+                        st.code(traceback.format_exc())
+            
+            # Mostrar el botón "Usar Esta Herramienta" solo si hay código generado
+            if 'codigo_generado' in st.session_state:
+                st.write("---")
+                st.write(f"**Herramienta generada:** `{st.session_state.get('tool_name', 'Herramienta')}`")
+                st.write(f"**Descripción:** {st.session_state.get('tool_schema', {}).get('description', 'No disponible')}")
+                
+                # Botón para usar la herramienta
+                if st.button("✨ Usar Esta Herramienta", key="usar_herramienta"):
+                    with st.spinner("Procesando y creando herramienta..."):
+                        try:
+                            # Extraer todos los datos necesarios
+                            name, schema, code, func = extract_code_and_schema(st.session_state.codigo_generado)
+                            
+                            # Registrar y guardar la herramienta
+                            register_tool(name, schema, code)
+                            persist_tool_to_disk(name, schema, code)
+                            set_tool_status(name, True)
+                            
+                            # Recargar todas las herramientas para actualizar la interfaz
+                            load_all_tools()
+                            
+                            # Mensaje de éxito
+                            st.success(f"✅ Herramienta '{name}' creada y activada exitosamente")
+                            
+                            # Limpiar estado
+                            if 'codigo_generado' in st.session_state:
+                                del st.session_state.codigo_generado
+                            if 'tool_name' in st.session_state:
+                                del st.session_state.tool_name
+                            if 'tool_schema' in st.session_state:
+                                del st.session_state.tool_schema
+                            
+                            # Recargar la página para mostrar la herramienta en las listas
+                            st.rerun()
+                                
+                        except Exception as e:
+                            st.error(f"❌ Error al crear la herramienta: {str(e)}")
+                            import traceback
+                            st.code(traceback.format_exc())
+
+        with st.expander("✏️ Crear Manualmente", expanded=False):
+            with st.form("new_tool_form"):
+                col1, col2, col3 = st.columns([2,2,1])
+                with col1:
+                    name = st.text_input(
+                        "Nombre",
+                        value=st.session_state.get("generated_name", ""),
+                        help="Nombre único para la herramienta"
+                    )
+                with col2:
+                    desc = st.text_input(
+                        "Descripción",
+                        value=st.session_state.get("generated_desc", ""),
+                        help="Breve descripción de su función"
+                    )
+                with col3:
+                    postprocess = st.toggle(
+                        "Post-procesado",
+                        value=st.session_state.get("generated_postprocess", True),
+                        help="Si está activado, la IA procesará el resultado. Si está desactivado, se mostrará el resultado directo de la herramienta."
+                    )
+                
+                json_schema = st.text_area(
+                    "Esquema JSON (parámetros)",
+                    height=150,
+                    value=st.session_state.get("generated_schema", """{
+                        "type": "object",
+                        "properties": {
+                            "param1": {
+                                "type": "string",
+                                "description": "Primer parámetro"
+                            }
+                        },
+                        "required": ["param1"]
+                    }"""),
+                    help="Define los parámetros que acepta la herramienta"
+                )
+                
+                code = st.text_area(
+                    "Código Python",
+                    height=200,
+                    value=st.session_state.get("generated_code", """def nueva_herramienta(param1):
+                        '''
+                        Documentación de la herramienta
+                        '''
+                        return f"Procesando: {param1}"
+                    """),
+                    help="Implementación de la herramienta"
+                )
+                
+                if st.form_submit_button("✨ Crear Herramienta"):
+                    try:
+                        with st.spinner("Registrando herramienta..."):
+                            params = json.loads(json_schema)
+                            schema = {
+                                "name": name,
+                                "description": desc,
+                                "parameters": params,
+                                "postprocess": postprocess
+                            }
+                            register_tool(name, schema, code)
+                            persist_tool_to_disk(name, schema, code)
+                            
+                            # Recargar todas las herramientas para actualizar la interfaz
+                            load_all_tools()
+                        
+                        st.success(f"✅ Herramienta '{name}' creada exitosamente")
+                        
+                        # Limpiar los campos generados
+                        for key in ["generated_name", "generated_desc", "generated_schema", "generated_code", "generated_postprocess"]:
+                            if key in st.session_state:
+                                del st.session_state[key]
+                        
+                        # Recargar la página para mostrar la herramienta en las listas
+                        st.rerun()
+                        
+                    except Exception as e:
+                        st.error(f"❌ Error al crear la herramienta: {str(e)}")
 
         st.divider()
-
-        # Formulario de creación manual
-        st.markdown("### ✏️ Crear Manualmente")
-        with st.form("new_tool_form"):
-            col1, col2, col3 = st.columns([2,2,1])
-            with col1:
-                name = st.text_input(
-                    "Nombre",
-                    value=st.session_state.get("generated_name", ""),
-                    help="Nombre único para la herramienta"
-                )
-            with col2:
-                desc = st.text_input(
-                    "Descripción",
-                    value=st.session_state.get("generated_desc", ""),
-                    help="Breve descripción de su función"
-                )
-            with col3:
-                postprocess = st.toggle(
-                    "Post-procesado",
-                    value=st.session_state.get("generated_postprocess", True),
-                    help="Si está activado, la IA procesará el resultado. Si está desactivado, se mostrará el resultado directo de la herramienta."
-                )
-            
-            json_schema = st.text_area(
-                "Esquema JSON (parámetros)",
-                height=150,
-                value=st.session_state.get("generated_schema", """{
-  "type": "object",
-  "properties": {
-    "param1": {
-      "type": "string",
-      "description": "Primer parámetro"
-    }
-  },
-  "required": ["param1"]
-}"""),
-                help="Define los parámetros que acepta la herramienta"
-            )
-            
-            code = st.text_area(
-                "Código Python",
-                height=200,
-                value=st.session_state.get("generated_code", """def nueva_herramienta(param1):
-    '''
-    Documentación de la herramienta
-    '''
-    return f"Procesando: {param1}"
-"""),
-                help="Implementación de la herramienta"
-            )
-            
-            if st.form_submit_button("✨ Crear Herramienta"):
-                try:
-                    with st.spinner("Registrando herramienta..."):
-                        params = json.loads(json_schema)
-                        schema = {
-                            "name": name,
-                            "description": desc,
-                            "parameters": params,
-                            "postprocess": postprocess
-                        }
-                        register_tool(name, schema, code)
-                        persist_tool_to_disk(name, schema, code)
-                    st.success(f"✅ Herramienta '{name}' creada exitosamente")
-                    
-                    # Limpiar los campos generados
-                    for key in ["generated_name", "generated_desc", "generated_schema", "generated_code", "generated_postprocess"]:
-                        if key in st.session_state:
-                            del st.session_state[key]
-                except Exception as e:
-                    st.error(f"❌ Error al crear la herramienta: {str(e)}")
         
         # Errores de Carga
         with st.expander("🚨 Errores de Carga", expanded=False):
@@ -380,7 +570,7 @@ elif nav == "⚙️ Admin":
                     st.error(f"📄 {e['file']}\n```\n{e['error']}\n```")
             else:
                 st.success("✅ No se encontraron errores de carga")
-    
+
     # === TAB VARIABLES DE ENTORNO ===
     with tabs[1]:
         st.subheader("🔐 Gestión de Variables de Entorno")
