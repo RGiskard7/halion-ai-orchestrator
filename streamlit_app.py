@@ -239,24 +239,94 @@ elif nav == "⚙️ Admin":
         
         # Nueva Herramienta
         st.subheader("➕ Crear Nueva Herramienta")
+
+        # Generación con IA
+        with st.expander("🤖 Generar con IA", expanded=False):
+            ai_prompt = st.text_area(
+                "Describe la herramienta que necesitas",
+                help="Describe en lenguaje natural qué quieres que haga la herramienta. Por ejemplo: 'Necesito una herramienta que traduzca texto a código morse y viceversa'",
+                placeholder="Ejemplo: Una herramienta que calcule el IMC dado el peso en kg y la altura en metros..."
+            )
+            
+            if st.button("🪄 Generar Herramienta", disabled=not ai_prompt):
+                with st.spinner("La IA está generando tu herramienta..."):
+                    try:
+                        # Prompt para la IA
+                        generation_prompt = f"""Genera una herramienta Python basada en esta descripción: '{ai_prompt}'
+
+                        Debes proporcionar:
+                        1. Nombre único y descriptivo para la herramienta
+                        2. Descripción clara de su función
+                        3. Schema JSON con los parámetros necesarios
+                        4. Código Python que implemente la funcionalidad
+                        5. Si debe usar post-procesado o no (true/false)
+
+                        Responde en formato JSON exactamente así:
+                        {{
+                            "name": "nombre_herramienta",
+                            "description": "Descripción clara",
+                            "schema": {{
+                                // El schema JSON completo
+                            }},
+                            "code": "// El código Python completo",
+                            "postprocess": true/false
+                        }}"""
+
+                        # Llamada a la IA
+                        response = chat_with_tools(
+                            generation_prompt,
+                            user_id="system",
+                            api_key=api_key,
+                            model="gpt-4",
+                            temperature=0.7
+                        )
+
+                        # Parsear la respuesta
+                        try:
+                            tool_data = json.loads(response)
+                            
+                            # Rellenar el formulario con los datos generados
+                            st.session_state.generated_name = tool_data["name"]
+                            st.session_state.generated_desc = tool_data["description"]
+                            st.session_state.generated_schema = json.dumps(tool_data["schema"], indent=2)
+                            st.session_state.generated_code = tool_data["code"]
+                            st.session_state.generated_postprocess = tool_data.get("postprocess", True)
+                            
+                            st.success("✨ Herramienta generada correctamente. Los campos del formulario se han rellenado automáticamente.")
+                        except json.JSONDecodeError:
+                            st.error("❌ La IA no generó un JSON válido. Por favor, intenta de nuevo.")
+                    except Exception as e:
+                        st.error(f"❌ Error al generar la herramienta: {str(e)}")
+
+        st.divider()
+
+        # Formulario de creación manual
+        st.markdown("### ✏️ Crear Manualmente")
         with st.form("new_tool_form"):
             col1, col2, col3 = st.columns([2,2,1])
             with col1:
-                name = st.text_input("Nombre", help="Nombre único para la herramienta")
+                name = st.text_input(
+                    "Nombre",
+                    value=st.session_state.get("generated_name", ""),
+                    help="Nombre único para la herramienta"
+                )
             with col2:
-                desc = st.text_input("Descripción", help="Breve descripción de su función")
+                desc = st.text_input(
+                    "Descripción",
+                    value=st.session_state.get("generated_desc", ""),
+                    help="Breve descripción de su función"
+                )
             with col3:
                 postprocess = st.toggle(
                     "Post-procesado",
-                    value=True,
+                    value=st.session_state.get("generated_postprocess", True),
                     help="Si está activado, la IA procesará el resultado. Si está desactivado, se mostrará el resultado directo de la herramienta."
                 )
             
             json_schema = st.text_area(
                 "Esquema JSON (parámetros)",
                 height=150,
-                help="Define los parámetros que acepta la herramienta",
-                value="""{
+                value=st.session_state.get("generated_schema", """{
   "type": "object",
   "properties": {
     "param1": {
@@ -265,19 +335,20 @@ elif nav == "⚙️ Admin":
     }
   },
   "required": ["param1"]
-}"""
+}"""),
+                help="Define los parámetros que acepta la herramienta"
             )
             
             code = st.text_area(
                 "Código Python",
                 height=200,
-                help="Implementación de la herramienta",
-                value="""def nueva_herramienta(param1):
+                value=st.session_state.get("generated_code", """def nueva_herramienta(param1):
     '''
     Documentación de la herramienta
     '''
     return f"Procesando: {param1}"
-"""
+"""),
+                help="Implementación de la herramienta"
             )
             
             if st.form_submit_button("✨ Crear Herramienta"):
@@ -293,6 +364,11 @@ elif nav == "⚙️ Admin":
                         register_tool(name, schema, code)
                         persist_tool_to_disk(name, schema, code)
                     st.success(f"✅ Herramienta '{name}' creada exitosamente")
+                    
+                    # Limpiar los campos generados
+                    for key in ["generated_name", "generated_desc", "generated_schema", "generated_code", "generated_postprocess"]:
+                        if key in st.session_state:
+                            del st.session_state[key]
                 except Exception as e:
                     st.error(f"❌ Error al crear la herramienta: {str(e)}")
         

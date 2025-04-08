@@ -4,7 +4,7 @@
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.30+-red.svg)](https://streamlit.io/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-API-green.svg)](https://openai.com/)
 
-Este proyecto implementa un entorno modular estilo MCP (Model-Context-Protocol), diseñado para crear asistentes inteligentes capaces de invocar herramientas externas ("tools") mediante *function calling* de OpenAI, con una interfaz profesional en Streamlit.
+Este proyecto implementa un entorno modular estilo MCP (Model-Context-Protocol), diseñado para crear asistentes inteligentes capaces de invocar herramientas externas ("tools") mediante *function calling* de OpenAI, con una interfaz en Streamlit.
 
 > Plataforma extensible para construir, gestionar y desplegar asistentes IA con capacidades personalizadas.
 
@@ -17,6 +17,8 @@ Este proyecto implementa un entorno modular estilo MCP (Model-Context-Protocol),
 ✅ **Sin Reinicios**: Añade, edita y gestiona herramientas sin detener el servidor  
 ✅ **Transparencia Total**: Logs detallados, exportables en CSV/JSON  
 ✅ **Gestión Integrada**: Variables de entorno editables desde la UI  
+✅ **Control de Herramientas**: Activación/desactivación y post-procesado configurable  
+✅ **Generación con IA**: Creación automática de herramientas mediante descripción en lenguaje natural  
 ✅ **Compatibilidad con OpenAI**: Soporte para GPT-4 y GPT-3.5-Turbo  
 ✅ **Personalización**: Control de temperatura y selección de modelo  
 
@@ -68,9 +70,14 @@ streamlit run streamlit_app.py
 - Soporte para texto
 - Selección de modelo y temperatura
 - Historial de conversación persistente
+- Visualización de herramientas activas
 
 ### ⚙️ Panel de Administración
-- **Herramientas**: Cargar, recargar y crear tools dinámicas
+- **Herramientas**: 
+  - Cargar, recargar y crear tools dinámicas
+  - Activar/desactivar herramientas individualmente
+  - Control de post-procesado por herramienta
+  - Generación automática con IA
 - **Variables**: Gestión del archivo `.env` desde la UI
 - **Logs**: Visualización y exportación de registros
 
@@ -78,30 +85,44 @@ streamlit run streamlit_app.py
 
 ## 🧰 Creación de Herramientas
 
-### Método 1: Desde la UI (Sin código adicional)
+### Método 1: Generación con IA
+1. Navega a **Admin > Herramientas > 🤖 Generar con IA**
+2. Describe la herramienta que necesitas en lenguaje natural
+3. La IA generará automáticamente:
+   - Nombre y descripción
+   - Schema JSON de parámetros
+   - Código Python de implementación
+   - Configuración de post-procesado
 
-1. Navega a la pestaña **Admin > Herramientas**
-2. Define el esquema JSON de parámetros:
+### Método 2: Creación Manual
+1. Navega a **Admin > Herramientas > ✏️ Crear Manualmente**
+2. Define el nombre, descripción y comportamiento de post-procesado
+3. Configura el schema JSON:
 
 ```json
 {
   "type": "object",
   "properties": {
-    "ciudad": {"type": "string", "description": "Ciudad a consultar"}
+    "param1": {
+      "type": "string",
+      "description": "Descripción del parámetro"
+    }
   },
-  "required": ["ciudad"]
+  "required": ["param1"]
 }
 ```
 
-3. Implementa la función Python:
+4. Implementa la función Python:
 
 ```python
-def obtener_hora(ciudad):
-    from datetime import datetime
-    return f"En {ciudad} son las {datetime.now().strftime('%H:%M:%S')}"
+def mi_herramienta(param1):
+    '''
+    Documentación de la herramienta
+    '''
+    return f"Resultado: {param1}"
 ```
 
-### Método 2: Creando un archivo Python
+### Método 3: Creando un archivo Python
 
 Crea un archivo en la carpeta `tools/` con la siguiente estructura:
 
@@ -113,6 +134,7 @@ def mi_nueva_herramienta(param1, param2="valor_default"):
 schema = {
   "name": "mi_nueva_herramienta",
   "description": "Descripción de lo que hace la herramienta",
+  "postprocess": True,  # Controla si la IA procesa el resultado
   "parameters": {
     "type": "object",
     "properties": {
@@ -155,10 +177,14 @@ schema = {
 2. El mensaje se envía a la API de OpenAI con la lista de tools disponibles
 3. El modelo decide si usar `function_call` basado en la intención del usuario
 4. Si corresponde, el sistema:
+   - Verifica si la herramienta está activa
    - Invoca la tool Python seleccionada con los argumentos extraídos
    - Registra la ejecución en los logs
-   - Devuelve el resultado como parte de la respuesta
-5. El usuario recibe una respuesta contextualizada que incorpora el resultado
+   - Si la herramienta tiene post-procesado activado:
+     - Envía el resultado a GPT para contextualización
+   - Si no tiene post-procesado:
+     - Devuelve el resultado directamente
+5. El usuario recibe la respuesta procesada o directa según la configuración
 
 **Ejemplo**: _"¿Qué tiempo hace en Madrid?"_ → usa `get_current_weather` → muestra datos meteorológicos
 
@@ -183,6 +209,7 @@ Los logs pueden exportarse desde la interfaz en formato CSV o JSON para análisi
 - Las API Keys se almacenan en `.env` (nunca en el código)
 - Las herramientas deben estar explícitamente activadas para ser utilizadas
 - Validación de parámetros antes de la ejecución
+- Control granular del post-procesado por herramienta
 - Manejo de excepciones para evitar fallos en cascada
 - (Próximamente) Control de acceso basado en usuarios y permisos
 
@@ -190,12 +217,12 @@ Los logs pueden exportarse desde la interfaz en formato CSV o JSON para análisi
 
 ## 🧭 Roadmap
 
-- **Base de datos**: Soporte a SQLite/PostgreSQL para persistencia de usuarios y logs
+- **Base de datos**: Soporte a SQLite/PostgreSQL para persistencia
 - **Autenticación**: Sistema de login y permisos diferenciados
-- **CLI**: Herramienta de línea de comandos para registrar/editar tools
-- **Editor Visual**: Creación de tools sin escribir código (drag & drop)
-- **Toolchains**: Encadenamiento automático de herramientas para tareas complejas
-- **Multi-LLM**: Compatibilidad con otras APIs (Claude, Gemini, LLaMA, etc.)
+- **CLI**: Herramienta de línea de comandos para gestión
+- **Editor Visual**: Creación de tools sin escribir código
+- **Toolchains**: Encadenamiento automático de herramientas
+- **Multi-LLM**: Compatibilidad con otras APIs (Claude, Gemini, etc.)
 - **Despliegue**: Guías para Docker, Kubernetes y servicios cloud
 
 ---
@@ -221,8 +248,8 @@ Desarrollado por **RGiskard7** ✨ con ❤️ por el poder de lo modular, lo lim
 
 ## 🧭 Casos de Uso
 
-- **Asistente Personalizado**: Crea un asistente IA con funciones específicas para tu negocio
-- **Laboratorio de Experimentación**: Prueba nuevas ideas de herramientas en tiempo real
-- **Prototipado Rápido**: Base para integraciones con web, apps móviles, bots, etc.
+- **Asistente Personalizado**: Crea un asistente IA con funciones específicas
+- **Laboratorio de Experimentación**: Prueba nuevas ideas de herramientas
+- **Prototipado Rápido**: Base para integraciones con web, apps móviles, bots
 - **Automatización**: Conecta APIs externas a través de herramientas personalizadas
 - **Educación**: Plataforma para aprender sobre LLMs y function calling

@@ -13,6 +13,7 @@ OpenAI Modular MCP (Model-Context-Protocol) es una plataforma extensible para la
 - **Usabilidad**: Ofrecer una interfaz intuitiva tanto para usuarios finales como para administradores
 - **Transparencia**: Registrar todas las interacciones y ejecuciones para análisis y auditoría
 - **Seguridad**: Implementar buenas prácticas para el manejo de credenciales y ejecución de código
+- **Control**: Proporcionar gestión granular de herramientas y su comportamiento
 
 ## 🏗️ Arquitectura del Sistema
 
@@ -23,11 +24,16 @@ Usuario → Interfaz Streamlit → Executor (chat_with_tools) → OpenAI API
                                        ↓
                                   ¿function_call?
                                        ↓
-                                     Si → Tool Manager → Herramienta Específica
+                                     Si → Tool Manager → ¿Tool Activa? → Herramienta
                                        ↓                      ↓
                                     Logger ← ← ← ← ← ← ← Resultado
                                        ↓
-                                   Respuesta → Usuario
+                              ¿Post-procesado?
+                                       ↓
+                                Si → OpenAI → Respuesta
+                                No → Resultado Directo
+                                       ↓
+                                   Usuario
 ```
 
 ### Componentes Principales
@@ -36,13 +42,18 @@ Usuario → Interfaz Streamlit → Executor (chat_with_tools) → OpenAI API
 
 Interfaz de usuario construida con Streamlit que proporciona:
 
-- **Chat con IA**: Interfaz conversacional con soporte para texto e imágenes
+- **Chat con IA**: 
+  - Interfaz conversacional con soporte para texto
   - Selección de modelo (GPT-4, GPT-3.5, etc.)
   - Control de temperatura para ajustar creatividad
   - Historial de conversación persistente
+  - Visualización de herramientas activas
 
 - **Panel de Administración**:
   - Gestión de herramientas (carga, recarga, creación)
+  - Activación/desactivación individual de herramientas
+  - Control de post-procesado por herramienta
+  - Generación automática de herramientas con IA
   - Visualización y exportación de logs
   - Administración de variables de entorno
 
@@ -53,7 +64,9 @@ Orquestador central que:
 - Construye los mensajes para la API de OpenAI
 - Incluye las definiciones de herramientas disponibles
 - Procesa la respuesta y detecta llamadas a funciones
-- Ejecuta las herramientas solicitadas y reincorpora los resultados
+- Ejecuta las herramientas solicitadas
+- Gestiona el post-procesado condicional de resultados
+- Reincorpora los resultados según configuración
 
 #### 3. `tool_manager.py`
 
@@ -61,6 +74,7 @@ Gestor de herramientas que:
 
 - Carga dinámicamente todas las herramientas desde el directorio `/tools/`
 - Mantiene un registro de herramientas activas/inactivas
+- Gestiona el estado de post-procesado de cada herramienta
 - Registra errores de carga para diagnóstico
 - Proporciona acceso unificado a herramientas estáticas y dinámicas
 
@@ -69,6 +83,7 @@ Gestor de herramientas que:
 Registro de herramientas dinámicas que:
 
 - Permite definir herramientas en tiempo de ejecución
+- Soporta generación automática mediante IA
 - Compila código Python desde la interfaz de usuario
 - Persiste herramientas creadas dinámicamente a disco
 - Gestiona el ciclo de vida de herramientas en memoria
@@ -98,25 +113,45 @@ Gestor de variables de entorno que:
 2. `streamlit_app.py` llama a `chat_with_tools()` en `executor.py`
 3. `executor.py` prepara el contexto y envía la solicitud a OpenAI
 4. OpenAI determina si se necesita invocar una herramienta
-5. Si es necesario, `executor.py` obtiene la herramienta de `tool_manager.py`
-6. Se ejecuta la herramienta y se registra la operación en `logger.py`
-7. El resultado se incorpora a la respuesta y se muestra al usuario
+5. Si es necesario:
+   - Se verifica si la herramienta está activa
+   - `executor.py` obtiene la herramienta de `tool_manager.py`
+   - Se ejecuta la herramienta y se registra en `logger.py`
+   - Si tiene post-procesado activado:
+     - El resultado se envía a GPT para contextualización
+   - Si no tiene post-procesado:
+     - El resultado se devuelve directamente
+6. El usuario recibe la respuesta según la configuración
 
 ### 2. Flujo de Gestión de Herramientas
 
 #### Carga Inicial:
 
 1. Al iniciar la aplicación, `tool_manager.py` escanea el directorio `/tools/`
-2. Cada archivo Python se importa y se registra su función principal y esquema
+2. Cada archivo Python se importa y se registra su función principal y schema
 3. Se cargan las herramientas dinámicas previamente guardadas
 4. Se aplica el estado de activación según `.tool_status.json`
 
-#### Creación Dinámica:
+#### Creación con IA:
 
-1. El administrador define una nueva herramienta en la interfaz
-2. `dynamic_tool_registry.py` compila y registra la función
-3. La herramienta está disponible inmediatamente sin reiniciar
-4. Opcionalmente, se persiste a disco como un archivo Python
+1. El usuario describe la herramienta en lenguaje natural
+2. La IA genera:
+   - Nombre y descripción
+   - Schema JSON de parámetros
+   - Código Python de implementación
+   - Configuración de post-procesado
+3. El usuario revisa y puede modificar la generación
+4. La herramienta se registra y persiste
+
+#### Creación Manual:
+
+1. El usuario define:
+   - Nombre y descripción
+   - Comportamiento de post-procesado
+   - Schema JSON de parámetros
+   - Código Python
+2. La herramienta se valida y registra
+3. Opcionalmente se persiste a disco
 
 ## 📂 Estructura de Directorios
 
@@ -146,7 +181,7 @@ Gestor de variables de entorno que:
 Cada herramienta consta de dos componentes principales:
 
 1. **Función Python**: Implementa la lógica de la herramienta
-2. **Esquema JSON**: Define la interfaz y parámetros
+2. **Schema JSON**: Define la interfaz, parámetros y comportamiento
 
 ```python
 # Ejemplo: tools/saludar.py
@@ -159,6 +194,7 @@ def saludar(nombre, formal=False):
 schema = {
   "name": "saludar",
   "description": "Genera un saludo personalizado",
+  "postprocess": True,  # Controla si la IA procesa el resultado
   "parameters": {
     "type": "object",
     "properties": {
@@ -174,12 +210,15 @@ schema = {
 
 1. **Herramientas Estáticas**: Definidas en archivos Python en `/tools/`
 2. **Herramientas Dinámicas**: Creadas en tiempo de ejecución desde la interfaz
+3. **Herramientas Generadas**: Creadas automáticamente por la IA
 
 ## 🔒 Seguridad y Consideraciones
 
 - **Aislamiento**: Las herramientas se ejecutan en el mismo contexto que la aplicación
-- **Validación**: Los parámetros se validan según el esquema antes de la ejecución
+- **Validación**: Los parámetros se validan según el schema antes de la ejecución
 - **Credenciales**: Las API keys se almacenan en `.env` y se acceden vía `os.getenv()`
+- **Control**: Las herramientas deben estar explícitamente activadas para ser usadas
+- **Granularidad**: Control individual de post-procesado por herramienta
 - **Logging**: Todas las ejecuciones quedan registradas para auditoría
 
 ## 🚀 Estado Actual y Próximos Pasos
@@ -187,10 +226,11 @@ schema = {
 ### Implementado
 
 - ✅ Interfaz de chat funcional con modelos GPT-3.5 y GPT-4
-- ✅ Soporte para GPT-4-Vision (procesamiento de imágenes)
 - ✅ Panel de administración completo
 - ✅ Sistema de herramientas modulares
 - ✅ Creación dinámica de herramientas
+- ✅ Generación automática con IA
+- ✅ Control de activación y post-procesado
 - ✅ Logging y exportación
 
 ### En Desarrollo
