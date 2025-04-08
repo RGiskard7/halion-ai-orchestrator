@@ -1,7 +1,5 @@
 {
-  "get_latest_news": true,
-  "get_current_weather": true,
-  "fetch_latest_news": true,
-  "send_email": false,
-  "saludar": true
+  "fetch_latest_news": false,
+  "fetch_relevant_news": true,
+  "get_latest_news": true
 }

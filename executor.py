@@ -38,6 +38,10 @@ def chat_with_tools(prompt: str, user_id="anon", api_key="", model="gpt-4", temp
             result = all_tools[func_name]["func"](**arguments)
             log_tool_call(func_name, arguments, result)
 
+            # Convertir el resultado a string si no lo es ya
+            if not isinstance(result, str):
+                result = json.dumps(result, ensure_ascii=False, indent=2)
+            
             # Siempre pasamos por el modelo, pero con instrucciones específicas
             messages.append(reply.to_dict())
             messages.append({"role": "function", "name": func_name, "content": result})

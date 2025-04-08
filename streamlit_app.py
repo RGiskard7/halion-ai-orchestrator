@@ -16,7 +16,7 @@ from tool_manager import (
     load_all_tools, get_all_loaded_tools, get_loading_errors, 
     get_all_dynamic_tools, set_tool_status, get_tool_status, is_tool_active
 )
-from env_manager import get_env_variables, set_env_variable, delete_env_variable
+from env_manager import get_env_variables, set_env_variable, delete_env_variable, reload_env_variables
 
 def generate_tool_with_ai(description: str, api_key: str, model: str = "gpt-4", temperature: float = 0.7) -> str:
     """
@@ -63,7 +63,16 @@ def generate_tool_with_ai(description: str, api_key: str, model: str = "gpt-4", 
                 - parameters: Definición JSON Schema de parámetros
                 - required: Lista de parámetros obligatorios
 
-            3. BUENAS PRÁCTICAS:
+            3. GESTIÓN DE CREDENCIALES Y VARIABLES DE ENTORNO (MUY IMPORTANTE):
+                - SIEMPRE usa os.getenv() o os.environ.get() para acceder a credenciales/tokens/claves
+                - NUNCA incluyas credenciales directamente en el código
+                - Usa nombres de variables descriptivos con sufijos _API_KEY, _TOKEN, etc.
+                - Cada API key o credencial DEBE usar su propia variable de entorno
+                - Incluye comentarios explicando qué es cada variable de entorno
+                - Al inicio del archivo incluye 'from dotenv import load_dotenv' y 'load_dotenv()'
+                - Verifica siempre si las variables están disponibles y maneja los casos de error
+
+            4. BUENAS PRÁCTICAS:
                 - Código limpio y comentado
                 - Validaciones de entrada
                 - Mensajes de error descriptivos
@@ -72,7 +81,12 @@ def generate_tool_with_ai(description: str, api_key: str, model: str = "gpt-4", 
             FORMATO:
             ```python
             from typing import Dict, Optional, Union
-            import requests  # (si es necesario)
+            import requests
+            import os
+            from dotenv import load_dotenv
+
+            # Cargar variables de entorno
+            load_dotenv()
 
             def nombre_herramienta(param1: str, param2: Optional[int] = None) -> Dict[str, Union[str, int]]:
                 \"\"\"
@@ -88,12 +102,18 @@ def generate_tool_with_ai(description: str, api_key: str, model: str = "gpt-4", 
                 Raises:
                     ValueError: Descripción de cuándo se lanza este error
                 \"\"\"
+                # Obtener API key desde variables de entorno
+                api_key = os.getenv("SERVICIO_API_KEY")
+                if not api_key:
+                    raise ValueError("API key no configurada. Añade SERVICIO_API_KEY a las variables de entorno.")
+                
                 # Validaciones
                 if not param1:
                     raise ValueError("param1 no puede estar vacío")
                 
                 try:
-                    # Lógica principal
+                    # Lógica principal aquí
+                    # ...
                     return resultado
                 except Exception as e:
                     raise Exception(f"Error en nombre_herramienta: {{e}}")
@@ -120,7 +140,8 @@ def generate_tool_with_ai(description: str, api_key: str, model: str = "gpt-4", 
             ```
             IMPORTANTE:
             - La herramienta debe ser funcional y segura
-            - Debe ser compatible las tools (antes funtion calling) de OpenAI
+            - Debe ser compatible con las tools (antes function calling) de OpenAI
+            - SIEMPRE usa variables de entorno para APIs, tokens, o cualquier credencial
         """
         
         # Llamada a la API
@@ -153,6 +174,27 @@ def generate_tool_with_ai(description: str, api_key: str, model: str = "gpt-4", 
         
     except Exception as e:
         raise ValueError(f"Error al generar código: {str(e)}")
+
+# Funciones de utilidad para generación de herramientas
+def extract_code_and_schema(code: str):
+    """
+    Ejecuta el código generado por IA y extrae la función y el schema
+    
+    Args:
+        code: Código Python generado por la IA
+        
+    Returns:
+        tuple: (nombre_funcion, schema, codigo, funcion)
+    """
+    namespace = {}
+    exec(code, namespace)
+    func_name = re.search(r'def\s+(\w+)', code).group(1)
+    schema = namespace.get("schema")
+    if not schema:
+        raise ValueError("No se encontró el schema en el código generado.")
+    if "name" not in schema:
+        schema["name"] = func_name
+    return func_name, schema, code, namespace[func_name]
 
 # Configuración inicial
 load_dotenv()
@@ -209,6 +251,121 @@ def update_tool_summary():
     }
     
     return st.session_state.tool_summary
+
+# Función para detectar posibles variables de entorno en el código
+def detect_env_variables(code):
+    """
+    Detecta posibles variables de entorno en el código generado.
+    
+    Args:
+        code (str): Código Python a analizar
+    
+    Returns:
+        list: Lista de diccionarios con información de las variables de entorno encontradas
+    """
+    # Patrones para buscar variables de entorno
+    patterns = [
+        # Patrones estándar de dotenv/os
+        r'os\.environ\.get\(["\']([A-Za-z0-9_]+)["\']',              # os.environ.get('VAR_NAME')
+        r'os\.getenv\(["\']([A-Za-z0-9_]+)["\']',                    # os.getenv('VAR_NAME')
+        r'os\.environ\[["\']([A-Za-z0-9_]+)["\']\]',                 # os.environ['VAR_NAME']
+        r'environ\.get\(["\']([A-Za-z0-9_]+)["\']',                  # environ.get('VAR_NAME')
+        r'environ\[["\']([A-Za-z0-9_]+)["\']\]',                     # environ['VAR_NAME']
+        r'getenv\(["\']([A-Za-z0-9_]+)["\']',                        # getenv('VAR_NAME')
+        r'load_dotenv.*?\n.*?["\']([A-Za-z0-9_]+)["\']',             # Después de load_dotenv()
+        
+        # Patrones para variables hardcoded (claves API, etc)
+        r'[\'"]([A-Za-z0-9_]+_(?:KEY|TOKEN|SECRET|API|AUTH|PASSWORD|PASS|PWD|APIKEY|APISECRET|ID))[\'"]',    # Variables con prefijo/sufijo de clave
+        r'[\'"]([A-Za-z0-9]{32,})[\'"]',                              # Cadenas largas que parecen claves
+        r'[\'"]([a-zA-Z0-9]{5,}\.[a-zA-Z0-9]{5,}\.[a-zA-Z0-9-_]{5,})[\'"]',  # Cadenas con formato de JWT/token
+        
+        # Strings literales que parecen URLs de API con claves
+        r'[\'"]https?://[^\'"]+[\?&](?:key|token|api_key|apikey|auth)=([^&\'"]+)[\'"]',  # URLs con parámetros api_key
+        r'[\'"]https?://[^\'"]+/auth/[^/\'"]+/([^/\'"]+)[\'"]',      # URLs con componentes de autenticación
+        
+        # Buscar constantes que parecen ser credenciales
+        r'(?:API_KEY|TOKEN|AUTH_TOKEN|SECRET|PASSWORD)\s*=\s*[\'"]([^\'"]+)[\'"]',  # CONST = "valor"
+        
+        # Detección de asignación a variables que parecen claves
+        r'([A-Za-z0-9_]+(?:key|token|secret|api|auth|password|apikey))(?:\s*=\s*)[\'"][^\'"]{5,}[\'"]',  # var_name = "valor"
+    ]
+    
+    env_vars = []
+    var_names_found = set()  # Para evitar duplicados
+    
+    # Buscar ocurrencias de estos patrones
+    for pattern in patterns:
+        matches = re.finditer(pattern, code, re.MULTILINE | re.IGNORECASE)
+        for match in matches:
+            # Extraer nombre de variable según el patrón
+            var_name = None
+            
+            # Si es un patrón de os.environ o similar, el grupo 1 es el nombre de variable
+            var_name = match.group(1)
+            
+            # Verificar que tenemos un nombre de variable y no es un valor literal o URL
+            if var_name and not var_name.startswith(('http', 'https', '{')):
+                # Normalizar nombres de variables que puedan ser valores
+                if len(var_name) > 30 or re.match(r'^[A-Za-z0-9+/=]+$', var_name):
+                    # Esto parece un valor no un nombre, intentamos extraer un nombre del contexto
+                    context_start = max(0, match.start() - 100)
+                    context = code[context_start:match.start()]
+                    name_match = re.search(r'([A-Z0-9_]+)\s*=\s*[\'"]', context)
+                    if name_match:
+                        var_name = name_match.group(1)
+                    else:
+                        # Si no podemos encontrar un nombre, usamos un nombre genérico
+                        var_name = f"API_KEY_{len(var_names_found) + 1}"
+            
+                # Verificar que es un nombre válido de variable y no está duplicado
+                if var_name and var_name not in var_names_found and len(var_name) > 2:
+                    var_names_found.add(var_name)
+                    
+                    # Intentar detectar una descripción en el contexto
+                    context_lines = code[max(0, match.start() - 200):match.start()].split('\n')
+                    description = ""
+                    
+                    # Buscar en comentarios o docstrings cerca
+                    for line in reversed(context_lines):
+                        line = line.strip()
+                        if "#" in line:
+                            desc_part = line.split("#", 1)[1].strip()
+                            if len(desc_part) > 5:  # Solo si parece una descripción real
+                                description = desc_part
+                                break
+                        if '"""' in line or "'''" in line:
+                            desc_part = line.replace('"""', '').replace("'''", '').strip()
+                            if len(desc_part) > 5:
+                                description = desc_part
+                                break
+                    
+                    if not description:
+                        # Generar descripción basada en el nombre
+                        var_name_readable = var_name.replace('_', ' ').lower()
+                        description = f"Variable de entorno para {var_name_readable}"
+                    
+                    # Determinar el tipo de variable
+                    var_type = "API_KEY"  # Por defecto
+                    var_name_upper = var_name.upper()
+                    if "TOKEN" in var_name_upper:
+                        var_type = "TOKEN"
+                    elif "SECRET" in var_name_upper:
+                        var_type = "SECRET"
+                    elif "PASSWORD" in var_name_upper or "PASS" in var_name_upper or "PWD" in var_name_upper:
+                        var_type = "PASSWORD"
+                    elif "URL" in var_name_upper or "ENDPOINT" in var_name_upper:
+                        var_type = "URL"
+                    elif "ID" in var_name_upper and not any(x in var_name_upper for x in ["KEY", "TOKEN", "SECRET"]):
+                        var_type = "ID"
+                    
+                    env_vars.append({
+                        "name": var_name,
+                        "description": description,
+                        "value": "",
+                        "type": var_type
+                    })
+    
+    return env_vars
 
 # == SIDEBAR ==
 with st.sidebar:    
@@ -641,6 +798,11 @@ elif nav == "⚙️ Admin":
                         # Guardar el código generado en la sesión para usarlo después
                         st.session_state.codigo_generado = code
                         
+                        # Detectar posibles variables de entorno
+                        env_vars = detect_env_variables(code)
+                        if env_vars:
+                            st.session_state.detected_env_vars = env_vars
+                        
                         # Extraer datos para mostrar información
                         try:
                             name, schema, _, _ = extract_code_and_schema(code)
@@ -653,6 +815,50 @@ elif nav == "⚙️ Admin":
                         
                         # Mostrar el código generado
                         st.code(code, language="python")
+                        
+                        # Mostrar variables de entorno detectadas si existen
+                        if env_vars:
+                            st.warning(f"⚠️ Se han detectado {len(env_vars)} variables de entorno necesarias para esta herramienta")
+                            
+                            # Mostrar formulario para configurar variables
+                            st.write("### 🔐 Configurar Variables de Entorno")
+                            st.write("Estas variables son necesarias para que la herramienta funcione correctamente:")
+                            
+                            # Tabla resumen de variables detectadas
+                            env_data = [{
+                                "Variable": var["name"], 
+                                "Tipo": var["type"], 
+                                "Descripción": var["description"]
+                            } for var in env_vars]
+                            st.dataframe(env_data)
+                            
+                            # Formularios para configurar cada variable - SIN USAR EXPANDERS
+                            st.write("#### Configura los valores de las variables detectadas:")
+                            
+                            for i, var in enumerate(env_vars):
+                                # Usar columnas en lugar de expanders
+                                st.write(f"**🔑 {var['name']} ({var['type']})**")
+                                st.write(f"_Descripción:_ {var['description']}")
+                                st.write(f"_Utilización:_ La herramienta obtiene esta variable mediante `os.getenv(\"{var['name']}\")`")
+                                
+                                # Campo para valor
+                                new_value = st.text_input(
+                                    f"Valor para {var['name']}",
+                                    type="password",
+                                    key=f"env_var_{i}",
+                                    help=f"Deja vacío para configurarlo más tarde en la sección Variables de Entorno"
+                                )
+                                # Guardar valor en la estructura
+                                if new_value:
+                                    var["value"] = new_value
+                                    st.session_state.detected_env_vars = env_vars
+                                
+                                # Separador entre variables
+                                if i < len(env_vars) - 1:
+                                    st.divider()
+                            
+                            # Mensaje adicional de ayuda
+                            st.info("📝 Estas variables se guardarán en el archivo .env cuando uses la herramienta. También puedes configurarlas más tarde en la pestaña 'Variables de Entorno'.")
                         
                         # Aquí mostramos el botón "Usar Esta Herramienta"
                         st.success("✅ Código generado correctamente. Revísalo y si te parece correcto, úsalo.")
@@ -686,6 +892,33 @@ elif nav == "⚙️ Admin":
                             # Extraer todos los datos necesarios
                             name, schema, code, func = extract_code_and_schema(st.session_state.codigo_generado)
                             
+                            # Guardar variables de entorno detectadas
+                            if "detected_env_vars" in st.session_state and st.session_state.detected_env_vars:
+                                # Guardar todas las variables detectadas en .env
+                                vars_added = []
+                                
+                                # Mostrar progreso
+                                with st.spinner("Guardando variables de entorno..."):
+                                    for var in st.session_state.detected_env_vars:
+                                        # Guardar la variable (con o sin valor)
+                                        result = set_env_variable(var["name"], var["value"])
+                                        if result:
+                                            vars_added.append(var["name"])
+                                    
+                                    # Recargar variables para que estén disponibles inmediatamente
+                                    if vars_added:
+                                        reload_env_variables()
+                                
+                                # Mostrar resultados
+                                if vars_added:
+                                    st.success(f"✅ Variables guardadas en .env: {', '.join(vars_added)}")
+                                    # Si hay variables sin valor, mostrar un mensaje adicional
+                                    empty_vars = [var["name"] for var in st.session_state.detected_env_vars if not var["value"]]
+                                    if empty_vars:
+                                        st.info(f"ℹ️ Las siguientes variables se guardaron sin valor y deberás configurarlas en la pestaña 'Variables de Entorno': {', '.join(empty_vars)}")
+                                else:
+                                    st.error("⚠️ No se pudieron guardar las variables de entorno")
+                            
                             # Registrar y guardar la herramienta
                             register_tool(name, schema, code)
                             persist_tool_to_disk(name, schema, code)
@@ -707,6 +940,8 @@ elif nav == "⚙️ Admin":
                                 del st.session_state.tool_name
                             if 'tool_schema' in st.session_state:
                                 del st.session_state.tool_schema
+                            if 'detected_env_vars' in st.session_state:
+                                del st.session_state.detected_env_vars
                             
                             # Recargar la página para mostrar la herramienta en las listas
                             st.rerun()
@@ -811,7 +1046,14 @@ elif nav == "⚙️ Admin":
 
     # === TAB VARIABLES DE ENTORNO ===
     with tabs[1]:
-        st.subheader("🔐 Gestión de Variables de Entorno")
+        col1, col2 = st.columns([3,1])
+        with col1:
+            st.subheader("🔐 Gestión de Variables de Entorno")
+        with col2:
+            if st.button("🔄 Recargar Variables", help="Recarga las variables de entorno desde .env para uso inmediato"):
+                with st.spinner("Recargando variables..."):
+                    reload_env_variables()
+                st.success("✅ Variables recargadas exitosamente")
         
         # Variables Actuales
         envs = get_env_variables()
@@ -830,11 +1072,13 @@ elif nav == "⚙️ Admin":
                     with col2:
                         if st.button("💾 Guardar", key=f"save_{key}"):
                             set_env_variable(key, new_val)
+                            reload_env_variables()  # Recargar para uso inmediato
                             st.success("✅ Variable actualizada")
                     with col3:
                         if st.button("🗑️ Eliminar", key=f"delete_{key}"):
                             if st.warning("¿Estás seguro?"):
                                 delete_env_variable(key)
+                                reload_env_variables()  # Recargar para actualizar la memoria
                                 st.warning("Variable eliminada")
         else:
             st.info("ℹ️ No hay variables de entorno configuradas")
@@ -851,6 +1095,7 @@ elif nav == "⚙️ Admin":
             if st.form_submit_button("✨ Añadir Variable"):
                 if new_key.strip() and new_value.strip():
                     set_env_variable(new_key, new_value)
+                    reload_env_variables()  # Recargar para uso inmediato
                     st.success("✅ Variable añadida correctamente")
                 else:
                     st.error("❌ Nombre y valor son requeridos")
