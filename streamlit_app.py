@@ -332,7 +332,7 @@ elif nav == "⚙️ Admin":
             static_tools = get_all_loaded_tools()
             if static_tools:
                 for k, v in static_tools.items():
-                    col1, col2, col3 = st.columns([3,1,1])
+                    col1, col2, col3, col4, col5 = st.columns([3,0.5,0.5,0.5,0.5])
                     with col1:
                         st.markdown(f"""
                         **`{k}`**  
@@ -340,8 +340,30 @@ elif nav == "⚙️ Admin":
                         {'🔄' if v['schema'].get('postprocess', True) else '📤'} {'_Post-procesado activo_' if v['schema'].get('postprocess', True) else '_Salida directa_'}
                         """)
                     with col2:
-                        st.empty()  # Columna vacía para mantener el espaciado
+                        # Botón para ver código
+                        if st.button("👁️", key=f"view_{k}", help=f"Ver código de {k}"):
+                            # Guarda el nombre de la herramienta a ver en el estado
+                            st.session_state.view_tool = k
+                            st.session_state.view_tool_code = True
                     with col3:
+                        # Botón para editar
+                        if st.button("✏️", key=f"edit_{k}", help=f"Editar {k}"):
+                            # Cargar contenido del archivo para edición
+                            tool_path = os.path.join("tools", f"{k}.py")
+                            try:
+                                with open(tool_path, "r") as file:
+                                    tool_code = file.read()
+                                # Guardar en el estado para la edición
+                                st.session_state.edit_tool = k
+                                st.session_state.edit_tool_code = tool_code
+                            except Exception as e:
+                                st.error(f"No se pudo cargar el archivo: {str(e)}")
+                    with col4:
+                        # Botón para eliminar
+                        if st.button("🗑️", key=f"delete_direct_{k}", help=f"Eliminar {k}"):
+                            st.session_state.delete_tool = k
+                            st.session_state.delete_tool_is_dynamic = False
+                    with col5:
                         is_active = is_tool_active(k)
                         if st.toggle("Activa", value=is_active, key=f"toggle_{k}"):
                             if not is_active:  # Si estaba inactiva
@@ -351,6 +373,145 @@ elif nav == "⚙️ Admin":
                             if is_active:  # Si estaba activa
                                 set_tool_status(k, False)
                                 st.warning(f"⚠️ {k} desactivada")
+                
+                # Modal para visualizar código
+                if "view_tool" in st.session_state and "view_tool_code" in st.session_state and st.session_state.view_tool_code:
+                    tool_name = st.session_state.view_tool
+                    tool_path = os.path.join("tools", f"{tool_name}.py")
+                    is_dynamic = st.session_state.get("view_tool_is_dynamic", False)
+                    
+                    st.info(f"📄 Visualizando código de `{tool_name}` ({'herramienta dinámica' if is_dynamic else 'herramienta estática'})")
+                    try:
+                        with open(tool_path, "r") as file:
+                            tool_code = file.read()
+                        st.code(tool_code, language="python")
+                        
+                        # Botones de acción
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            if st.button("✏️ Editar esta herramienta", key=f"edit_from_view_{tool_name}"):
+                                st.session_state.edit_tool = tool_name
+                                st.session_state.edit_tool_code = tool_code
+                                st.session_state.edit_tool_is_dynamic = is_dynamic
+                                st.session_state.view_tool_code = False
+                        with col2:
+                            if st.button("🗑️ Eliminar esta herramienta", key=f"delete_from_view_{tool_name}"):
+                                st.session_state.delete_tool = tool_name
+                                st.session_state.delete_tool_is_dynamic = is_dynamic
+                                st.session_state.view_tool_code = False
+                        
+                        # Botón para cerrar
+                        if st.button("❌ Cerrar", key="close_view"):
+                            st.session_state.view_tool_code = False
+                            if "view_tool_is_dynamic" in st.session_state:
+                                del st.session_state.view_tool_is_dynamic
+                            st.rerun()
+                    except Exception as e:
+                        st.error(f"Error al leer el código: {str(e)}")
+                        if st.button("Cerrar", key="close_view_error"):
+                            st.session_state.view_tool_code = False
+                            if "view_tool_is_dynamic" in st.session_state:
+                                del st.session_state.view_tool_is_dynamic
+                            st.rerun()
+                
+                # Modal para editar código
+                if "edit_tool" in st.session_state and "edit_tool_code" in st.session_state:
+                    tool_name = st.session_state.edit_tool
+                    is_dynamic = st.session_state.get("edit_tool_is_dynamic", False)
+                    
+                    st.warning(f"✏️ Editando herramienta `{tool_name}` ({'dinámica' if is_dynamic else 'estática'})")
+                    
+                    # Formulario de edición
+                    with st.form(key=f"edit_form_{tool_name}"):
+                        edited_code = st.text_area(
+                            "Código de la herramienta", 
+                            value=st.session_state.edit_tool_code,
+                            height=400
+                        )
+                        
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            save_button = st.form_submit_button("💾 Guardar cambios")
+                        with col2:
+                            cancel_button = st.form_submit_button("❌ Cancelar")
+                    
+                    # Procesar acciones del formulario
+                    if save_button:
+                        tool_path = os.path.join("tools", f"{tool_name}.py")
+                        try:
+                            # Guardar archivo
+                            with open(tool_path, "w") as file:
+                                file.write(edited_code)
+                            
+                            # Si es herramienta dinámica, también actualizar el registro
+                            if is_dynamic:
+                                try:
+                                    # Extraer metadatos
+                                    namespace = {}
+                                    exec(edited_code, namespace)
+                                    # Registrar de nuevo en el sistema
+                                    if "schema" in namespace:
+                                        register_tool(tool_name, namespace["schema"], edited_code)
+                                    else:
+                                        st.warning("No se encontró el schema en el código, la herramienta puede no funcionar correctamente")
+                                except Exception as e:
+                                    st.warning(f"Se guardó el archivo pero hubo un error al registrar la herramienta: {str(e)}")
+                            
+                            # Recargar herramientas
+                            load_all_tools()
+                            st.success(f"✅ Herramienta '{tool_name}' actualizada correctamente")
+                            
+                            # Limpiar estado
+                            del st.session_state.edit_tool
+                            del st.session_state.edit_tool_code
+                            if "edit_tool_is_dynamic" in st.session_state:
+                                del st.session_state.edit_tool_is_dynamic
+                            st.rerun()
+                        except Exception as e:
+                            st.error(f"Error al guardar cambios: {str(e)}")
+                    
+                    if cancel_button:
+                        # Limpiar estado
+                        del st.session_state.edit_tool
+                        del st.session_state.edit_tool_code
+                        if "edit_tool_is_dynamic" in st.session_state:
+                            del st.session_state.edit_tool_is_dynamic
+                        st.rerun()
+                
+                # Confirmación para eliminar
+                if "delete_tool" in st.session_state:
+                    tool_name = st.session_state.delete_tool
+                    is_dynamic = st.session_state.get("delete_tool_is_dynamic", False)
+                    
+                    st.error(f"🗑️ ¿Estás seguro de que deseas eliminar la herramienta `{tool_name}`?")
+                    
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        if st.button("✅ Sí, eliminar", key=f"confirm_delete_{tool_name}"):
+                            tool_path = os.path.join("tools", f"{tool_name}.py")
+                            try:
+                                # Eliminar archivo
+                                os.remove(tool_path)
+                                # Marcar como inactiva
+                                set_tool_status(tool_name, False)
+                                # Recargar herramientas
+                                load_all_tools()
+                                st.success(f"✅ Herramienta '{tool_name}' eliminada correctamente")
+                                
+                                # Limpiar estado
+                                del st.session_state.delete_tool
+                                if "delete_tool_is_dynamic" in st.session_state:
+                                    del st.session_state.delete_tool_is_dynamic
+                                st.rerun()
+                            except Exception as e:
+                                st.error(f"Error al eliminar herramienta: {str(e)}")
+                    with col2:
+                        if st.button("❌ No, cancelar", key=f"cancel_delete_{tool_name}"):
+                            # Limpiar estado
+                            del st.session_state.delete_tool
+                            if "delete_tool_is_dynamic" in st.session_state:
+                                del st.session_state.delete_tool_is_dynamic
+                            st.rerun()
             else:
                 st.info("ℹ️ No hay herramientas estáticas cargadas")
         
@@ -359,7 +520,7 @@ elif nav == "⚙️ Admin":
             dynamic_tools = get_all_dynamic_tools()
             if dynamic_tools:
                 for k, v in dynamic_tools.items():
-                    col1, col2, col3 = st.columns([3,1,1])
+                    col1, col2, col3, col4, col5 = st.columns([3,0.5,0.5,0.5,0.5])
                     with col1:
                         st.markdown(f"""
                         **`{k}`**  
@@ -367,8 +528,32 @@ elif nav == "⚙️ Admin":
                         {'🔄' if v['schema'].get('postprocess', True) else '📤'} {'_Post-procesado activo_' if v['schema'].get('postprocess', True) else '_Salida directa_'}
                         """)
                     with col2:
-                        st.empty()  # Columna vacía para mantener el espaciado
+                        # Botón para ver código
+                        if st.button("👁️", key=f"view_dyn_{k}", help=f"Ver código de {k}"):
+                            # Guarda el nombre de la herramienta a ver en el estado
+                            st.session_state.view_tool = k
+                            st.session_state.view_tool_code = True
+                            st.session_state.view_tool_is_dynamic = True
                     with col3:
+                        # Botón para editar
+                        if st.button("✏️", key=f"edit_dyn_{k}", help=f"Editar {k}"):
+                            # Cargar contenido del archivo para edición
+                            tool_path = os.path.join("tools", f"{k}.py")
+                            try:
+                                with open(tool_path, "r") as file:
+                                    tool_code = file.read()
+                                # Guardar en el estado para la edición
+                                st.session_state.edit_tool = k
+                                st.session_state.edit_tool_code = tool_code
+                                st.session_state.edit_tool_is_dynamic = True
+                            except Exception as e:
+                                st.error(f"No se pudo cargar el archivo: {str(e)}")
+                    with col4:
+                        # Botón para eliminar
+                        if st.button("🗑️", key=f"delete_direct_dyn_{k}", help=f"Eliminar {k}"):
+                            st.session_state.delete_tool = k
+                            st.session_state.delete_tool_is_dynamic = True
+                    with col5:
                         is_active = is_tool_active(k)
                         if st.toggle("Activa", value=is_active, key=f"toggle_dyn_{k}"):
                             if not is_active:  # Si estaba inactiva
