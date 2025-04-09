@@ -3,28 +3,42 @@ import json
 from logger import log_tool_call
 from tool_manager import get_tools
 
-def chat_with_tools(prompt: str, user_id="anon", api_key="", model="gpt-4", temperature=0.7):
+def chat_with_tools(prompt: str, user_id="anon", api_key="", model="gpt-4", temperature=0.7, 
+                 max_tokens=None, top_p=1.0, presence_penalty=0.0, frequency_penalty=0.0, seed=None):
     openai.api_key = api_key
     all_tools = get_tools()
     schemas = [info["schema"] for info in all_tools.values()]
+    
+    # Crear diccionario base para parámetros comunes
+    common_params = {
+        "model": model,
+        "temperature": temperature,
+        "top_p": top_p,
+        "presence_penalty": presence_penalty,
+        "frequency_penalty": frequency_penalty
+    }
+    
+    # Añadir parámetros opcionales solo si se proporcionan
+    if max_tokens:
+        common_params["max_tokens"] = max_tokens
+    if seed is not None:
+        common_params["seed"] = seed
 
     messages = [{"role": "user", "content": prompt}]
 
     # Primera llamada
     if schemas:
         response = openai.chat.completions.create(
-            model=model,
+            **common_params,
             messages=messages,
             functions=schemas,
-            function_call="auto",
-            temperature=temperature
+            function_call="auto"
         )
     else:
         # Sin tools definidas
         response = openai.chat.completions.create(
-            model=model,
-            messages=messages,
-            temperature=temperature
+            **common_params,
+            messages=messages
         )
 
     reply = response.choices[0].message
@@ -54,11 +68,10 @@ def chat_with_tools(prompt: str, user_id="anon", api_key="", model="gpt-4", temp
                 })
 
             final = openai.chat.completions.create(
-                model=model,
+                **common_params,
                 messages=messages,
                 functions=schemas,  # Mantenemos la posibilidad de llamadas adicionales
-                function_call="auto",
-                temperature=temperature
+                function_call="auto"
             )
             return final.choices[0].message.content
         else:

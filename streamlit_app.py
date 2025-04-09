@@ -196,44 +196,6 @@ def extract_code_and_schema(code: str):
         schema["name"] = func_name
     return func_name, schema, code, namespace[func_name]
 
-# Configuración inicial
-load_dotenv()
-st.set_page_config(
-    page_title="🧠 OpenAI Modular MCP",
-    page_icon="🧠",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
-# Estilos CSS personalizados (solo para botones y cajas)
-st.markdown("""
-    <style>
-    .stButton>button {
-        width: 100%;
-    }
-    .success-box {
-        padding: 1rem;
-        border-radius: 0.5rem;
-        background-color: #d4edda;
-        border: 1px solid #c3e6cb;
-        color: #155724;
-    }
-    .warning-box {
-        padding: 1rem;
-        border-radius: 0.5rem;
-        background-color: #fff3cd;
-        border: 1px solid #ffeeba;
-        color: #856404;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# Inicialización de estado
-if "chat" not in st.session_state:
-    st.session_state.chat = []
-if "tools_loaded" not in st.session_state:
-    st.session_state.tools_loaded = False
-
 # Función para actualizar el resumen de herramientas
 def update_tool_summary():
     # Status rápido de herramientas
@@ -367,6 +329,44 @@ def detect_env_variables(code):
     
     return env_vars
 
+# Configuración inicial
+load_dotenv()
+st.set_page_config(
+    page_title="🧠 OpenAI Modular MCP",
+    page_icon="🧠",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# Estilos CSS personalizados (solo para botones y cajas)
+st.markdown("""
+    <style>
+    .stButton>button {
+        width: 100%;
+    }
+    .success-box {
+        padding: 1rem;
+        border-radius: 0.5rem;
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+    }
+    .warning-box {
+        padding: 1rem;
+        border-radius: 0.5rem;
+        background-color: #fff3cd;
+        border: 1px solid #ffeeba;
+        color: #856404;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Inicialización de estado
+if "chat" not in st.session_state:
+    st.session_state.chat = []
+if "tools_loaded" not in st.session_state:
+    st.session_state.tools_loaded = False
+
 # == SIDEBAR ==
 with st.sidebar:    
     # Sección de Navegación Principal
@@ -403,7 +403,7 @@ with st.sidebar:
     with col1:
         model = st.selectbox(
             "Modelo",
-            ["gpt-4", "gpt-3.5-turbo"],
+            ["gpt-4", "gpt-3.5-turbo", "gpt-4-turbo"],
             help="Selecciona el modelo de OpenAI"
         )
     with col2:
@@ -413,10 +413,71 @@ with st.sidebar:
             help="Creatividad: 0=preciso, 1=creativo"
         )
     
+    # Expander para configuración avanzada
+    with st.expander("⚙️ Configuración Avanzada", expanded=False):
+        # max_tokens
+        max_tokens = st.slider(
+            "Max Tokens",
+            100, 4000, 1024,
+            help="Número máximo de tokens en la respuesta"
+        )
+        
+        # top_p
+        top_p = st.slider(
+            "Top P",
+            0.1, 1.0, 1.0,
+            help="Controla la diversidad del texto (valores menores = más específico)"
+        )
+        
+        # Columnas para presence y frequency penalty
+        col1, col2 = st.columns(2)
+        with col1:
+            presence_penalty = st.slider(
+                "Presence Penalty",
+                -2.0, 2.0, 0.0,
+                help="Penaliza nuevos temas (positivo = más diversos)"
+            )
+        with col2:
+            frequency_penalty = st.slider(
+                "Frequency Penalty",
+                -2.0, 2.0, 0.0,
+                help="Penaliza repeticiones (positivo = menos repetición)"
+            )
+        
+        # Opciones adicionales
+        seed = st.number_input(
+            "Seed",
+            min_value=-1,
+            max_value=10000,
+            value=-1,
+            help="Semilla para reproducibilidad. -1 = desactivado"
+        )
+    
+    # Guardar todas las configuraciones en el estado de sesión
+    st.session_state.model_config = {
+        "model": model,
+        "temperature": temp,
+        "max_tokens": max_tokens,
+        "top_p": top_p,
+        "presence_penalty": presence_penalty,
+        "frequency_penalty": frequency_penalty,
+        "seed": None if seed == -1 else seed
+    }
+    
     st.divider()
     
     # Sección de Herramientas
-    st.markdown("### 🔧 Herramientas")
+    col1, col2 = st.columns([4, 1])
+    with col1:
+        st.markdown("### 🔧 Herramientas")
+    with col2:
+        if st.button("🔄", key="reload_tools_sidebar", help="Recargar herramientas"):
+            with st.spinner("Recargando..."):
+                load_all_tools()
+                update_tool_summary()
+            st.success("✅")
+            time.sleep(0.3)
+            st.rerun()
     
     # Actualizar información de herramientas
     if "tool_summary" not in st.session_state:
@@ -478,8 +539,13 @@ if nav == "💬 Chat":
                         prompt,
                         user_id="anon",
                         api_key=api_key,
-                        model=model,
-                        temperature=temp
+                        model=st.session_state.model_config["model"],
+                        temperature=st.session_state.model_config["temperature"],
+                        max_tokens=st.session_state.model_config["max_tokens"],
+                        top_p=st.session_state.model_config["top_p"],
+                        presence_penalty=st.session_state.model_config["presence_penalty"],
+                        frequency_penalty=st.session_state.model_config["frequency_penalty"],
+                        seed=st.session_state.model_config["seed"]
                     )
                     st.markdown(reply)
                 except Exception as e:
@@ -515,7 +581,38 @@ elif nav == "⚙️ Admin":
         with st.expander("📁 Herramientas Estáticas", expanded=True):
             static_tools = get_all_loaded_tools()
             if static_tools:
-                for k, v in static_tools.items():
+                # Paginación para herramientas estáticas
+                items_per_page = 5  # Cantidad de herramientas por página
+                total_tools = len(static_tools)
+                total_pages = (total_tools + items_per_page - 1) // items_per_page  # Redondear hacia arriba
+                
+                # Inicializar el estado de la página si no existe
+                if "static_tools_page" not in st.session_state:
+                    st.session_state.static_tools_page = 1
+                
+                # Controles de paginación
+                col1, col2, col3 = st.columns([1, 3, 1])
+                with col1:
+                    if st.button("⬅️ Anterior", key="prev_static", disabled=st.session_state.static_tools_page <= 1):
+                        st.session_state.static_tools_page -= 1
+                        st.rerun()
+                with col2:
+                    st.write(f"Página {st.session_state.static_tools_page} de {max(1, total_pages)} ({total_tools} herramientas)")
+                with col3:
+                    if st.button("Siguiente ➡️", key="next_static", disabled=st.session_state.static_tools_page >= total_pages):
+                        st.session_state.static_tools_page += 1
+                        st.rerun()
+                
+                # Calcular qué herramientas mostrar en esta página
+                start_idx = (st.session_state.static_tools_page - 1) * items_per_page
+                end_idx = min(start_idx + items_per_page, total_tools)
+                
+                # Obtener las keys ordenadas para poder paginarlas
+                tool_keys = sorted(list(static_tools.keys()))[start_idx:end_idx]
+                
+                # Mostrar las herramientas de esta página
+                for k in tool_keys:
+                    v = static_tools[k]
                     col1, col2, col3, col4, col5 = st.columns([3,0.5,0.5,0.5,0.5])
                     with col1:
                         st.markdown(f"""
@@ -715,7 +812,38 @@ elif nav == "⚙️ Admin":
         with st.expander("💫 Herramientas Dinámicas", expanded=True):
             dynamic_tools = get_all_dynamic_tools()
             if dynamic_tools:
-                for k, v in dynamic_tools.items():
+                # Paginación para herramientas dinámicas
+                items_per_page = 5  # Cantidad de herramientas por página
+                total_tools = len(dynamic_tools)
+                total_pages = (total_tools + items_per_page - 1) // items_per_page  # Redondear hacia arriba
+                
+                # Inicializar el estado de la página si no existe
+                if "dynamic_tools_page" not in st.session_state:
+                    st.session_state.dynamic_tools_page = 1
+                
+                # Controles de paginación
+                col1, col2, col3 = st.columns([1, 3, 1])
+                with col1:
+                    if st.button("⬅️ Anterior", key="prev_dynamic", disabled=st.session_state.dynamic_tools_page <= 1):
+                        st.session_state.dynamic_tools_page -= 1
+                        st.rerun()
+                with col2:
+                    st.write(f"Página {st.session_state.dynamic_tools_page} de {max(1, total_pages)} ({total_tools} herramientas)")
+                with col3:
+                    if st.button("Siguiente ➡️", key="next_dynamic", disabled=st.session_state.dynamic_tools_page >= total_pages):
+                        st.session_state.dynamic_tools_page += 1
+                        st.rerun()
+                
+                # Calcular qué herramientas mostrar en esta página
+                start_idx = (st.session_state.dynamic_tools_page - 1) * items_per_page
+                end_idx = min(start_idx + items_per_page, total_tools)
+                
+                # Obtener las keys ordenadas para poder paginarlas
+                tool_keys = sorted(list(dynamic_tools.keys()))[start_idx:end_idx]
+                
+                # Mostrar las herramientas de esta página
+                for k in tool_keys:
+                    v = dynamic_tools[k]
                     col1, col2, col3, col4, col5 = st.columns([3,0.5,0.5,0.5,0.5])
                     with col1:
                         st.markdown(f"""
@@ -793,7 +921,12 @@ elif nav == "⚙️ Admin":
                             st.stop()
                             
                         # Generar código con la IA
-                        code = generate_tool_with_ai(ai_prompt, api_key, model, temp)
+                        code = generate_tool_with_ai(
+                            ai_prompt, 
+                            api_key, 
+                            st.session_state.model_config["model"], 
+                            st.session_state.model_config["temperature"]
+                        )
                         
                         # Guardar el código generado en la sesión para usarlo después
                         st.session_state.codigo_generado = code

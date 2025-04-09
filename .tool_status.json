@@ -1,5 +1,8 @@
 {
   "fetch_latest_news": false,
   "fetch_relevant_news": true,
-  "get_latest_news": true
+  "get_latest_news": true,
+  "fetch_movie_info": true,
+  "recommend_movie_by_genre": true,
+  "get_movie_info": true
 }
