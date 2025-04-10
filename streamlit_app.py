@@ -898,6 +898,15 @@ elif nav == "⚙️ Admin":
             else:
                 st.info("ℹ️ No hay herramientas dinámicas registradas")
 
+        # Errores de Carga
+        with st.expander("🚨 Errores de Carga", expanded=False):
+            errors = get_loading_errors()
+            if errors:
+                for e in errors:
+                    st.error(f"📄 {e['file']}\n```\n{e['error']}\n```")
+            else:
+                st.success("✅ No se encontraron errores de carga")    
+
         st.divider()
         
         # Nueva Herramienta
@@ -1165,17 +1174,6 @@ elif nav == "⚙️ Admin":
                         
                     except Exception as e:
                         st.error(f"❌ Error al crear la herramienta: {str(e)}")
-
-        st.divider()
-        
-        # Errores de Carga
-        with st.expander("🚨 Errores de Carga", expanded=False):
-            errors = get_loading_errors()
-            if errors:
-                for e in errors:
-                    st.error(f"📄 {e['file']}\n```\n{e['error']}\n```")
-            else:
-                st.success("✅ No se encontraron errores de carga")
 
     # === TAB VARIABLES DE ENTORNO ===
     with tabs[1]:

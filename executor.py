@@ -55,17 +55,21 @@ def chat_with_tools(prompt: str, user_id="anon", api_key="", model="gpt-4", temp
             # Convertir el resultado a string si no lo es ya
             if not isinstance(result, str):
                 result = json.dumps(result, ensure_ascii=False, indent=2)
+
+            # Si no requiere post-proceso, devuelve el resultado tal cual
+            if not all_tools[func_name]["schema"].get("postprocess", True):
+                return result
             
-            # Siempre pasamos por el modelo, pero con instrucciones específicas
+            # Si sí requiere postproceso, sigue el flujo habitual
             messages.append(reply.to_dict())
             messages.append({"role": "function", "name": func_name, "content": result})
 
             # Si la herramienta no requiere post-procesamiento, damos instrucciones específicas
-            if not all_tools[func_name]["schema"].get("postprocess", True):
+            '''if not all_tools[func_name]["schema"].get("postprocess", True):
                 messages.append({
                     "role": "system",
                     "content": "Por favor, devuelve el resultado exacto de la herramienta sin modificarlo ni resumirlo, pero evalúa si se necesitan llamadas adicionales a otras herramientas."
-                })
+                })'''
 
             final = openai.chat.completions.create(
                 **common_params,
