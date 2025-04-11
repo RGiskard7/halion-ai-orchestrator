@@ -1,13 +1,6 @@
 {
-  "fetch_latest_news": false,
-  "fetch_relevant_news": false,
-  "get_latest_news": true,
-  "fetch_movie_info": true,
-  "recommend_movie_by_genre": true,
-  "get_movie_info": true,
-  "saludar": false,
-  "get_current_weather": true,
+  "search_in_duckduckgo": false,
   "buscar_en_internet": true,
-  "navigate_app_screen": false,
-  "get_hotel_info": false
+  "fetch_instant_answer": false,
+  "internet_search_tool": false
 }

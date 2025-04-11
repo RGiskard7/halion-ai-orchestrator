@@ -30,21 +30,44 @@ def reload_env_variables():
     
     return env_vars
 
-def set_env_variable(key, value):
+def set_env_variable(key, value=""):
     """
     Establece o actualiza una variable de entorno en el archivo .env
     
     Args:
         key: Nombre de la variable
         value: Valor a establecer (puede ser vacío)
+        
+    Returns:
+        bool: True si la operación fue exitosa, False en caso contrario
+        
+    Notes:
+        - Si la variable ya existe y el nuevo valor es vacío, se mantiene el valor existente
+        - Si la variable no existe, se crea con el valor proporcionado (incluso si es vacío)
     """
+    if not key:
+        logging.error("Error: No se puede guardar una variable sin nombre")
+        return False
+        
     # Asegurarse de que existe el archivo
     if not os.path.exists(ENV_PATH):
         # Crear un archivo vacío
-        with open(ENV_PATH, 'w') as f:
-            pass
+        try:
+            with open(ENV_PATH, 'w') as f:
+                pass
+        except Exception as e:
+            logging.error(f"Error al crear el archivo .env: {str(e)}")
+            return False
     
     try:
+        # Obtener las variables existentes
+        current_vars = get_env_variables()
+        
+        # Si la variable existe y el nuevo valor está vacío, no modificar
+        if key in current_vars and not value:
+            logging.info(f"La variable {key} ya existe y no se cambió porque el nuevo valor estaba vacío")
+            return True
+            
         # Enfoque directo que funciona con valores vacíos
         # Leer el archivo actual
         content = ""

@@ -6741,3 +6741,1574 @@ Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__ca
 ¿Tiene función llamable?: True
 Herramienta 'navigate_app_screen' cargada correctamente
 Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'navigate_app_screen']
+
+
+--- NUEVA LLAMADA A register_tool 2025-04-10T14:09:11.882959 ---
+Nombre: search_in_duckduckgo
+Schema: {
+  "name": "search_in_duckduckgo",
+  "description": "Realiza una búsqueda en internet a través de la API de DuckDuckGo.",
+  "postprocess": false,
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "El término de búsqueda."
+      },
+      "language": {
+        "type": "string",
+        "description": "El idioma preferido para los resultados de la búsqueda. Por defecto es inglés ('en')."
+      }
+    },
+    "required": [
+      "query"
+    ]
+  }
+}
+Longitud de func_code: 2064 caracteres
+Primeras líneas de func_code: ['from typing import Dict, Optional, Union\nimport requests\nimport os\nfrom dotenv import load_dotenv\n\n# Cargar variables de entorno\nload_dotenv()\n\ndef search_in_duckduckgo(query: str, language: Optional[str] = "en") -> Dict[str, Union[str, int]]:\n    """\n    Realiza una búsqueda en internet a través de la API de DuckDuckGo.\n\n    Args:\n        query (str): El término de búsqueda. \n        language (str, optional): El idioma preferido para los resultados de la búsqueda. Por defecto es inglés (\'en\'). \n\n    Returns:\n        Dict[str, Union[str, int]]: Un diccionario que contiene el estado de la respuesta y los resultados de la búsqueda.\n\n    Raises:\n        ValueError: Se lanza este error si no se proporciona la clave de API o si el término de búsqueda está vacío.\n    """\n    # Obtener API key desde variables de entorno\n    api_key = os.getenv("DUCKDUCKGO_API_KEY")\n    if not api_key:\n        raise ValueError("API key no configurada. Añade DUCKDUCKGO_API_KEY a las variables de entorno.")\n\n    # Validaciones\n    if not query:\n        raise ValueError("El término de búsqueda no puede estar vacío")\n\n    try:\n        # Lógica principal\n        url = f"https://api.duckduckgo.com/?q={query}&format=json&kl={language}"\n        response = requests.get(url)\n        return {\n            "status": response.status_code,\n            "results": response.json()\n        }\n    except Exception as e:\n        raise Exception(f"Error en search_in_duckduckgo: {e}")\n\nschema = {\n    "name": "search_in_duckduckgo",\n    "description": "Realiza una búsqueda en internet a través de la API de DuckDuckGo.",\n    "postprocess": False,\n    "parameters": {\n        "type": "object",\n        "properties": {\n            "query": {\n                "type": "string",\n                "description": "El término de búsqueda."\n            },\n            "language": {\n                "type": "string",\n                "description": "El idioma preferido para los resultados de la búsqueda. Por defecto es inglés (\'en\')."\n            }\n        },\n        "required": ["query"]\n    }\n}']
+Ejecutando código en namespace...
+Keys en namespace: ['__builtins__', 'Dict', 'Optional', 'Union', 'requests', 'os', 'load_dotenv', 'search_in_duckduckgo', 'schema']
+Función 'search_in_duckduckgo' encontrada en el namespace
+Herramienta 'search_in_duckduckgo' registrada con éxito en memoria
+
+
+--- NUEVA LLAMADA A persist_tool_to_disk 2025-04-10T14:09:11.885466 ---
+Nombre: search_in_duckduckgo
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Carpeta creada/verificada
+Ruta del archivo a crear: tools/search_in_duckduckgo.py
+¿El código ya tiene schema?: True
+Guardando archivo con schema existente...
+¿Se creó el archivo?: True
+Tamaño del archivo: 2087
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-10T14:09:11.887591 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['get_hotel_info.py', 'test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'search_in_duckduckgo.py', 'recommend_movie_by_genre.py', 'saludar.py', 'fetch_relevant_news.py', 'fetch_movie_info.py', 'get_movie_info.py', 'navigate_app_screen.py']
+Procesando archivo: get_hotel_info.py, ruta: tools/get_hotel_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_hotel_info...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_hotel_info', 'json', 'load_dotenv', 'os', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_hotel_info' cargada correctamente
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: search_in_duckduckgo.py, ruta: tools/search_in_duckduckgo.py
+¿Archivo existe?: True
+Ejecutando módulo: search_in_duckduckgo...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'requests', 'schema', 'search_in_duckduckgo']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'search_in_duckduckgo' cargada correctamente
+Procesando archivo: recommend_movie_by_genre.py, ruta: tools/recommend_movie_by_genre.py
+¿Archivo existe?: True
+Ejecutando módulo: recommend_movie_by_genre...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'random', 'recommend_movie_by_genre', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'recommend_movie_by_genre' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: fetch_relevant_news.py, ruta: tools/fetch_relevant_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_relevant_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_relevant_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_relevant_news' cargada correctamente
+Procesando archivo: fetch_movie_info.py, ruta: tools/fetch_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_movie_info...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_movie_info' cargada correctamente
+Procesando archivo: get_movie_info.py, ruta: tools/get_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_movie_info...
+Atributos del módulo: ['Dict', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_movie_info' cargada correctamente
+Procesando archivo: navigate_app_screen.py, ruta: tools/navigate_app_screen.py
+¿Archivo existe?: True
+Ejecutando módulo: navigate_app_screen...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'json', 'load_dotenv', 'navigate_app_screen', 'os', 'process', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'navigate_app_screen' cargada correctamente
+Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'search_in_duckduckgo', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'navigate_app_screen']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-10T14:10:42.202167 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['get_hotel_info.py', 'test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'search_in_duckduckgo.py', 'recommend_movie_by_genre.py', 'saludar.py', 'fetch_relevant_news.py', 'fetch_movie_info.py', 'get_movie_info.py', 'navigate_app_screen.py']
+Procesando archivo: get_hotel_info.py, ruta: tools/get_hotel_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_hotel_info...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_hotel_info', 'json', 'load_dotenv', 'os', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_hotel_info' cargada correctamente
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: search_in_duckduckgo.py, ruta: tools/search_in_duckduckgo.py
+¿Archivo existe?: True
+Ejecutando módulo: search_in_duckduckgo...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'requests', 'schema', 'search_in_duckduckgo']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'search_in_duckduckgo' cargada correctamente
+Procesando archivo: recommend_movie_by_genre.py, ruta: tools/recommend_movie_by_genre.py
+¿Archivo existe?: True
+Ejecutando módulo: recommend_movie_by_genre...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'random', 'recommend_movie_by_genre', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'recommend_movie_by_genre' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: fetch_relevant_news.py, ruta: tools/fetch_relevant_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_relevant_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_relevant_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_relevant_news' cargada correctamente
+Procesando archivo: fetch_movie_info.py, ruta: tools/fetch_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_movie_info...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_movie_info' cargada correctamente
+Procesando archivo: get_movie_info.py, ruta: tools/get_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_movie_info...
+Atributos del módulo: ['Dict', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_movie_info' cargada correctamente
+Procesando archivo: navigate_app_screen.py, ruta: tools/navigate_app_screen.py
+¿Archivo existe?: True
+Ejecutando módulo: navigate_app_screen...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'json', 'load_dotenv', 'navigate_app_screen', 'os', 'process', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'navigate_app_screen' cargada correctamente
+Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'search_in_duckduckgo', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'navigate_app_screen']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-10T14:10:49.299036 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['get_hotel_info.py', 'test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'search_in_duckduckgo.py', 'recommend_movie_by_genre.py', 'saludar.py', 'fetch_relevant_news.py', 'fetch_movie_info.py', 'get_movie_info.py', 'navigate_app_screen.py']
+Procesando archivo: get_hotel_info.py, ruta: tools/get_hotel_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_hotel_info...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_hotel_info', 'json', 'load_dotenv', 'os', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_hotel_info' cargada correctamente
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: search_in_duckduckgo.py, ruta: tools/search_in_duckduckgo.py
+¿Archivo existe?: True
+Ejecutando módulo: search_in_duckduckgo...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'requests', 'schema', 'search_in_duckduckgo']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'search_in_duckduckgo' cargada correctamente
+Procesando archivo: recommend_movie_by_genre.py, ruta: tools/recommend_movie_by_genre.py
+¿Archivo existe?: True
+Ejecutando módulo: recommend_movie_by_genre...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'random', 'recommend_movie_by_genre', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'recommend_movie_by_genre' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: fetch_relevant_news.py, ruta: tools/fetch_relevant_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_relevant_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_relevant_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_relevant_news' cargada correctamente
+Procesando archivo: fetch_movie_info.py, ruta: tools/fetch_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_movie_info...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_movie_info' cargada correctamente
+Procesando archivo: get_movie_info.py, ruta: tools/get_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_movie_info...
+Atributos del módulo: ['Dict', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_movie_info' cargada correctamente
+Procesando archivo: navigate_app_screen.py, ruta: tools/navigate_app_screen.py
+¿Archivo existe?: True
+Ejecutando módulo: navigate_app_screen...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'json', 'load_dotenv', 'navigate_app_screen', 'os', 'process', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'navigate_app_screen' cargada correctamente
+Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'search_in_duckduckgo', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'navigate_app_screen']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-10T14:11:53.523813 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['get_hotel_info.py', 'test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'search_in_duckduckgo.py', 'recommend_movie_by_genre.py', 'saludar.py', 'fetch_relevant_news.py', 'fetch_movie_info.py', 'get_movie_info.py', 'navigate_app_screen.py']
+Procesando archivo: get_hotel_info.py, ruta: tools/get_hotel_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_hotel_info...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_hotel_info', 'json', 'load_dotenv', 'os', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_hotel_info' cargada correctamente
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: search_in_duckduckgo.py, ruta: tools/search_in_duckduckgo.py
+¿Archivo existe?: True
+Ejecutando módulo: search_in_duckduckgo...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'requests', 'schema', 'search_in_duckduckgo']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'search_in_duckduckgo' cargada correctamente
+Procesando archivo: recommend_movie_by_genre.py, ruta: tools/recommend_movie_by_genre.py
+¿Archivo existe?: True
+Ejecutando módulo: recommend_movie_by_genre...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'random', 'recommend_movie_by_genre', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'recommend_movie_by_genre' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: fetch_relevant_news.py, ruta: tools/fetch_relevant_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_relevant_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_relevant_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_relevant_news' cargada correctamente
+Procesando archivo: fetch_movie_info.py, ruta: tools/fetch_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_movie_info...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_movie_info' cargada correctamente
+Procesando archivo: get_movie_info.py, ruta: tools/get_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_movie_info...
+Atributos del módulo: ['Dict', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_movie_info' cargada correctamente
+Procesando archivo: navigate_app_screen.py, ruta: tools/navigate_app_screen.py
+¿Archivo existe?: True
+Ejecutando módulo: navigate_app_screen...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'json', 'load_dotenv', 'navigate_app_screen', 'os', 'process', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'navigate_app_screen' cargada correctamente
+Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'search_in_duckduckgo', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'navigate_app_screen']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-10T14:12:22.903746 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['get_hotel_info.py', 'test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'search_in_duckduckgo.py', 'recommend_movie_by_genre.py', 'saludar.py', 'fetch_relevant_news.py', 'fetch_movie_info.py', 'get_movie_info.py', 'navigate_app_screen.py']
+Procesando archivo: get_hotel_info.py, ruta: tools/get_hotel_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_hotel_info...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_hotel_info', 'json', 'load_dotenv', 'os', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_hotel_info' cargada correctamente
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: search_in_duckduckgo.py, ruta: tools/search_in_duckduckgo.py
+¿Archivo existe?: True
+Ejecutando módulo: search_in_duckduckgo...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'requests', 'schema', 'search_in_duckduckgo']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'search_in_duckduckgo' cargada correctamente
+Procesando archivo: recommend_movie_by_genre.py, ruta: tools/recommend_movie_by_genre.py
+¿Archivo existe?: True
+Ejecutando módulo: recommend_movie_by_genre...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'random', 'recommend_movie_by_genre', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'recommend_movie_by_genre' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: fetch_relevant_news.py, ruta: tools/fetch_relevant_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_relevant_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_relevant_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_relevant_news' cargada correctamente
+Procesando archivo: fetch_movie_info.py, ruta: tools/fetch_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_movie_info...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_movie_info' cargada correctamente
+Procesando archivo: get_movie_info.py, ruta: tools/get_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_movie_info...
+Atributos del módulo: ['Dict', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_movie_info' cargada correctamente
+Procesando archivo: navigate_app_screen.py, ruta: tools/navigate_app_screen.py
+¿Archivo existe?: True
+Ejecutando módulo: navigate_app_screen...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'json', 'load_dotenv', 'navigate_app_screen', 'os', 'process', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'navigate_app_screen' cargada correctamente
+Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'search_in_duckduckgo', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'navigate_app_screen']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-10T14:13:58.136965 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['get_hotel_info.py', 'test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'search_in_duckduckgo.py', 'recommend_movie_by_genre.py', 'saludar.py', 'fetch_relevant_news.py', 'fetch_movie_info.py', 'get_movie_info.py', 'navigate_app_screen.py']
+Procesando archivo: get_hotel_info.py, ruta: tools/get_hotel_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_hotel_info...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_hotel_info', 'json', 'load_dotenv', 'os', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_hotel_info' cargada correctamente
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: search_in_duckduckgo.py, ruta: tools/search_in_duckduckgo.py
+¿Archivo existe?: True
+Ejecutando módulo: search_in_duckduckgo...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'requests', 'schema', 'search_in_duckduckgo']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'search_in_duckduckgo' cargada correctamente
+Procesando archivo: recommend_movie_by_genre.py, ruta: tools/recommend_movie_by_genre.py
+¿Archivo existe?: True
+Ejecutando módulo: recommend_movie_by_genre...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'random', 'recommend_movie_by_genre', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'recommend_movie_by_genre' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: fetch_relevant_news.py, ruta: tools/fetch_relevant_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_relevant_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_relevant_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_relevant_news' cargada correctamente
+Procesando archivo: fetch_movie_info.py, ruta: tools/fetch_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_movie_info...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_movie_info' cargada correctamente
+Procesando archivo: get_movie_info.py, ruta: tools/get_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_movie_info...
+Atributos del módulo: ['Dict', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_movie_info' cargada correctamente
+Procesando archivo: navigate_app_screen.py, ruta: tools/navigate_app_screen.py
+¿Archivo existe?: True
+Ejecutando módulo: navigate_app_screen...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'json', 'load_dotenv', 'navigate_app_screen', 'os', 'process', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'navigate_app_screen' cargada correctamente
+Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'search_in_duckduckgo', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'navigate_app_screen']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-10T14:14:02.175769 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['get_hotel_info.py', 'test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'search_in_duckduckgo.py', 'recommend_movie_by_genre.py', 'saludar.py', 'fetch_relevant_news.py', 'fetch_movie_info.py', 'get_movie_info.py', 'navigate_app_screen.py']
+Procesando archivo: get_hotel_info.py, ruta: tools/get_hotel_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_hotel_info...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_hotel_info', 'json', 'load_dotenv', 'os', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_hotel_info' cargada correctamente
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: search_in_duckduckgo.py, ruta: tools/search_in_duckduckgo.py
+¿Archivo existe?: True
+Ejecutando módulo: search_in_duckduckgo...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'requests', 'schema', 'search_in_duckduckgo']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'search_in_duckduckgo' cargada correctamente
+Procesando archivo: recommend_movie_by_genre.py, ruta: tools/recommend_movie_by_genre.py
+¿Archivo existe?: True
+Ejecutando módulo: recommend_movie_by_genre...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'random', 'recommend_movie_by_genre', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'recommend_movie_by_genre' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: fetch_relevant_news.py, ruta: tools/fetch_relevant_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_relevant_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_relevant_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_relevant_news' cargada correctamente
+Procesando archivo: fetch_movie_info.py, ruta: tools/fetch_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_movie_info...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_movie_info' cargada correctamente
+Procesando archivo: get_movie_info.py, ruta: tools/get_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_movie_info...
+Atributos del módulo: ['Dict', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_movie_info' cargada correctamente
+Procesando archivo: navigate_app_screen.py, ruta: tools/navigate_app_screen.py
+¿Archivo existe?: True
+Ejecutando módulo: navigate_app_screen...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'json', 'load_dotenv', 'navigate_app_screen', 'os', 'process', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'navigate_app_screen' cargada correctamente
+Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'search_in_duckduckgo', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'navigate_app_screen']
+
+
+--- NUEVA LLAMADA A register_tool 2025-04-10T16:09:52.413750 ---
+Nombre: fetch_instant_answer
+Schema: {
+  "name": "fetch_instant_answer",
+  "description": "Fetches instant answers from DuckDuckGo.",
+  "postprocess": true,
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The search query."
+      }
+    },
+    "required": [
+      "query"
+    ]
+  }
+}
+Longitud de func_code: 1290 caracteres
+Primeras líneas de func_code: ['from typing import Dict, Optional, Union\nimport requests\n\ndef fetch_instant_answer(query: str) -> Dict[str, str]:\n    """\n    Retrieves quick answers like definitions or facts directly from DuckDuckGo.\n\n    Args:\n        query (str): The search query.\n\n    Returns:\n        Dict[str, str]: A dictionary containing the query and the answer.\n\n    Raises:\n        ValueError: If the query is empty.\n        Exception: If there is any issue with the request.\n    """\n    if not query:\n        raise ValueError("Query cannot be empty.")\n\n    url = "https://api.duckduckgo.com/"\n    params = {"q": query, "format": "json"}\n\n    try:\n        response = requests.get(url, params=params)\n        return {\n            "query": query,\n            "answer": response.json().get("AbstractText", "No instant answer available.")\n        }\n    except Exception as e:\n        raise Exception(f"Error in fetch_instant_answer: {e}")\n\nschema = {\n    "name": "fetch_instant_answer",\n    "description": "Fetches instant answers from DuckDuckGo.",\n    "postprocess": True,\n    "parameters": {\n        "type": "object",\n        "properties": {\n            "query": {\n                "type": "string",\n                "description": "The search query."\n            }\n        },\n        "required": ["query"]\n    }\n}']
+Ejecutando código en namespace...
+Keys en namespace: ['__builtins__', 'Dict', 'Optional', 'Union', 'requests', 'fetch_instant_answer', 'schema']
+Función 'fetch_instant_answer' encontrada en el namespace
+Herramienta 'fetch_instant_answer' registrada con éxito en memoria
+
+
+--- NUEVA LLAMADA A persist_tool_to_disk 2025-04-10T16:09:52.417512 ---
+Nombre: fetch_instant_answer
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Carpeta creada/verificada
+Ruta del archivo a crear: tools/fetch_instant_answer.py
+¿El código ya tiene schema?: True
+Guardando archivo con schema existente...
+¿Se creó el archivo?: True
+Tamaño del archivo: 1291
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-10T16:09:52.421656 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['get_hotel_info.py', 'test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'search_in_duckduckgo.py', 'recommend_movie_by_genre.py', 'saludar.py', 'fetch_relevant_news.py', 'fetch_movie_info.py', 'get_movie_info.py', 'fetch_instant_answer.py', 'navigate_app_screen.py']
+Procesando archivo: get_hotel_info.py, ruta: tools/get_hotel_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_hotel_info...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_hotel_info', 'json', 'load_dotenv', 'os', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_hotel_info' cargada correctamente
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: search_in_duckduckgo.py, ruta: tools/search_in_duckduckgo.py
+¿Archivo existe?: True
+Ejecutando módulo: search_in_duckduckgo...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'requests', 'schema', 'search_in_duckduckgo']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'search_in_duckduckgo' cargada correctamente
+Procesando archivo: recommend_movie_by_genre.py, ruta: tools/recommend_movie_by_genre.py
+¿Archivo existe?: True
+Ejecutando módulo: recommend_movie_by_genre...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'random', 'recommend_movie_by_genre', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'recommend_movie_by_genre' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: fetch_relevant_news.py, ruta: tools/fetch_relevant_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_relevant_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_relevant_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_relevant_news' cargada correctamente
+Procesando archivo: fetch_movie_info.py, ruta: tools/fetch_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_movie_info...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_movie_info' cargada correctamente
+Procesando archivo: get_movie_info.py, ruta: tools/get_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_movie_info...
+Atributos del módulo: ['Dict', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_movie_info' cargada correctamente
+Procesando archivo: fetch_instant_answer.py, ruta: tools/fetch_instant_answer.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_instant_answer...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_instant_answer', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_instant_answer' cargada correctamente
+Procesando archivo: navigate_app_screen.py, ruta: tools/navigate_app_screen.py
+¿Archivo existe?: True
+Ejecutando módulo: navigate_app_screen...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'json', 'load_dotenv', 'navigate_app_screen', 'os', 'process', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'navigate_app_screen' cargada correctamente
+Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'search_in_duckduckgo', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'fetch_instant_answer', 'navigate_app_screen']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-10T16:09:56.870874 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['get_hotel_info.py', 'test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', '__pycache__', 'search_in_duckduckgo.py', 'recommend_movie_by_genre.py', 'saludar.py', 'fetch_relevant_news.py', 'fetch_movie_info.py', 'get_movie_info.py', 'fetch_instant_answer.py', 'navigate_app_screen.py']
+Procesando archivo: get_hotel_info.py, ruta: tools/get_hotel_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_hotel_info...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_hotel_info', 'json', 'load_dotenv', 'os', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_hotel_info' cargada correctamente
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: search_in_duckduckgo.py, ruta: tools/search_in_duckduckgo.py
+¿Archivo existe?: True
+Ejecutando módulo: search_in_duckduckgo...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'requests', 'schema', 'search_in_duckduckgo']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'search_in_duckduckgo' cargada correctamente
+Procesando archivo: recommend_movie_by_genre.py, ruta: tools/recommend_movie_by_genre.py
+¿Archivo existe?: True
+Ejecutando módulo: recommend_movie_by_genre...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'random', 'recommend_movie_by_genre', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'recommend_movie_by_genre' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: fetch_relevant_news.py, ruta: tools/fetch_relevant_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_relevant_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_relevant_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_relevant_news' cargada correctamente
+Procesando archivo: fetch_movie_info.py, ruta: tools/fetch_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_movie_info...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_movie_info' cargada correctamente
+Procesando archivo: get_movie_info.py, ruta: tools/get_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_movie_info...
+Atributos del módulo: ['Dict', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_movie_info' cargada correctamente
+Procesando archivo: fetch_instant_answer.py, ruta: tools/fetch_instant_answer.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_instant_answer...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_instant_answer', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_instant_answer' cargada correctamente
+Procesando archivo: navigate_app_screen.py, ruta: tools/navigate_app_screen.py
+¿Archivo existe?: True
+Ejecutando módulo: navigate_app_screen...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'json', 'load_dotenv', 'navigate_app_screen', 'os', 'process', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'navigate_app_screen' cargada correctamente
+Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'search_in_duckduckgo', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'fetch_instant_answer', 'navigate_app_screen']
+
+
+--- NUEVA LLAMADA A register_tool 2025-04-10T16:13:27.491946 ---
+Nombre: internet_search_tool
+Schema: {
+  "name": "internet_search_tool",
+  "description": "A tool that performs internet search using DuckDuckGo's API.",
+  "postprocess": true,
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The search query."
+      },
+      "category": {
+        "type": "string",
+        "description": "The category for targeted searches."
+      },
+      "region": {
+        "type": "string",
+        "description": "The region for localized search results."
+      }
+    },
+    "required": [
+      "query"
+    ]
+  }
+}
+Longitud de func_code: 1818 caracteres
+Primeras líneas de func_code: ['from typing import Dict, Optional, Union\nimport requests\n\ndef internet_search_tool(query: str, category: Optional[str] = None, region: Optional[str] = "us-en") -> Dict[str, Union[str, int]]:\n    """\n    A tool that performs internet search using DuckDuckGo\'s API.\n    \n    Args:\n        query (str): The search query.\n        category (str, optional): The category for targeted searches. Defaults to None.\n        region (str, optional): The region for localized search results. Defaults to "us-en".\n        \n    Returns:\n        Dict[str, Union[str, int]]: The search results.\n        \n    Raises:\n        ValueError: If query is not provided.\n        Exception: If an error occurred during the API request.\n    """\n    if not query:\n        raise ValueError("query is required")\n    \n    url = "https://api.duckduckgo.com/"\n    params = {"q": query, "format": "json", "ia": category, "kl": region}\n    \n    try:\n        response = requests.get(url, params=params)\n        response.raise_for_status()\n        return response.json()\n    except Exception as e:\n        raise Exception(f"Error occurred during the API request: {e}")\n\nschema = {\n    "name": "internet_search_tool",\n    "description": "A tool that performs internet search using DuckDuckGo\'s API.",\n    "postprocess": True,\n    "parameters": {\n        "type": "object",\n        "properties": {\n            "query": {\n                "type": "string",\n                "description": "The search query."\n            },\n            "category": {\n                "type": "string",\n                "description": "The category for targeted searches."\n            },\n            "region": {\n                "type": "string",\n                "description": "The region for localized search results."\n            }\n        },\n        "required": ["query"]\n    }\n}']
+Ejecutando código en namespace...
+Keys en namespace: ['__builtins__', 'Dict', 'Optional', 'Union', 'requests', 'internet_search_tool', 'schema']
+Función 'internet_search_tool' encontrada en el namespace
+Herramienta 'internet_search_tool' registrada con éxito en memoria
+
+
+--- NUEVA LLAMADA A persist_tool_to_disk 2025-04-10T16:13:27.494203 ---
+Nombre: internet_search_tool
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Carpeta creada/verificada
+Ruta del archivo a crear: tools/internet_search_tool.py
+¿El código ya tiene schema?: True
+Guardando archivo con schema existente...
+¿Se creó el archivo?: True
+Tamaño del archivo: 1819
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-10T16:13:27.498518 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['get_hotel_info.py', 'test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', 'internet_search_tool.py', '__pycache__', 'search_in_duckduckgo.py', 'recommend_movie_by_genre.py', 'saludar.py', 'fetch_relevant_news.py', 'fetch_movie_info.py', 'get_movie_info.py', 'fetch_instant_answer.py', 'navigate_app_screen.py']
+Procesando archivo: get_hotel_info.py, ruta: tools/get_hotel_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_hotel_info...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_hotel_info', 'json', 'load_dotenv', 'os', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_hotel_info' cargada correctamente
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: internet_search_tool.py, ruta: tools/internet_search_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: internet_search_tool...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'internet_search_tool', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'internet_search_tool' cargada correctamente
+Procesando archivo: search_in_duckduckgo.py, ruta: tools/search_in_duckduckgo.py
+¿Archivo existe?: True
+Ejecutando módulo: search_in_duckduckgo...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'requests', 'schema', 'search_in_duckduckgo']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'search_in_duckduckgo' cargada correctamente
+Procesando archivo: recommend_movie_by_genre.py, ruta: tools/recommend_movie_by_genre.py
+¿Archivo existe?: True
+Ejecutando módulo: recommend_movie_by_genre...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'random', 'recommend_movie_by_genre', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'recommend_movie_by_genre' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: fetch_relevant_news.py, ruta: tools/fetch_relevant_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_relevant_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_relevant_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_relevant_news' cargada correctamente
+Procesando archivo: fetch_movie_info.py, ruta: tools/fetch_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_movie_info...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_movie_info' cargada correctamente
+Procesando archivo: get_movie_info.py, ruta: tools/get_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_movie_info...
+Atributos del módulo: ['Dict', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_movie_info' cargada correctamente
+Procesando archivo: fetch_instant_answer.py, ruta: tools/fetch_instant_answer.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_instant_answer...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_instant_answer', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_instant_answer' cargada correctamente
+Procesando archivo: navigate_app_screen.py, ruta: tools/navigate_app_screen.py
+¿Archivo existe?: True
+Ejecutando módulo: navigate_app_screen...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'json', 'load_dotenv', 'navigate_app_screen', 'os', 'process', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'navigate_app_screen' cargada correctamente
+Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'internet_search_tool', 'search_in_duckduckgo', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'fetch_instant_answer', 'navigate_app_screen']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-10T16:14:01.107657 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['get_hotel_info.py', 'test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', 'internet_search_tool.py', '__pycache__', 'search_in_duckduckgo.py', 'recommend_movie_by_genre.py', 'saludar.py', 'fetch_relevant_news.py', 'fetch_movie_info.py', 'get_movie_info.py', 'fetch_instant_answer.py', 'navigate_app_screen.py']
+Procesando archivo: get_hotel_info.py, ruta: tools/get_hotel_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_hotel_info...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_hotel_info', 'json', 'load_dotenv', 'os', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_hotel_info' cargada correctamente
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: internet_search_tool.py, ruta: tools/internet_search_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: internet_search_tool...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'internet_search_tool', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'internet_search_tool' cargada correctamente
+Procesando archivo: search_in_duckduckgo.py, ruta: tools/search_in_duckduckgo.py
+¿Archivo existe?: True
+Ejecutando módulo: search_in_duckduckgo...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'requests', 'schema', 'search_in_duckduckgo']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'search_in_duckduckgo' cargada correctamente
+Procesando archivo: recommend_movie_by_genre.py, ruta: tools/recommend_movie_by_genre.py
+¿Archivo existe?: True
+Ejecutando módulo: recommend_movie_by_genre...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'random', 'recommend_movie_by_genre', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'recommend_movie_by_genre' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: fetch_relevant_news.py, ruta: tools/fetch_relevant_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_relevant_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_relevant_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_relevant_news' cargada correctamente
+Procesando archivo: fetch_movie_info.py, ruta: tools/fetch_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_movie_info...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_movie_info' cargada correctamente
+Procesando archivo: get_movie_info.py, ruta: tools/get_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_movie_info...
+Atributos del módulo: ['Dict', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_movie_info' cargada correctamente
+Procesando archivo: fetch_instant_answer.py, ruta: tools/fetch_instant_answer.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_instant_answer...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_instant_answer', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_instant_answer' cargada correctamente
+Procesando archivo: navigate_app_screen.py, ruta: tools/navigate_app_screen.py
+¿Archivo existe?: True
+Ejecutando módulo: navigate_app_screen...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'json', 'load_dotenv', 'navigate_app_screen', 'os', 'process', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'navigate_app_screen' cargada correctamente
+Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'internet_search_tool', 'search_in_duckduckgo', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'fetch_instant_answer', 'navigate_app_screen']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-10T16:14:07.983532 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['get_hotel_info.py', 'test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', 'internet_search_tool.py', '__pycache__', 'search_in_duckduckgo.py', 'recommend_movie_by_genre.py', 'saludar.py', 'fetch_relevant_news.py', 'fetch_movie_info.py', 'get_movie_info.py', 'fetch_instant_answer.py', 'navigate_app_screen.py']
+Procesando archivo: get_hotel_info.py, ruta: tools/get_hotel_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_hotel_info...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_hotel_info', 'json', 'load_dotenv', 'os', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_hotel_info' cargada correctamente
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: internet_search_tool.py, ruta: tools/internet_search_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: internet_search_tool...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'internet_search_tool', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'internet_search_tool' cargada correctamente
+Procesando archivo: search_in_duckduckgo.py, ruta: tools/search_in_duckduckgo.py
+¿Archivo existe?: True
+Ejecutando módulo: search_in_duckduckgo...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'requests', 'schema', 'search_in_duckduckgo']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'search_in_duckduckgo' cargada correctamente
+Procesando archivo: recommend_movie_by_genre.py, ruta: tools/recommend_movie_by_genre.py
+¿Archivo existe?: True
+Ejecutando módulo: recommend_movie_by_genre...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'random', 'recommend_movie_by_genre', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'recommend_movie_by_genre' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: fetch_relevant_news.py, ruta: tools/fetch_relevant_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_relevant_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_relevant_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_relevant_news' cargada correctamente
+Procesando archivo: fetch_movie_info.py, ruta: tools/fetch_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_movie_info...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_movie_info' cargada correctamente
+Procesando archivo: get_movie_info.py, ruta: tools/get_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_movie_info...
+Atributos del módulo: ['Dict', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_movie_info' cargada correctamente
+Procesando archivo: fetch_instant_answer.py, ruta: tools/fetch_instant_answer.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_instant_answer...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_instant_answer', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_instant_answer' cargada correctamente
+Procesando archivo: navigate_app_screen.py, ruta: tools/navigate_app_screen.py
+¿Archivo existe?: True
+Ejecutando módulo: navigate_app_screen...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'json', 'load_dotenv', 'navigate_app_screen', 'os', 'process', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'navigate_app_screen' cargada correctamente
+Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'internet_search_tool', 'search_in_duckduckgo', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'fetch_instant_answer', 'navigate_app_screen']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-10T16:21:29.795458 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['get_hotel_info.py', 'test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', 'internet_search_tool.py', '__pycache__', 'search_in_duckduckgo.py', 'recommend_movie_by_genre.py', 'saludar.py', 'fetch_relevant_news.py', 'fetch_movie_info.py', 'get_movie_info.py', 'fetch_instant_answer.py', 'navigate_app_screen.py']
+Procesando archivo: get_hotel_info.py, ruta: tools/get_hotel_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_hotel_info...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_hotel_info', 'json', 'load_dotenv', 'os', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_hotel_info' cargada correctamente
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: internet_search_tool.py, ruta: tools/internet_search_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: internet_search_tool...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'internet_search_tool', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'internet_search_tool' cargada correctamente
+Procesando archivo: search_in_duckduckgo.py, ruta: tools/search_in_duckduckgo.py
+¿Archivo existe?: True
+Ejecutando módulo: search_in_duckduckgo...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'requests', 'schema', 'search_in_duckduckgo']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'search_in_duckduckgo' cargada correctamente
+Procesando archivo: recommend_movie_by_genre.py, ruta: tools/recommend_movie_by_genre.py
+¿Archivo existe?: True
+Ejecutando módulo: recommend_movie_by_genre...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'random', 'recommend_movie_by_genre', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'recommend_movie_by_genre' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: fetch_relevant_news.py, ruta: tools/fetch_relevant_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_relevant_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_relevant_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_relevant_news' cargada correctamente
+Procesando archivo: fetch_movie_info.py, ruta: tools/fetch_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_movie_info...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_movie_info' cargada correctamente
+Procesando archivo: get_movie_info.py, ruta: tools/get_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_movie_info...
+Atributos del módulo: ['Dict', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_movie_info' cargada correctamente
+Procesando archivo: fetch_instant_answer.py, ruta: tools/fetch_instant_answer.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_instant_answer...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_instant_answer', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_instant_answer' cargada correctamente
+Procesando archivo: navigate_app_screen.py, ruta: tools/navigate_app_screen.py
+¿Archivo existe?: True
+Ejecutando módulo: navigate_app_screen...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'json', 'load_dotenv', 'navigate_app_screen', 'os', 'process', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'navigate_app_screen' cargada correctamente
+Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'internet_search_tool', 'search_in_duckduckgo', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'fetch_instant_answer', 'navigate_app_screen']
+
+
+--- FUNCIÓN load_all_tools LLAMADA 2025-04-11T01:32:19.063505 ---
+Ruta de trabajo: /Users/edu/visual-studio-code-workspace/openai-modular-mcp
+Existe TOOLS_FOLDER 'tools': True
+Archivos en 'tools': ['get_hotel_info.py', 'test_diagnóstico.py', 'buscar_en_internet.py', 'get_current_weather.py', 'get_latest_news.py', 'internet_search_tool.py', '__pycache__', 'search_in_duckduckgo.py', 'recommend_movie_by_genre.py', 'saludar.py', 'fetch_relevant_news.py', 'fetch_movie_info.py', 'get_movie_info.py', 'fetch_instant_answer.py', 'navigate_app_screen.py']
+Procesando archivo: get_hotel_info.py, ruta: tools/get_hotel_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_hotel_info...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_hotel_info', 'json', 'load_dotenv', 'os', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_hotel_info' cargada correctamente
+Procesando archivo: test_diagnóstico.py, ruta: tools/test_diagnóstico.py
+¿Archivo existe?: True
+Ejecutando módulo: test_diagnóstico...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'schema', 'test_diagnostico']
+¿Tiene schema?: True
+¿Tiene función llamable?: False
+ERROR: Falta 'schema' o función no encontrada
+ERROR al cargar test_diagnóstico.py: Falta 'schema' o función no encontrada
+TRACEBACK: Traceback (most recent call last):
+  File "/Users/edu/visual-studio-code-workspace/openai-modular-mcp/tool_manager.py", line 85, in load_all_tools
+    raise Exception(error_msg)
+Exception: Falta 'schema' o función no encontrada
+
+Procesando archivo: buscar_en_internet.py, ruta: tools/buscar_en_internet.py
+¿Archivo existe?: True
+Ejecutando módulo: buscar_en_internet...
+Atributos del módulo: ['DDGS', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'buscar_en_internet', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'buscar_en_internet' cargada correctamente
+Procesando archivo: get_current_weather.py, ruta: tools/get_current_weather.py
+¿Archivo existe?: True
+Ejecutando módulo: get_current_weather...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_current_weather', 'json', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_current_weather' cargada correctamente
+Procesando archivo: get_latest_news.py, ruta: tools/get_latest_news.py
+¿Archivo existe?: True
+Ejecutando módulo: get_latest_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_latest_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_latest_news' cargada correctamente
+Procesando archivo: internet_search_tool.py, ruta: tools/internet_search_tool.py
+¿Archivo existe?: True
+Ejecutando módulo: internet_search_tool...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'internet_search_tool', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'internet_search_tool' cargada correctamente
+Procesando archivo: search_in_duckduckgo.py, ruta: tools/search_in_duckduckgo.py
+¿Archivo existe?: True
+Ejecutando módulo: search_in_duckduckgo...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'requests', 'schema', 'search_in_duckduckgo']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'search_in_duckduckgo' cargada correctamente
+Procesando archivo: recommend_movie_by_genre.py, ruta: tools/recommend_movie_by_genre.py
+¿Archivo existe?: True
+Ejecutando módulo: recommend_movie_by_genre...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'load_dotenv', 'os', 'random', 'recommend_movie_by_genre', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'recommend_movie_by_genre' cargada correctamente
+Procesando archivo: saludar.py, ruta: tools/saludar.py
+¿Archivo existe?: True
+Ejecutando módulo: saludar...
+Atributos del módulo: ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'saludar', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'saludar' cargada correctamente
+Procesando archivo: fetch_relevant_news.py, ruta: tools/fetch_relevant_news.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_relevant_news...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_relevant_news', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_relevant_news' cargada correctamente
+Procesando archivo: fetch_movie_info.py, ruta: tools/fetch_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_movie_info...
+Atributos del módulo: ['Dict', 'List', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_movie_info' cargada correctamente
+Procesando archivo: get_movie_info.py, ruta: tools/get_movie_info.py
+¿Archivo existe?: True
+Ejecutando módulo: get_movie_info...
+Atributos del módulo: ['Dict', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'get_movie_info', 'load_dotenv', 'os', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'get_movie_info' cargada correctamente
+Procesando archivo: fetch_instant_answer.py, ruta: tools/fetch_instant_answer.py
+¿Archivo existe?: True
+Ejecutando módulo: fetch_instant_answer...
+Atributos del módulo: ['Dict', 'Optional', 'Union', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fetch_instant_answer', 'requests', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'fetch_instant_answer' cargada correctamente
+Procesando archivo: navigate_app_screen.py, ruta: tools/navigate_app_screen.py
+¿Archivo existe?: True
+Ejecutando módulo: navigate_app_screen...
+Atributos del módulo: ['Dict', 'MongoClient', 'Optional', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'json', 'load_dotenv', 'navigate_app_screen', 'os', 'process', 'schema']
+¿Tiene schema?: True
+¿Tiene función llamable?: True
+Herramienta 'navigate_app_screen' cargada correctamente
+Herramientas cargadas: ['get_hotel_info', 'buscar_en_internet', 'get_current_weather', 'get_latest_news', 'internet_search_tool', 'search_in_duckduckgo', 'recommend_movie_by_genre', 'saludar', 'fetch_relevant_news', 'fetch_movie_info', 'get_movie_info', 'fetch_instant_answer', 'navigate_app_screen']

@@ -41,7 +41,7 @@ def get_latest_news(country: str) -> Dict[str, Union[str, int]]:
 schema = {
     "name": "get_latest_news",
     "description": "Obtiene las últimas noticias relevantes de un país especificado",
-    "postprocess": False,
+    "postprocess": True,
     "parameters": {
         "type": "object",
         "properties": {

@@ -966,11 +966,15 @@ elif nav == "⚙️ Admin":
                             st.write("### 🔐 Configurar Variables de Entorno")
                             st.write("Estas variables son necesarias para que la herramienta funcione correctamente:")
                             
+                            # Comprobar variables existentes en .env
+                            existing_env_vars = get_env_variables()
+                            
                             # Tabla resumen de variables detectadas
                             env_data = [{
                                 "Variable": var["name"], 
                                 "Tipo": var["type"], 
-                                "Descripción": var["description"]
+                                "Descripción": var["description"],
+                                "Estado": "✅ Ya existe" if var["name"] in existing_env_vars else "🆕 Nueva"
                             } for var in env_vars]
                             st.dataframe(env_data)
                             
@@ -979,18 +983,34 @@ elif nav == "⚙️ Admin":
                             
                             for i, var in enumerate(env_vars):
                                 # Usar columnas en lugar de expanders
-                                st.write(f"**🔑 {var['name']} ({var['type']})**")
-                                st.write(f"_Descripción:_ {var['description']}")
-                                st.write(f"_Utilización:_ La herramienta obtiene esta variable mediante `os.getenv(\"{var['name']}\")`")
+                                col1, col2 = st.columns([3, 1])
+                                with col1:
+                                    st.write(f"**🔑 {var['name']} ({var['type']})**")
+                                    st.write(f"_Descripción:_ {var['description']}")
+                                    st.write(f"_Utilización:_ La herramienta obtiene esta variable mediante `os.getenv(\"{var['name']}\")`")
                                 
-                                # Campo para valor
+                                with col2:
+                                    if var["name"] in existing_env_vars:
+                                        st.info(f"✅ Variable ya configurada")
+                                
+                                # Si la variable ya existe, cargar su valor actual
+                                existing_value = ""
+                                if var["name"] in existing_env_vars:
+                                    existing_value = existing_env_vars[var["name"]]
+                                    # Pre-asignar el valor existente
+                                    var["value"] = existing_value
+                                    st.session_state.detected_env_vars = env_vars
+                                
+                                # Campo para valor, ya sea nuevo o existente
                                 new_value = st.text_input(
                                     f"Valor para {var['name']}",
+                                    value=existing_value,  # Mostrar valor existente si lo hay
                                     type="password",
                                     key=f"env_var_{i}",
-                                    help=f"Deja vacío para configurarlo más tarde en la sección Variables de Entorno"
+                                    help=f"{'Valor actual (oculto)' if existing_value else 'Deja vacío para configurarlo más tarde en la sección Variables de Entorno'}"
                                 )
-                                # Guardar valor en la estructura
+                                
+                                # Guardar valor en la estructura si cambia
                                 if new_value:
                                     var["value"] = new_value
                                     st.session_state.detected_env_vars = env_vars
@@ -1000,7 +1020,7 @@ elif nav == "⚙️ Admin":
                                     st.divider()
                             
                             # Mensaje adicional de ayuda
-                            st.info("📝 Estas variables se guardarán en el archivo .env cuando uses la herramienta. También puedes configurarlas más tarde en la pestaña 'Variables de Entorno'.")
+                            st.info("📝 Estas variables se guardarán en el archivo .env cuando uses la herramienta. Variables existentes se mantendrán a menos que ingreses un nuevo valor.")
                         
                         # Aquí mostramos el botón "Usar Esta Herramienta"
                         st.success("✅ Código generado correctamente. Revísalo y si te parece correcto, úsalo.")
@@ -1038,12 +1058,23 @@ elif nav == "⚙️ Admin":
                             if "detected_env_vars" in st.session_state and st.session_state.detected_env_vars:
                                 # Guardar todas las variables detectadas en .env
                                 vars_added = []
+                                vars_unchanged = []
+                                
+                                # Obtener variables existentes para comparación
+                                existing_env_vars = get_env_variables()
                                 
                                 # Mostrar progreso
                                 with st.spinner("Guardando variables de entorno..."):
                                     for var in st.session_state.detected_env_vars:
+                                        # Comprobar si la variable ya existe y si se ha modificado
+                                        if var["name"] in existing_env_vars:
+                                            # Si el valor no ha cambiado (o está vacío), mantener el valor existente
+                                            if not var.get("value") or var.get("value") == existing_env_vars[var["name"]]:
+                                                vars_unchanged.append(var["name"])
+                                                continue
+                                        
                                         # Guardar la variable (con o sin valor)
-                                        result = set_env_variable(var["name"], var["value"])
+                                        result = set_env_variable(var["name"], var.get("value", ""))
                                         if result:
                                             vars_added.append(var["name"])
                                     
@@ -1053,12 +1084,16 @@ elif nav == "⚙️ Admin":
                                 
                                 # Mostrar resultados
                                 if vars_added:
-                                    st.success(f"✅ Variables guardadas en .env: {', '.join(vars_added)}")
+                                    st.success(f"✅ Variables guardadas/actualizadas en .env: {', '.join(vars_added)}")
                                     # Si hay variables sin valor, mostrar un mensaje adicional
-                                    empty_vars = [var["name"] for var in st.session_state.detected_env_vars if not var["value"]]
+                                    empty_vars = [var["name"] for var in st.session_state.detected_env_vars if not var.get("value")]
                                     if empty_vars:
                                         st.info(f"ℹ️ Las siguientes variables se guardaron sin valor y deberás configurarlas en la pestaña 'Variables de Entorno': {', '.join(empty_vars)}")
-                                else:
+                                
+                                if vars_unchanged:
+                                    st.info(f"ℹ️ Variables existentes que se mantuvieron sin cambios: {', '.join(vars_unchanged)}")
+                                
+                                if not vars_added and not vars_unchanged:
                                     st.error("⚠️ No se pudieron guardar las variables de entorno")
                             
                             # Registrar y guardar la herramienta
