@@ -28,7 +28,7 @@ def buscar_en_internet(query: str, max_results: int = 5) -> str:
 schema = {
   "name": "buscar_en_internet",
   "description": "Realiza una búsqueda en internet (DuckDuckGo) y devuelve resultados detallados.",
-  "postprocess": False,
+  "postprocess": True,
   "parameters": {
     "type": "object",
     "properties": {

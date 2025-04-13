@@ -1,10 +1,21 @@
 import openai
 import json
-from logger import log_tool_call
-from tool_manager import get_tools
+from app.core.logger import log_tool_call
+from app.core.tool_manager import get_tools
 
-def chat_with_tools(prompt: str, user_id="anon", api_key="", model="gpt-4", temperature=0.7, 
-                 max_tokens=None, top_p=1.0, presence_penalty=0.0, frequency_penalty=0.0, seed=None):
+def chat_with_tools(
+    prompt: str, 
+    user_id="anon", 
+    api_key="", 
+    model="gpt-4o-mini", 
+    temperature=0.7, 
+    max_tokens=None, 
+    top_p=1.0, 
+    presence_penalty=0.0, 
+    frequency_penalty=0.0, 
+    seed=None
+):
+    
     openai.api_key = api_key
     all_tools = get_tools()
     schemas = [info["schema"] for info in all_tools.values()]

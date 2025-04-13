@@ -39,7 +39,7 @@ Usuario → Interfaz Streamlit → Executor (chat_with_tools) → OpenAI API
 
 ### Componentes Principales
 
-#### 1. `streamlit_app.py`
+#### 1. `app/main.py`
 
 Interfaz de usuario construida con Streamlit que proporciona:
 
@@ -62,7 +62,7 @@ Interfaz de usuario construida con Streamlit que proporciona:
   - Visualización y exportación de logs
   - Administración de variables de entorno con UI dedicada
 
-#### 2. `executor.py`
+#### 2. `app/core/executor.py`
 
 Orquestador central que:
 
@@ -74,18 +74,18 @@ Orquestador central que:
 - Reincorpora los resultados según configuración
 - Pasa parámetros avanzados (seed, penalties, etc.) a la API
 
-#### 3. `tool_manager.py`
+#### 3. `app/core/tool_manager.py`
 
 Gestor de herramientas que:
 
-- Carga dinámicamente todas las herramientas desde el directorio `/tools/`
+- Carga dinámicamente todas las herramientas desde el directorio `app/tools/`
 - Mantiene un registro de herramientas activas/inactivas
 - Gestiona el estado de post-procesado de cada herramienta
 - Registra errores de carga para diagnóstico
 - Proporciona acceso unificado a herramientas estáticas y dinámicas
 - Genera logs detallados de depuración durante la carga
 
-#### 4. `dynamic_tool_registry.py`
+#### 4. `app/core/dynamic_tool_registry.py`
 
 Registro de herramientas dinámicas que:
 
@@ -97,7 +97,7 @@ Registro de herramientas dinámicas que:
 - Valida el código generado antes de registrarlo
 - Maneja errores de importación y compilación
 
-#### 5. `logger.py`
+#### 5. `app/core/logger.py`
 
 Sistema de registro que:
 
@@ -107,7 +107,7 @@ Sistema de registro que:
 - Facilita el análisis y depuración
 - Mantiene un historial limitado para optimizar memoria
 
-#### 6. `env_manager.py`
+#### 6. `app/utils/env_manager.py`
 
 Gestor de variables de entorno que:
 
@@ -122,13 +122,13 @@ Gestor de variables de entorno que:
 ### 1. Flujo de Conversación
 
 1. El usuario envía un mensaje a través de la interfaz de chat
-2. `streamlit_app.py` llama a `chat_with_tools()` en `executor.py`
+2. `app/views/chat_view.py` llama a `chat_with_tools()` en `app/core/executor.py`
 3. `executor.py` prepara el contexto y envía la solicitud a OpenAI
 4. OpenAI determina si se necesita invocar una herramienta
 5. Si es necesario:
    - Se verifica si la herramienta está activa
-   - `executor.py` obtiene la herramienta de `tool_manager.py`
-   - Se ejecuta la herramienta y se registra en `logger.py`
+   - `executor.py` obtiene la herramienta de `app/core/tool_manager.py`
+   - Se ejecuta la herramienta y se registra en `app/core/logger.py`
    - Si tiene post-procesado activado:
      - El resultado se envía a GPT para contextualización
    - Si no tiene post-procesado:
@@ -139,10 +139,10 @@ Gestor de variables de entorno que:
 
 #### Carga Inicial:
 
-1. Al iniciar la aplicación, `tool_manager.py` escanea el directorio `/tools/`
+1. Al iniciar la aplicación, `app/core/tool_manager.py` escanea el directorio `app/tools/`
 2. Cada archivo Python se importa y se registra su función principal y schema
 3. Se cargan las herramientas dinámicas previamente guardadas
-4. Se aplica el estado de activación según `.tool_status.json`
+4. Se aplica el estado de activación según `app/config/.tool_status.json`
 5. Se generan logs detallados de errores o problemas durante la carga
 
 #### Creación con IA:
@@ -172,30 +172,37 @@ Gestor de variables de entorno que:
 
 ```
 .
-├── tools/                       # Herramientas disponibles
-│   ├── buscar_en_internet.py    # Búsqueda web (DuckDuckGo)
-│   ├── get_current_weather.py   # Información meteorológica
-│   ├── get_hotel_info.py        # Información de hoteles (MongoDB)
-│   ├── fetch_movie_info.py      # Datos de películas (OMDB/TMDB)
-│   ├── get_latest_news.py       # Noticias actuales
-│   ├── saludar.py               # Ejemplo simple
-│   └── ...                      # Otras herramientas
-├── debug_logs/                  # Logs de diagnóstico
-│   └── file_creation_debug.log  # Registro detallado de errores 
-├── streamlit_app.py             # Aplicación principal
-├── executor.py                  # Orquestador de OpenAI
-├── tool_manager.py              # Gestión de herramientas
-├── dynamic_tool_registry.py     # Registro dinámico
-├── logger.py                    # Sistema de logs
-├── env_manager.py               # Gestión de .env
-├── tool_calls.log               # Registro de invocaciones
+├── app/                         # Estructura modular de la aplicación
+│   ├── components/              # Componentes reutilizables
+│   ├── controllers/             # Lógica de controladores
+│   ├── views/                   # Vistas de la interfaz
+│   │   ├── admin_view.py        # Panel de administración
+│   │   ├── chat_view.py         # Interfaz de chat
+│   │   └── tools_view.py        # Gestión de herramientas 
+│   ├── models/                  # Modelos de datos
+│   ├── utils/                   # Utilidades
+│   │   └── ai_generation.py     # Generación de herramientas con IA
+│   ├── core/                    # Funcionalidades centrales
+│   │   ├── dynamic_tool_registry.py  # Registro de herramientas dinámicas
+│   │   ├── executor.py          # Orquestador de OpenAI
+│   │   ├── logger.py            # Sistema de logs
+│   │   └── tool_manager.py      # Gestión de herramientas
+│   ├── tools/                   # Herramientas disponibles
+│   ├── config/                  # Archivos de configuración
+│   │   └── .tool_status.json    # Estado de activación de herramientas
+│   └── debug_logs/              # Logs específicos de la app
+│       ├── file_creation_debug.log  # Registro detallado de errores
+│       └── tool_calls.log       # Registro de invocaciones a herramientas
+├── docs/                        # Documentación
+│   ├── assets/                  # Recursos visuales (imágenes, iconos)
+│   └── images/                  # Imágenes para documentación
 ├── .env                         # Variables de entorno (privado)
 ├── .env.example                 # Plantilla de variables
-├── .tool_status.json            # Estado de activación
 ├── requirements.txt             # Dependencias
 ├── pyproject.toml               # Configuración del proyecto
-├── roadmap.md                   # Plan de desarrollo
-└── README.md                    # Documentación general
+├── run.py                       # Script de ejecución simplificado
+├── main_context.md              # Arquitectura y contexto técnico
+└── roadmap.md                   # Plan de desarrollo
 ```
 
 ## 🔌 Integración de Herramientas

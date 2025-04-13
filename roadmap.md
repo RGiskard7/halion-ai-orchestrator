@@ -12,7 +12,6 @@ Este documento traza el camino evolutivo del proyecto, ordenado por prioridad y 
 - [x] Logs detallados de llamadas a tools
 - [x] Edición de variables de entorno `.env` desde la UI
 - [x] Activación selectiva de tools desde `.tool_status.json`
-- [x] Soporte de imágenes con GPT-4-Vision (subida desde UI)
 
 ---
 
@@ -36,6 +35,11 @@ Este documento traza el camino evolutivo del proyecto, ordenado por prioridad y 
 ### 5. Persistencia en base de datos
 - Reemplazar logs y tool_status con SQLite o PostgreSQL
 - Guardar usuarios, sesiones, tools, estadísticas
+
+### 6. Soporte de imágenes con GPT-4-Vision
+- Implementar subida de imágenes desde la UI
+- Procesamiento visual usando GPT-4-Vision
+- Herramientas específicas para análisis de imágenes
 
 ---
 

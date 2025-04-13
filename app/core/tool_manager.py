@@ -1,11 +1,29 @@
 import importlib.util
 import os
 import json
-from dynamic_tool_registry import get_all_dynamic_tools
+from app.core.dynamic_tool_registry import get_all_dynamic_tools, TOOLS_FOLDER, DEBUG_LOGS_FOLDER
 from datetime import datetime
 
-TOOLS_FOLDER = "tools"
-TOOL_STATUS_FILE = ".tool_status.json"
+# Definir rutas absolutas basadas en la ubicación actual del script
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+APP_DIR = os.path.dirname(CURRENT_DIR)       # Directorio app/
+ROOT_DIR = os.path.dirname(APP_DIR)          # Directorio raíz del proyecto
+CONFIG_DIR = os.path.join(APP_DIR, "config") # Directorio app/config/
+
+# Asegurar que el directorio config existe
+if not os.path.exists(CONFIG_DIR):
+    os.makedirs(CONFIG_DIR, exist_ok=True)
+
+# Ya no definimos TOOLS_FOLDER aquí, lo importamos directamente de dynamic_tool_registry
+# para asegurar consistencia en las rutas
+# TOOLS_FOLDER = os.path.join(APP_DIR, "tools")
+# DEBUG_LOGS_FOLDER = os.path.join(APP_DIR, "debug_logs")
+TOOL_STATUS_FILE = os.path.join(CONFIG_DIR, ".tool_status.json")
+
+# Asegurarse de que existan los directorios necesarios
+os.makedirs(TOOLS_FOLDER, exist_ok=True)
+os.makedirs(DEBUG_LOGS_FOLDER, exist_ok=True)
+
 _loaded_tools_cache = {}
 _tool_errors = []
 _tool_status = {}
@@ -17,7 +35,17 @@ def _load_tool_status():
             with open(TOOL_STATUS_FILE, 'r') as f:
                 _tool_status = json.load(f)
         else:
-            _tool_status = {}
+            # Si el archivo no existe en la nueva ubicación, comprobar la antigua
+            old_path = os.path.join(ROOT_DIR, ".tool_status.json")
+            if os.path.exists(old_path):
+                with open(old_path, 'r') as f:
+                    _tool_status = json.load(f)
+                # Migrar el archivo a la nueva ubicación
+                _save_tool_status()
+                # Eliminar el archivo antiguo para evitar confusiones
+                os.remove(old_path)
+            else:
+                _tool_status = {}
     except Exception:
         _tool_status = {}
 
@@ -40,8 +68,12 @@ def load_all_tools():
     _tool_errors = []
     _load_tool_status()  # Cargamos el estado de las herramientas
 
+    # Asegurar que exista el directorio de logs
+    os.makedirs(DEBUG_LOGS_FOLDER, exist_ok=True)
+    debug_log_path = os.path.join(DEBUG_LOGS_FOLDER, "file_creation_debug.log")
+
     # Registrar en el log de depuración
-    with open("debug_logs/file_creation_debug.log", "a") as debug_file:
+    with open(debug_log_path, "a") as debug_file:
         debug_file.write(f"\n\n--- FUNCIÓN load_all_tools LLAMADA {datetime.now().isoformat()} ---\n")
         debug_file.write(f"Ruta de trabajo: {os.getcwd()}\n")
         debug_file.write(f"Existe TOOLS_FOLDER '{TOOLS_FOLDER}': {os.path.exists(TOOLS_FOLDER)}\n")
@@ -49,7 +81,7 @@ def load_all_tools():
         try:
             if not os.path.exists(TOOLS_FOLDER):
                 debug_file.write(f"Creando carpeta '{TOOLS_FOLDER}'...\n")
-                os.makedirs(TOOLS_FOLDER)
+                os.makedirs(TOOLS_FOLDER, exist_ok=True)
                 
             # Listar archivos en la carpeta
             files = os.listdir(TOOLS_FOLDER)

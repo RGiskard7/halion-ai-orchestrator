@@ -1,0 +1,13 @@
+
+    ===================================
+    TEST DE ESCRITURA: 2025-04-13T16:52:06.229939
+    ===================================
+    
+    Este archivo se creó para verificar que se puede escribir en el directorio
+    app/debug_logs. Si puedes ver este mensaje, significa que el directorio
+    está configurado correctamente y tiene los permisos adecuados.
+    
+    Información adicional:
+    - Ruta actual: /Users/edu/visual-studio-code-workspace/openai-modular-mcp/app/debug_logs
+    - Contenido del directorio: ['file_creation_debug.log', 'tool_calls.log', 'test_write.py', 'streamlit_diagnostic.log']
+    

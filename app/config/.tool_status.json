@@ -1,0 +1,12 @@
+{
+  "search_in_duckduckgo": false,
+  "buscar_en_internet": true,
+  "fetch_instant_answer": false,
+  "internet_search_tool": false,
+  "get_movie_info": false,
+  "Dict": true,
+  "Optional": true,
+  "get_book_info": true,
+  "obtener_info_libro": true,
+  "obtener_informacion_libro": false
+}
