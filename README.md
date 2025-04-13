@@ -10,25 +10,51 @@
   <a href="https://openai.com/blog/openai-api/"><img src="https://img.shields.io/badge/OpenAI-API-green.svg" alt="OpenAI API"></a>
 </p>
 
-**HALion** es un framework extensible para crear, gestionar y desplegar asistentes IA con capacidades personalizadas a través de herramientas modulares, combinando potencia técnica con una experiencia de desarrollo fluida e intuitiva.
+**HALion** es una plataforma extensible que convierte modelos de lenguaje como GPT-4 en asistentes inteligentes con capacidades personalizadas mediante herramientas modulares (function calling).
+
+> "No es un chatbot. Es una plataforma de acciones orquestadas por IA."
 
 ## 🌟 Características Principales
 
-- **🤖 Chat con Modelos Avanzados**: Interfaz conversacional con soporte para GPT-4, GPT-3.5 y versiones Turbo.
-- **🔧 Herramientas Dinámicas**: Añade nuevas capacidades fácilmente, gestionadas como plugins modulares.
-- **🧩 Arquitectura Modular**: Cada herramienta es un bloque independiente que amplía el comportamiento del agente.
-- **✨ Generación Automática de Tools**: Describe lo que quieres y la IA genera la herramienta por ti.
-- **📊 Panel de Administración**: Todo el sistema bajo control desde una interfaz gráfica clara y personalizable.
-- **🔄 Integración con APIs Externas**: Clima, búsqueda web, bases de datos y más.
-- **⚙️ Configuración Avanzada de Modelos**: Ajustes detallados por modelo: temperatura, tokens, post-procesamiento.
-- **📚 Documentación Integrada**: Guías, ejemplos y especificaciones directamente dentro del proyecto.
+- 🧩 **Arquitectura modular**: añade herramientas en Python como si fueran plugins.
+- 🔧 **Panel de administración completo**: visualiza, activa o desactiva herramientas.
+- ⚙️ **Configuración Avanzada de Modelos**: Ajustes detallados por modelo: temperatura, tokens, post-procesamiento.
+- 🤖 **Generación automática de tools**: crea nuevas herramientas describiendo lo que quieres que hagan.
+- 🔍 **Integración con APIs**: conecta fácilmente servicios externos como clima, búsqueda web, emails, etc.
+- 🔐 **Gestión de entorno**: edita las variables del `.env` directamente desde la interfaz.
+- 📊 **Logs detallados**: traza todas las llamadas a herramientas, con exportación JSON/CSV.
+- 💬 **Chat con herramientas**: usa GPT-4 o GPT-3.5 con tus tools personalizadas.
+- 🔄 **Activación dinámica**: elige qué herramientas están disponibles para el modelo.
+- ⚙️ **Control de post-procesado**: decide si la IA debe continuar el flujo o devolver el resultado directo.
+- 📚 **Documentación Integrada**: Guías, ejemplos y especificaciones directamente dentro del proyecto.
+
+## ✨ ¿Qué es HALion?
+
+HALion es un "orquestador" de inteligencia modular. No sólo responde, actúa. Permite que un modelo LLM invoque funciones definidas por el usuario de forma modular, dinámica y extensible. Puedes pensar en HALion como el backend de un sistema operativo para IA conversacional.
+
+## 🧠 Cómo funciona
+
+1. El usuario escribe un prompt en el chat.
+2. GPT detecta que necesita usar una herramienta (`function_call`).
+3. HALion ejecuta esa tool, pasando los parámetros automáticamente.
+4. La respuesta de la tool se devuelve al modelo (para que continúe el razonamiento) o directamente al usuario.
+
+Todo eso lo puedes ver en tiempo real, modificar, y extender.
+
+## 🛠️🧠 Generar herramientas con IA
+
+Simplemente describe la herramienta que necesitas. Ejemplo:
+
+> "Necesito una herramienta que calcule el IMC dado el peso en kg y la altura en metros"
+
+HALion generará el código, lo validará, lo guardará en disco y lo activará automáticamente.
 
 ## 🛠️ Instalación
 
 ```bash
 # Clona el proyecto
-$ git clone https://github.com/tu-usuario/halion.git
-$ cd halion
+$ git clone https://github.com/RGiskard7/halion-ai-orchestrator.git
+$ cd halion-ai-orchestrator
 
 # Crea un entorno virtual
 $ python -m venv venv
@@ -40,6 +66,9 @@ $ pip install -r requirements.txt
 # Configura tu API Key en el archivo .env
 $ cp .env.example .env
 # Edita el archivo y añade tu clave de OpenAI
+
+# Añadir tu API key de OpenAI en .env
+OPENAI_API_KEY=sk-...
 ```
 
 ## 🚀 Uso Rápido
@@ -71,7 +100,7 @@ Abre tu navegador en [http://localhost:8501](http://localhost:8501).
 ## 🧰 Estructura del Proyecto
 
 ```
-openai-modular-mcp/
+halion-ai-orchestrator/
 ├── app/                      # Código principal de la aplicación
 │   ├── components/           # Componentes de la interfaz Streamlit
 │   ├── controllers/          # Lógica de controladores
