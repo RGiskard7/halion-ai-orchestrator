@@ -1,4 +1,4 @@
-# 🧩 OpenAI Modular MCP - Documentación Técnica
+# 🧩 HALion: Modular Intelligence Orchestrator - Documentación Técnica
 
 ## 📄 Visión General
 

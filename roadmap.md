@@ -1,4 +1,4 @@
-# 🗺️ Hoja de Ruta - OpenAI Modular MCP
+# 🗺️ Hoja de Ruta - HALion: Modular Intelligence Orchestrator
 
 Este documento traza el camino evolutivo del proyecto, ordenado por prioridad y categoría. Sirve como guía para futuras mejoras, funcionalidades deseadas y mantenibilidad a largo plazo.
 
