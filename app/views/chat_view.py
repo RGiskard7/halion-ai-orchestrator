@@ -1,5 +1,5 @@
 import streamlit as st
-from app.core.executor import chat_with_tools
+from app.services.chat_service import chat_with_tools
 
 def render():
     """

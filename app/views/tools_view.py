@@ -3,7 +3,7 @@ import os
 import json
 import time
 from app.components.tool_card import render_tool_card
-from app.controllers.tools_controller import (
+from app.controllers.tool_controller import (
     reload_tools, handle_tool_view, handle_tool_edit, 
     handle_tool_delete, handle_tool_toggle, save_tool_edit,
     confirm_tool_delete, create_tool, handle_tool_postprocess_toggle

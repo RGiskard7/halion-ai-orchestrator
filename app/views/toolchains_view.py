@@ -5,7 +5,6 @@ import os
 import json
 from app.models.toolchain_model import Toolchain, ToolchainStep
 from app.core.toolchain_loader import load_toolchains_from_file, TOOLCHAINS_FILE
-from app.controllers.toolchain_executor import execute_toolchain
 from app.core.tool_manager import get_tools
 import time
 

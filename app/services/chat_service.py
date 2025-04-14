@@ -7,7 +7,7 @@ from app.core.tool_manager import get_tools
 # ✅ Importaciones necesarias para toolchains
 from app.models.toolchain_model import Toolchain
 from app.core.toolchain_loader import load_toolchains_from_file
-from app.controllers.toolchain_executor import execute_toolchain
+from app.services.toolchain_service import execute_toolchain
 
 def chat_with_tools(
     prompt: str, 
