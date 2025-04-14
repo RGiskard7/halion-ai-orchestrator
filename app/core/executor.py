@@ -3,6 +3,12 @@ import json
 from app.core.logger import log_tool_call
 from app.core.tool_manager import get_tools
 
+
+# ✅ Importaciones necesarias para toolchains
+from app.models.toolchain_model import Toolchain
+from app.core.toolchain_loader import load_toolchains_from_file
+from app.controllers.toolchain_executor import execute_toolchain
+
 def chat_with_tools(
     prompt: str, 
     user_id="anon", 
@@ -15,7 +21,31 @@ def chat_with_tools(
     frequency_penalty=0.0, 
     seed=None
 ):
+    """
+    Función principal que coordina la interacción con el modelo de OpenAI y 
+    ejecuta herramientas según sea necesario. También permite detectar una
+    toolchain y ejecutarla directamente si se menciona explícitamente en el prompt.
+    """
+
+    # ✅ NUEVO: Interceptar prompt si incluye una toolchain explícita
+    if "toolchain:" in prompt.lower():
+        try:
+            # Extraer nombre de la toolchain
+            name = prompt.split("toolchain:")[1].strip().split()[0]
+            toolchains = load_toolchains_from_file()
+            selected = next((t for t in toolchains if t.name == name), None)
+
+            if selected:
+                # 🚧 Aquí puedes mejorar para extraer parámetros desde el prompt
+                result = execute_toolchain(selected, {
+                    "texto_original": "Texto de ejemplo",
+                    "idioma_destino": "fr"
+                })
+                return result if isinstance(result, str) else json.dumps(result, ensure_ascii=False)
+        except Exception as e:
+            return f"Error al ejecutar la toolchain: {str(e)}"
     
+    # === Flujo habitual ===
     openai.api_key = api_key
     all_tools = get_tools()
     schemas = [info["schema"] for info in all_tools.values()]
@@ -74,13 +104,6 @@ def chat_with_tools(
             # Si sí requiere postproceso, sigue el flujo habitual
             messages.append(reply.to_dict())
             messages.append({"role": "function", "name": func_name, "content": result})
-
-            # Si la herramienta no requiere post-procesamiento, damos instrucciones específicas
-            '''if not all_tools[func_name]["schema"].get("postprocess", True):
-                messages.append({
-                    "role": "system",
-                    "content": "Por favor, devuelve el resultado exacto de la herramienta sin modificarlo ni resumirlo, pero evalúa si se necesitan llamadas adicionales a otras herramientas."
-                })'''
 
             final = openai.chat.completions.create(
                 **common_params,

@@ -145,3 +145,21 @@ def get_loading_errors():
 def get_tool_status():
     """Devuelve el estado de todas las herramientas"""
     return _tool_status
+
+def call_tool_by_name(tool_name: str, arguments: dict):
+    """
+    Ejecuta una herramienta por su nombre, pasando los argumentos proporcionados.
+
+    Args:
+        tool_name (str): Nombre de la herramienta.
+        arguments (dict): Diccionario con los argumentos requeridos por la herramienta.
+
+    Returns:
+        Resultado de la ejecución de la herramienta (puede ser cualquier tipo).
+    """
+    tools = get_tools()
+    if tool_name not in tools:
+        raise ValueError(f"La herramienta '{tool_name}' no está registrada.")
+    
+    func = tools[tool_name]["func"]
+    return func(**arguments)

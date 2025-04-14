@@ -1,7 +1,6 @@
 import openai
 import re
-import os
-
+import json
 def generate_tool_with_ai(description: str, api_key: str, model: str = "gpt-4", temperature: float = 0.7) -> str:
     """
     Genera código para una herramienta usando la API de OpenAI.
@@ -158,3 +157,62 @@ def generate_tool_with_ai(description: str, api_key: str, model: str = "gpt-4", 
         
     except Exception as e:
         raise ValueError(f"Error al generar código: {str(e)}") 
+    
+def generate_toolchain_with_ai(description: str, api_key: str, model="gpt-4", temperature=0.7) -> dict:
+    """
+    Genera una definición de Toolchain (en formato JSON) a partir de una descripción en lenguaje natural.
+
+    Args:
+        description (str): Descripción de lo que debe hacer la Toolchain.
+        api_key (str): Clave de API para OpenAI.
+        model (str): Modelo a usar.
+        temperature (float): Nivel de creatividad.
+
+    Returns:
+        dict: Estructura de toolchain con campos name, description, steps.
+    """
+    import openai
+    openai.api_key = api_key
+
+    prompt = f"""
+        Eres un asistente experto en automatización de flujos de herramientas.
+
+        Dado el siguiente requerimiento, genera una definición JSON de una Toolchain compuesta por pasos secuenciales.
+
+        El formato debe ser este:
+
+        {{
+        "name": "nombre_toolchain",
+        "description": "Una breve descripción",
+        "steps": [
+            {{
+            "tool_name": "nombre_tool",
+            "input_map": {{
+                "param_tool": "nombre_variable_del_contexto"
+            }}
+            }},
+            ...
+        ]
+        }}
+
+        Asegúrate de que los nombres de las herramientas coincidan con los disponibles en el sistema.
+
+        Descripción del flujo deseado:
+        {description}
+        """
+
+    response = openai.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "Eres un generador experto de Toolchains para flujos de herramientas."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=temperature
+    )
+
+    content = response.choices[0].message.content.strip()
+
+    try:
+        return json.loads(content)
+    except Exception as e:
+        raise ValueError(f"No se pudo parsear la Toolchain generada. Resultado:\n{content}\n\nError: {str(e)}")

@@ -1,0 +1,21 @@
+[
+  {
+    "name": "resumen_y_traduccion",
+    "description": "Resume un texto y lo traduce al francés",
+    "steps": [
+      {
+        "tool_name": "resumir_texto",
+        "input_map": {
+          "texto": "texto_original"
+        }
+      },
+      {
+        "tool_name": "traducir_texto",
+        "input_map": {
+          "texto": "resumen",
+          "idioma": "idioma_destino"
+        }
+      }
+    ]
+  }
+]
