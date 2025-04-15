@@ -168,26 +168,33 @@ def render_loading_errors():
 
 def render_ai_generator():
     """Renderiza la sección de generación de herramientas con IA"""
-    # Título y botón de limpiar en la misma línea
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        st.markdown("#### Generador de Herramientas con IA")
-    with col2:
-        if st.button("🧹 Limpiar", key="limpiar_ai_generator"):
-            # Limpiar todos los estados relacionados
-            for key in ["codigo_generado", "tool_name", "tool_schema", "detected_env_vars"]:
-                if key in st.session_state:
-                    del st.session_state[key]
-            st.rerun()
+    # Definir callback para limpiar
+    def clear_ai_form():
+        st.session_state.ai_prompt = ""
+        if "codigo_generado" in st.session_state:
+            del st.session_state.codigo_generado
+        if "tool_name" in st.session_state:
+            del st.session_state.tool_name
+        if "tool_schema" in st.session_state:
+            del st.session_state.tool_schema
+        if "detected_env_vars" in st.session_state:
+            del st.session_state.detected_env_vars
+    
+    st.markdown("#### Generador de Herramientas con IA")
+    
+    # Inicializar ai_prompt si no existe
+    if "ai_prompt" not in st.session_state:
+        st.session_state.ai_prompt = ""
     
     ai_prompt = st.text_area(
         "Describe la herramienta que necesitas",
+        key="ai_prompt",
         help="Describe en lenguaje natural qué quieres que haga la herramienta. Por ejemplo: 'Necesito una herramienta que traduzca texto a código morse y viceversa'",
         placeholder="Ejemplo: Una herramienta que calcule el IMC dado el peso en kg y la altura en metros..."
     )
     
-    # Botón para generar el código
-    if st.button("🔍 Generar Código", disabled=not ai_prompt, key="generar_codigo"):
+    # Definir callback para generar código
+    def generate_code_callback():
         with st.spinner("Generando código con IA..."):
             try:
                 # Verificar API key
@@ -204,7 +211,7 @@ def render_ai_generator():
                 
                 # Generar código con la IA
                 code = generate_tool_with_ai(
-                    ai_prompt, 
+                    st.session_state.ai_prompt, 
                     api_key, 
                     model_config["model"], 
                     model_config["temperature"]
@@ -241,39 +248,38 @@ def render_ai_generator():
                     st.session_state.tool_name = "desconocido"
                     st.session_state.tool_schema = {"description": "No disponible"}
                 
-                # Mostrar el código generado
-                st.code(code, language="python")
-                
-                # Mostrar variables de entorno detectadas si existen
-                render_detected_env_vars(env_vars)
-                
-                # Mensaje adicional de ayuda
-                st.success("✅ Código generado correctamente. Revísalo y si te parece correcto, úsalo.")
-                
-                # Botón para reiniciar (opcional)
-                if st.button("🔄 Reiniciar", key="reiniciar_despues_crear"):
-                    # Limpiar estado
-                    if 'codigo_generado' in st.session_state:
-                        del st.session_state.codigo_generado
-                    if 'tool_name' in st.session_state:
-                        del st.session_state.tool_name
-                    if 'tool_schema' in st.session_state:
-                        del st.session_state.tool_schema
-                    st.rerun()
-                
+                # Variables de entorno detectadas
+                if env_vars:
+                    render_detected_env_vars(env_vars)
             except Exception as e:
                 st.error(f"❌ Error al generar código: {str(e)}")
                 import traceback
                 st.code(traceback.format_exc())
+        
+    col1, col2 = st.columns(2)
+    with col1:
+        st.button("🔍 Generar Código", disabled=not ai_prompt, key="generar_codigo", on_click=generate_code_callback)
+    with col2:
+        st.button("🧹 Limpiar Campos", on_click=clear_ai_form, key="limpiar_campos_interno_generador")
     
-    # Mostrar el botón "Usar Esta Herramienta" solo si hay código generado
+    # Mostrar el código generado
     if 'codigo_generado' in st.session_state:
+        st.code(st.session_state.codigo_generado, language="python")
+        
+        # Mensaje adicional de ayuda
+        st.success("✅ Código generado correctamente. Revísalo y si te parece correcto, úsalo.")
+        
+        # Botón para reiniciar (opcional)
+        if st.button("🔄 Reiniciar", key="reiniciar_despues_crear"):
+            clear_ai_form()
+    
+        # Mostrar el botón "Usar Esta Herramienta" solo si hay código generado
         st.write("---")
         st.write(f"**Herramienta generada:** `{st.session_state.get('tool_name', 'Herramienta')}`")
         st.write(f"**Descripción:** {st.session_state.get('tool_schema', {}).get('description', 'No disponible')}")
         
-        # Botón para usar la herramienta
-        if st.button("✨ Usar Esta Herramienta", key="usar_herramienta"):
+        # Definir callback para usar la herramienta
+        def use_tool_callback():
             with st.spinner("Procesando y creando herramienta..."):
                 try:
                     # Extraer todos los datos necesarios
@@ -340,17 +346,8 @@ def render_ai_generator():
                         st.success(f"✅ Herramienta '{func_name}' creada y activada exitosamente")
                         
                         # Limpiar estado
-                        if 'codigo_generado' in st.session_state:
-                            del st.session_state.codigo_generado
-                        if 'tool_name' in st.session_state:
-                            del st.session_state.tool_name
-                        if 'tool_schema' in st.session_state:
-                            del st.session_state.tool_schema
-                        if 'detected_env_vars' in st.session_state:
-                            del st.session_state.detected_env_vars
+                        clear_ai_form()
                         
-                        # Recargar la página para mostrar la herramienta en las listas
-                        st.rerun()
                     else:
                         st.error("❌ No se pudo crear la herramienta")
                             
@@ -358,6 +355,9 @@ def render_ai_generator():
                     st.error(f"❌ Error al crear la herramienta: {str(e)}")
                     import traceback
                     st.code(traceback.format_exc())
+        
+        # Botón para usar la herramienta
+        st.button("✨ Usar Esta Herramienta", key="usar_herramienta", on_click=use_tool_callback)
 
 def render_detected_env_vars(env_vars):
     """Renderiza la sección de variables de entorno detectadas"""
@@ -428,94 +428,122 @@ def render_detected_env_vars(env_vars):
 
 def render_manual_creation():
     """Renderiza la sección de creación manual de herramientas"""
-    # Título y botón de limpiar en la misma línea
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        st.markdown("#### Crear Nueva Herramienta Manualmente")
-    with col2:
-        if st.button("🧹 Limpiar", key="limpiar_manual_creation"):
-            # Limpiar todos los campos del formulario
-            for key in ["generated_name", "generated_desc", "generated_schema", "generated_code", "generated_postprocess"]:
-                if key in st.session_state:
-                    del st.session_state[key]
-            st.rerun()
+    # Definir callback para limpiar el formulario
+    def clear_manual_form():
+        st.session_state.generated_name = ""
+        st.session_state.generated_desc = ""
+        st.session_state.generated_schema = """{
+            "type": "object",
+            "properties": {
+                "param1": {
+                    "type": "string",
+                    "description": "Primer parámetro"
+                }
+            },
+            "required": ["param1"]
+        }"""
+        st.session_state.generated_code = """def nueva_herramienta(param1):
+            '''
+            Documentación de la herramienta
+            '''
+            return f"Procesando: {param1}"
+        """
+        st.session_state.generated_postprocess = True
+    
+    st.markdown("#### Crear Nueva Herramienta Manualmente")
             
-    with st.form("new_tool_form"):
-        col1, col2, col3 = st.columns([2,2,1])
-        with col1:
-            name = st.text_input(
-                "Nombre",
-                value=st.session_state.get("generated_name", ""),
-                help="Nombre único para la herramienta"
-            )
-        with col2:
-            desc = st.text_input(
-                "Descripción",
-                value=st.session_state.get("generated_desc", ""),
-                help="Breve descripción de su función"
-            )
-        with col3:
-            postprocess = st.toggle(
-                "Post-procesado",
-                value=st.session_state.get("generated_postprocess", True),
-                help="Si está activado, la IA procesará el resultado. Si está desactivado, se mostrará el resultado directo de la herramienta."
-            )
-        
-        json_schema = st.text_area(
-            "Esquema JSON (parámetros)",
-            height=150,
-            value=st.session_state.get("generated_schema", """{
-                "type": "object",
-                "properties": {
-                    "param1": {
-                        "type": "string",
-                        "description": "Primer parámetro"
-                    }
-                },
-                "required": ["param1"]
-            }"""),
-            help="Define los parámetros que acepta la herramienta"
+    # Inicializar valores por defecto si no existen
+    if "generated_name" not in st.session_state:
+        st.session_state.generated_name = ""
+    if "generated_desc" not in st.session_state:
+        st.session_state.generated_desc = ""
+    if "generated_schema" not in st.session_state:
+        st.session_state.generated_schema = """{
+            "type": "object",
+            "properties": {
+                "param1": {
+                    "type": "string",
+                    "description": "Primer parámetro"
+                }
+            },
+            "required": ["param1"]
+        }"""
+    if "generated_code" not in st.session_state:
+        st.session_state.generated_code = """def nueva_herramienta(param1):
+            '''
+            Documentación de la herramienta
+            '''
+            return f"Procesando: {param1}"
+        """
+    if "generated_postprocess" not in st.session_state:
+        st.session_state.generated_postprocess = True
+            
+    # Crear inputs fuera del formulario para poder manipularlos con callbacks
+    col1, col2, col3 = st.columns([2,2,1])
+    with col1:
+        name = st.text_input(
+            "Nombre",
+            key="generated_name",
+            help="Nombre único para la herramienta"
         )
-        
-        code = st.text_area(
-            "Código Python",
-            height=200,
-            value=st.session_state.get("generated_code", """def nueva_herramienta(param1):
-                '''
-                Documentación de la herramienta
-                '''
-                return f"Procesando: {param1}"
-            """),
-            help="Implementación de la herramienta"
+    with col2:
+        desc = st.text_input(
+            "Descripción",
+            key="generated_desc",
+            help="Breve descripción de su función"
         )
-        
-        if st.form_submit_button("✨ Crear Herramienta"):
-            try:
-                with st.spinner("Registrando herramienta..."):
-                    params = json.loads(json_schema)
-                    schema = {
-                        "name": name,
-                        "description": desc,
-                        "parameters": params,
-                        "postprocess": postprocess
-                    }
-                    success = create_tool(name, schema, code)
+    with col3:
+        postprocess = st.toggle(
+            "Post-procesado",
+            key="generated_postprocess",
+            help="Si está activado, la IA procesará el resultado. Si está desactivado, se mostrará el resultado directo de la herramienta."
+        )
+    
+    json_schema = st.text_area(
+        "Esquema JSON (parámetros)",
+        height=150,
+        key="generated_schema",
+        help="Define los parámetros que acepta la herramienta"
+    )
+    
+    code = st.text_area(
+        "Código Python",
+        height=200,
+        key="generated_code",
+        help="Implementación de la herramienta"
+    )
+    
+    # Definir callback para crear herramienta
+    def create_tool_callback():
+        try:
+            with st.spinner("Registrando herramienta..."):
+                params = json.loads(st.session_state.generated_schema)
+                schema = {
+                    "name": st.session_state.generated_name,
+                    "description": st.session_state.generated_desc,
+                    "parameters": params,
+                    "postprocess": st.session_state.generated_postprocess
+                }
+                success = create_tool(st.session_state.generated_name, schema, st.session_state.generated_code)
+            
+            if success:
+                st.success(f"✅ Herramienta '{st.session_state.generated_name}' creada exitosamente")
                 
-                if success:
-                    st.success(f"✅ Herramienta '{name}' creada exitosamente")
-                    
-                    # Limpiar los campos generados
-                    for key in ["generated_name", "generated_desc", "generated_schema", "generated_code", "generated_postprocess"]:
-                        if key in st.session_state:
-                            del st.session_state[key]
-                    
-                    # Recargar la página para mostrar la herramienta en las listas
-                    st.rerun()
-                else:
-                    st.error("❌ No se pudo crear la herramienta")
+                # Limpiar el formulario
+                clear_manual_form()
                 
-            except Exception as e:
-                st.error(f"❌ Error al crear la herramienta: {str(e)}")
+            else:
+                st.error("❌ No se pudo crear la herramienta")
+            
+        except Exception as e:
+            st.error(f"❌ Error al crear la herramienta: {str(e)}")
+    
+    # Botones con callbacks
+    col1, col2 = st.columns(2)
+    with col1:
+        st.button("✨ Crear Herramienta", on_click=create_tool_callback, disabled=not name)
+    with col2:
+        st.button("🧹 Limpiar Campos", on_click=clear_manual_form, key="limpiar_campos_interno")
 
 def render_tool_modals():
     """Renderiza los modales para ver, editar y eliminar herramientas"""

@@ -74,7 +74,17 @@ def render_toolchains_list(toolchains):
             for k in sorted(initial_keys):
                 inputs[k] = st.text_input(f"Input: {k}", key=f"input_{selected.name}_{k}")
 
-            if st.button("▶️ Lanzar Toolchain", key=f"launch_{selected.name}"):
+            col1, col2 = st.columns(2)
+            with col1:
+                launch = st.button("▶️ Lanzar Toolchain", key=f"launch_{selected.name}")
+            with col2:
+                cancel = st.button("❌ Cancelar", key=f"cancel_run_{selected.name}")
+
+            if cancel:
+                del st.session_state.run_toolchain
+                st.rerun()
+
+            if launch:
                 try:
                     tools = get_tools()
                     context = inputs.copy()
@@ -129,6 +139,24 @@ def render_manual_creator():
     Formulario de creación manual de nuevas toolchains, con actualización dinámica de pasos.
     """
     with st.expander("✏️ Crear Toolchain Manualmente", expanded=False):
+        # Callback para limpiar el formulario
+        def clear_manual_form():
+            # Resetear número de pasos
+            st.session_state.new_tc_steps = 1
+            # Limpiar todos los campos de pasos
+            for i in range(10):  # Usar un máximo razonable
+                if f"new_tool_{i}" in st.session_state:
+                    st.session_state[f"new_tool_{i}"] = ""
+                if f"new_map_{i}" in st.session_state:
+                    st.session_state[f"new_map_{i}"] = ""
+            # Limpiar nombre y descripción si existen
+            if "new_tc_name" in st.session_state:
+                st.session_state.new_tc_name = ""
+            if "new_tc_desc" in st.session_state:
+                st.session_state.new_tc_desc = ""
+        
+        st.markdown("### Crear Nueva Toolchain")
+            
         # Inicializar número de pasos
         if "new_tc_steps" not in st.session_state:
             st.session_state.new_tc_steps = 1
@@ -144,60 +172,72 @@ def render_manual_creator():
             key="manual_steps_count"
         )
 
-        # Formulario de creación
-        with st.form("form_nueva_toolchain"):
-            name = st.text_input("Nombre único de la Toolchain")
-            desc = st.text_area("Descripción")
+        # Inicializar valores por defecto
+        if "new_tc_name" not in st.session_state:
+            st.session_state.new_tc_name = ""
+        if "new_tc_desc" not in st.session_state:
+            st.session_state.new_tc_desc = ""
+                
+        # Campos del formulario directamente (sin st.form)
+        name = st.text_input("Nombre único de la Toolchain", key="new_tc_name")
+        desc = st.text_area("Descripción", key="new_tc_desc")
 
-            raw_steps = []
-            for i in range(st.session_state.new_tc_steps):
-                st.markdown(f"**Paso {i + 1}**")
-                tool_name = st.text_input(f"Tool del Paso {i + 1}", key=f"new_tool_{i}")
-                map_text = st.text_area(
-                    f"Input map (clave:valor por línea)",
-                    key=f"new_map_{i}",
-                    placeholder="Ejemplo:\ntexto: resumen\nidioma: idioma_destino"
-                )
-                raw_steps.append((tool_name, map_text))
+        raw_steps = []
+        for i in range(st.session_state.new_tc_steps):
+            st.markdown(f"**Paso {i + 1}**")
+            tool_name = st.text_input(f"Tool del Paso {i + 1}", key=f"new_tool_{i}")
+            map_text = st.text_area(
+                f"Input map (clave:valor por línea)",
+                key=f"new_map_{i}",
+                placeholder="Ejemplo:\ntexto: resumen\nidioma: idioma_destino"
+            )
+            raw_steps.append((tool_name, map_text))
 
-            submitted = st.form_submit_button("💾 Guardar Toolchain")
-            if submitted:
-                try:
-                    steps = []
-                    for tool_name, raw_map in raw_steps:
-                        input_map = {}
-                        for line in raw_map.strip().splitlines():
-                            if ':' in line:
-                                k, v = line.split(':', 1)
-                                input_map[k.strip()] = v.strip()
-                        steps.append(ToolchainStep(tool_name=tool_name.strip(), input_map=input_map))
+        # Definir callback para guardar
+        def save_toolchain_callback():
+            try:
+                steps = []
+                for tool_name, raw_map in raw_steps:
+                    input_map = {}
+                    for line in raw_map.strip().splitlines():
+                        if ':' in line:
+                            k, v = line.split(':', 1)
+                            input_map[k.strip()] = v.strip()
+                    steps.append(ToolchainStep(tool_name=tool_name.strip(), input_map=input_map))
 
-                    nueva = Toolchain(name=name.strip(), description=desc.strip(), steps=steps)
+                nueva = Toolchain(name=name.strip(), description=desc.strip(), steps=steps)
 
-                    if os.path.exists(TOOLCHAINS_FILE):
-                        with open(TOOLCHAINS_FILE, "r") as f:
-                            existing = json.load(f)
-                    else:
-                        existing = []
+                if os.path.exists(TOOLCHAINS_FILE):
+                    with open(TOOLCHAINS_FILE, "r") as f:
+                        existing = json.load(f)
+                else:
+                    existing = []
 
-                    existing.append({
-                        "name": nueva.name,
-                        "description": nueva.description,
-                        "steps": [
-                            {"tool_name": s.tool_name, "input_map": s.input_map}
-                            for s in nueva.steps
-                        ]
-                    })
+                existing.append({
+                    "name": nueva.name,
+                    "description": nueva.description,
+                    "steps": [
+                        {"tool_name": s.tool_name, "input_map": s.input_map}
+                        for s in nueva.steps
+                    ]
+                })
 
-                    with open(TOOLCHAINS_FILE, "w") as f:
-                        json.dump(existing, f, indent=2, ensure_ascii=False)
+                with open(TOOLCHAINS_FILE, "w") as f:
+                    json.dump(existing, f, indent=2, ensure_ascii=False)
 
-                    st.success(f"✅ Toolchain `{nueva.name}` guardada correctamente.")
-                    del st.session_state.new_tc_steps
-                    st.rerun()
+                st.success(f"✅ Toolchain `{nueva.name}` guardada correctamente.")
+                clear_manual_form()
+                st.rerun()
 
-                except Exception as e:
-                    st.error(f"❌ Error al guardar la Toolchain: {str(e)}")
+            except Exception as e:
+                st.error(f"❌ Error al guardar la Toolchain: {str(e)}")
+                
+        # Botones con callbacks
+        col1, col2 = st.columns(2)
+        with col1:
+            st.button("💾 Guardar Toolchain", key="guardar_toolchain", on_click=save_toolchain_callback, disabled=not name)
+        with col2:
+            st.button("🧹 Limpiar Campos", key="limpiar_campos_toolchain", on_click=clear_manual_form)
 
 def render_toolchain_editor(toolchains):
     """
@@ -220,8 +260,107 @@ def render_toolchain_editor(toolchains):
     if step_key not in st.session_state:
         st.session_state[step_key] = len(selected.steps)
 
+    # Callback para restaurar valores originales
+    def clear_edit_form():
+        # Resetear número de pasos al original
+        st.session_state[step_key] = len(selected.steps)
+        # Restaurar valores originales
+        for i, step in enumerate(selected.steps):
+            if i < 10:  # Límite razonable
+                # Restaurar nombre de herramienta
+                key_tool = f"edit_tool_{i}"
+                if key_tool in st.session_state:
+                    st.session_state[key_tool] = step.tool_name
+                
+                # Restaurar mapeo de inputs
+                key_map = f"edit_map_{i}"
+                if key_map in st.session_state:
+                    map_text = "\n".join([f"{k}:{v}" for k, v in step.input_map.items()])
+                    st.session_state[key_map] = map_text
+        
+        # Restaurar nombre y descripción
+        if "edit_tc_name" in st.session_state:
+            st.session_state.edit_tc_name = selected.name
+        if "edit_tc_desc" in st.session_state:
+            st.session_state.edit_tc_desc = selected.description
+    
+    # Callback para cancelar edición
+    def cancel_edit_form():
+        del st.session_state.edit_toolchain
+        if step_key in st.session_state:
+            del st.session_state[step_key]
+        # Limpiar campos adicionales
+        for key in ["edit_tc_name", "edit_tc_desc"]:
+            if key in st.session_state:
+                del st.session_state[key]
+        # Limpiar campos de pasos
+        for i in range(10):
+            for prefix in ["edit_tool_", "edit_map_"]:
+                key = f"{prefix}{i}"
+                if key in st.session_state:
+                    del st.session_state[key]
+        st.rerun()
+    
+    # Callback para guardar cambios
+    def save_edited_toolchain():
+        try:
+            edited_steps = []
+            for i in range(st.session_state[step_key]):
+                key_tool = f"edit_tool_{i}"
+                key_map = f"edit_map_{i}"
+                
+                if key_tool in st.session_state and key_map in st.session_state:
+                    tool_name = st.session_state[key_tool]
+                    raw_map = st.session_state[key_map]
+                    
+                    input_map = {}
+                    for line in raw_map.strip().splitlines():
+                        if ':' in line:
+                            k, v = line.split(':', 1)
+                            input_map[k.strip()] = v.strip()
+                    
+                    edited_steps.append(ToolchainStep(tool_name=tool_name.strip(), input_map=input_map))
+                
+            updated = Toolchain(
+                name=st.session_state.edit_tc_name.strip(), 
+                description=st.session_state.edit_tc_desc.strip(), 
+                steps=edited_steps
+            )
+
+            # Reemplazar en archivo
+            updated_data = []
+            for t in toolchains:
+                if t.name == target_name:
+                    updated_data.append({
+                        "name": updated.name,
+                        "description": updated.description,
+                        "steps": [
+                            {"tool_name": s.tool_name, "input_map": s.input_map}
+                            for s in updated.steps
+                        ]
+                    })
+                else:
+                    updated_data.append({
+                        "name": t.name,
+                        "description": t.description,
+                        "steps": [
+                            {"tool_name": s.tool_name, "input_map": s.input_map}
+                            for s in t.steps
+                        ]
+                    })
+
+            with open(TOOLCHAINS_FILE, "w") as f:
+                json.dump(updated_data, f, indent=2, ensure_ascii=False)
+
+            st.success(f"✅ Toolchain `{updated.name}` actualizada correctamente.")
+            cancel_edit_form()  # Limpiar y cerrar
+
+        except Exception as e:
+            st.error(f"❌ Error al actualizar la Toolchain: {str(e)}")
+            
     # Sección de edición
     with st.expander(f"✏️ Editando Toolchain: {target_name}", expanded=True):
+        st.markdown("### 🔄 Edición de Toolchain")
         st.markdown("### 🔢 Configuración de pasos")
         st.session_state[step_key] = st.number_input(
             label="Cantidad de pasos",
@@ -234,98 +373,69 @@ def render_toolchain_editor(toolchains):
 
         num_steps = st.session_state[step_key]
 
-        # Formulario de edición
-        with st.form("form_edit_toolchain"):
-            name = st.text_input("Nuevo nombre de la Toolchain", value=selected.name)
-            desc = st.text_area("Descripción", value=selected.description)
+        # Inicializar valores por defecto para el formulario
+        if "edit_tc_name" not in st.session_state:
+            st.session_state.edit_tc_name = selected.name
+        if "edit_tc_desc" not in st.session_state:
+            st.session_state.edit_tc_desc = selected.description
+        
+        # Campos de edición directamente (sin st.form)
+        name = st.text_input("Nuevo nombre de la Toolchain", key="edit_tc_name")
+        desc = st.text_area("Descripción", key="edit_tc_desc")
 
-            edited_steps = []
-            for i in range(num_steps):
-                if i < len(selected.steps):
-                    existing_step = selected.steps[i]
-                    default_tool = existing_step.tool_name
-                    default_map = "\n".join([f"{k}:{v}" for k, v in existing_step.input_map.items()])
-                else:
-                    default_tool = ""
-                    default_map = ""
+        for i in range(num_steps):
+            # Preparar valores por defecto
+            if i < len(selected.steps):
+                existing_step = selected.steps[i]
+                default_tool = existing_step.tool_name
+                default_map = "\n".join([f"{k}:{v}" for k, v in existing_step.input_map.items()])
+                # Inicializar estado si no existe
+                key_tool = f"edit_tool_{i}"
+                key_map = f"edit_map_{i}"
+                if key_tool not in st.session_state:
+                    st.session_state[key_tool] = default_tool
+                if key_map not in st.session_state:
+                    st.session_state[key_map] = default_map
+            else:
+                # Para pasos nuevos
+                key_tool = f"edit_tool_{i}"
+                key_map = f"edit_map_{i}"
+                if key_tool not in st.session_state:
+                    st.session_state[key_tool] = ""
+                if key_map not in st.session_state:
+                    st.session_state[key_map] = ""
 
-                st.markdown(f"**Paso {i + 1}**")
-                tool_name = st.text_input(f"Tool del Paso {i + 1}", value=default_tool, key=f"edit_tool_{i}")
-                map_text = st.text_area(
-                    f"Input map (clave:valor por línea)",
-                    value=default_map,
-                    key=f"edit_map_{i}",
-                    placeholder="Ejemplo:\ntexto: resumen\nidioma: idioma_destino"
-                )
-                edited_steps.append((tool_name, map_text))
+            st.markdown(f"**Paso {i + 1}**")
+            st.text_input(f"Tool del Paso {i + 1}", key=key_tool)
+            st.text_area(
+                f"Input map (clave:valor por línea)",
+                key=key_map,
+                placeholder="Ejemplo:\ntexto: resumen\nidioma: idioma_destino"
+            )
 
-            col1, col2 = st.columns(2)
-            with col1:
-                submitted = st.form_submit_button("💾 Guardar cambios")
-            with col2:
-                cancel = st.form_submit_button("❌ Cancelar")
-
-        if submitted:
-            try:
-                steps = []
-                for tool_name, raw_map in edited_steps:
-                    input_map = {}
-                    for line in raw_map.strip().splitlines():
-                        if ':' in line:
-                            k, v = line.split(':', 1)
-                            input_map[k.strip()] = v.strip()
-                    steps.append(ToolchainStep(tool_name=tool_name.strip(), input_map=input_map))
-
-                updated = Toolchain(name=name.strip(), description=desc.strip(), steps=steps)
-
-                # Reemplazar en archivo
-                updated_data = []
-                for t in toolchains:
-                    if t.name == target_name:
-                        updated_data.append({
-                            "name": updated.name,
-                            "description": updated.description,
-                            "steps": [
-                                {"tool_name": s.tool_name, "input_map": s.input_map}
-                                for s in updated.steps
-                            ]
-                        })
-                    else:
-                        updated_data.append({
-                            "name": t.name,
-                            "description": t.description,
-                            "steps": [
-                                {"tool_name": s.tool_name, "input_map": s.input_map}
-                                for s in t.steps
-                            ]
-                        })
-
-                with open(TOOLCHAINS_FILE, "w") as f:
-                    json.dump(updated_data, f, indent=2, ensure_ascii=False)
-
-                st.success(f"✅ Toolchain `{updated.name}` actualizada correctamente.")
-                del st.session_state.edit_toolchain
-                del st.session_state[step_key]
-                st.rerun()
-
-            except Exception as e:
-                st.error(f"❌ Error al actualizar la Toolchain: {str(e)}")
-
-        if cancel:
-            del st.session_state.edit_toolchain
-            if step_key in st.session_state:
-                del st.session_state[step_key]
-            st.rerun()
+        # Botones con callbacks
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.button("💾 Guardar", key="guardar_edit_toolchain", on_click=save_edited_toolchain, disabled=not name)
+        with col2:
+            st.button("🧹 Restaurar Valores", key="restaurar_edit_toolchain", on_click=clear_edit_form)
+        with col3:
+            st.button("❌ Cancelar", key="cancelar_edit_toolchain", on_click=cancel_edit_form)
 
 def render_ai_creator():
     """
     Generación asistida por IA de una Toolchain a partir de descripción en lenguaje natural.
     """
     with st.expander("🤖 Generar Toolchain con IA", expanded=False):
-        st.markdown("Describe en lenguaje natural qué debe hacer la Toolchain")
-        descripcion = st.text_area("Descripción (prompt para IA)", placeholder="Ej: Resume un texto y tradúcelo al francés")
-
-        if st.button("✨ Generar Toolchain con IA", disabled=not descripcion):
+        # Callback para limpiar el formulario
+        def clear_ai_form():
+            if "tc_ai_description" in st.session_state:
+                st.session_state.tc_ai_description = ""
+            if "generated_toolchain" in st.session_state:
+                del st.session_state.generated_toolchain
+        
+        # Callback para generar toolchain
+        def generate_toolchain_callback():
             api_key = st.session_state.get("api_key", "")
             if not api_key:
                 st.error("❌ No hay API key configurada")
@@ -340,7 +450,7 @@ def render_ai_creator():
                 try:
                     from app.utils.ai_generation import generate_toolchain_with_ai
                     toolchain_json = generate_toolchain_with_ai(
-                        descripcion,
+                        st.session_state.tc_ai_description,
                         api_key,
                         model=model_config["model"],
                         temperature=model_config["temperature"]
@@ -349,32 +459,65 @@ def render_ai_creator():
                     # Mostrar resultado en la UI
                     st.session_state.generated_toolchain = toolchain_json
                     st.success("✅ Toolchain generada")
-                    st.json(toolchain_json)
-
+                    
                 except Exception as e:
                     st.error(f"❌ Error generando la Toolchain: {str(e)}")
+        
+        # Callback para guardar toolchain generada
+        def save_generated_toolchain():
+            try:
+                toolchain = st.session_state.generated_toolchain
+                if os.path.exists(TOOLCHAINS_FILE):
+                    with open(TOOLCHAINS_FILE, "r") as f:
+                        existing = json.load(f)
+                else:
+                    existing = []
 
-        # Mostrar botón de guardar si hay Toolchain generada
+                existing.append(toolchain)
+                with open(TOOLCHAINS_FILE, "w") as f:
+                    json.dump(existing, f, indent=2, ensure_ascii=False)
+
+                st.success(f"✅ Toolchain `{toolchain['name']}` guardada correctamente.")
+                clear_ai_form()
+                st.rerun()
+
+            except Exception as e:
+                st.error(f"❌ Error al guardar Toolchain generada: {str(e)}")
+        
+        st.markdown("### Generación de Toolchain con IA")
+        
+        # Inicializar descripción en el estado si no existe
+        if "tc_ai_description" not in st.session_state:
+            st.session_state.tc_ai_description = ""
+            
+        st.markdown("Describe en lenguaje natural qué debe hacer la Toolchain")
+        descripcion = st.text_area(
+            "Descripción (prompt para IA)", 
+            key="tc_ai_description",
+            placeholder="Ej: Resume un texto y tradúcelo al francés"
+        )
+
+        # Botones de acción
+        col1, col2 = st.columns(2)
+        with col1:
+            st.button("✨ Generar Toolchain", key="generar_toolchain", 
+                      on_click=generate_toolchain_callback, 
+                      disabled=not descripcion)
+        with col2:
+            st.button("🧹 Limpiar Campos", key="limpiar_ai_campos", on_click=clear_ai_form)
+
+        # Mostrar resultado si hay Toolchain generada
         if "generated_toolchain" in st.session_state:
             toolchain = st.session_state.generated_toolchain
-            if st.button("💾 Guardar Toolchain generada"):
-                try:
-                    if os.path.exists(TOOLCHAINS_FILE):
-                        with open(TOOLCHAINS_FILE, "r") as f:
-                            existing = json.load(f)
-                    else:
-                        existing = []
-
-                    existing.append(toolchain)
-                    with open(TOOLCHAINS_FILE, "w") as f:
-                        json.dump(existing, f, indent=2, ensure_ascii=False)
-
-                    st.success(f"✅ Toolchain `{toolchain['name']}` guardada correctamente.")
-                    del st.session_state.generated_toolchain
-                    st.rerun()
-
-                except Exception as e:
-                    st.error(f"❌ Error al guardar Toolchain generada: {str(e)}")
+            st.json(toolchain)
+            
+            # Botones para gestionar la toolchain generada
+            col1, col2 = st.columns(2)
+            with col1:
+                st.button("💾 Guardar Toolchain", key="guardar_toolchain_generada", 
+                          on_click=save_generated_toolchain)
+            with col2:
+                st.button("❌ Descartar", key="descartar_generada", on_click=clear_ai_form)
 
 def render_toolchain_modals(toolchains):
     """
