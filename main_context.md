@@ -22,6 +22,7 @@ OpenAI Modular MCP (Model-Context-Protocol) es una plataforma extensible para la
 
 ```
 Usuario → Interfaz Streamlit → Executor (chat_with_tools) → OpenAI API
+Usuario → Interfaz Streamlit → Chat Service (chat_with_tools) → OpenAI API
                                        ↓
                                   ¿function_call?
                                        ↓
@@ -73,8 +74,21 @@ Orquestador central que:
 - Gestiona el post-procesado condicional de resultados
 - Reincorpora los resultados según configuración
 - Pasa parámetros avanzados (seed, penalties, etc.) a la API
+- Gestiona el estado de la conversación y la lógica de interacción con el LLM.
 
-#### 3. `app/core/tool_manager.py`
+#### 3. `app/services/chat_service.py`
+
+Orquestador central que:
+
+- Construye los mensajes para la API de OpenAI
+- Incluye las definiciones de herramientas disponibles
+- Procesa la respuesta y detecta llamadas a funciones
+- Ejecuta las herramientas solicitadas
+- Gestiona el post-procesado condicional de resultados
+- Reincorpora los resultados según configuración
+- Pasa parámetros avanzados (seed, penalties, etc.) a la API
+
+#### 4. `app/core/tool_manager.py`
 
 Gestor de herramientas que:
 
@@ -85,7 +99,7 @@ Gestor de herramientas que:
 - Proporciona acceso unificado a herramientas estáticas y dinámicas
 - Genera logs detallados de depuración durante la carga
 
-#### 4. `app/core/dynamic_tool_registry.py`
+#### 5. `app/core/tool_definition_registry.py`
 
 Registro de herramientas dinámicas que:
 
@@ -97,7 +111,7 @@ Registro de herramientas dinámicas que:
 - Valida el código generado antes de registrarlo
 - Maneja errores de importación y compilación
 
-#### 5. `app/core/logger.py`
+#### 6. `app/core/logger.py`
 
 Sistema de registro que:
 
@@ -107,7 +121,7 @@ Sistema de registro que:
 - Facilita el análisis y depuración
 - Mantiene un historial limitado para optimizar memoria
 
-#### 6. `app/utils/env_manager.py`
+#### 7. `app/utils/env_manager.py`
 
 Gestor de variables de entorno que:
 
@@ -123,11 +137,14 @@ Gestor de variables de entorno que:
 
 1. El usuario envía un mensaje a través de la interfaz de chat
 2. `app/views/chat_view.py` llama a `chat_with_tools()` en `app/core/executor.py`
+2. `app/views/chat_view.py` llama a `chat_with_tools()` en `app/services/chat_service.py`
 3. `executor.py` prepara el contexto y envía la solicitud a OpenAI
+3. `chat_service.py` prepara el contexto y envía la solicitud a OpenAI
 4. OpenAI determina si se necesita invocar una herramienta
 5. Si es necesario:
    - Se verifica si la herramienta está activa
    - `executor.py` obtiene la herramienta de `app/core/tool_manager.py`
+   - `chat_service.py` obtiene la herramienta de `app/core/tool_manager.py`
    - Se ejecuta la herramienta y se registra en `app/core/logger.py`
    - Si tiene post-procesado activado:
      - El resultado se envía a GPT para contextualización
@@ -181,12 +198,14 @@ Gestor de variables de entorno que:
 │   │   └── tools_view.py        # Gestión de herramientas 
 │   ├── models/                  # Modelos de datos
 │   ├── utils/                   # Utilidades
-│   │   └── ai_generation.py     # Generación de herramientas con IA
+│   │   └── ai_generation.py     # Generación de herramientas/toolchains con IA
 │   ├── core/                    # Funcionalidades centrales
-│   │   ├── dynamic_tool_registry.py  # Registro de herramientas dinámicas
+│   │   ├── tool_definition_registry.py  # Registro y gestión de archivos de tools
 │   │   ├── executor.py          # Orquestador de OpenAI
 │   │   ├── logger.py            # Sistema de logs
 │   │   └── tool_manager.py      # Gestión de herramientas
+│   ├── services/                # Lógica de servicios (ej. chat)
+│   │   └── chat_service.py      # Servicio principal de chat
 │   ├── tools/                   # Herramientas disponibles
 │   ├── config/                  # Archivos de configuración
 │   │   └── .tool_status.json    # Estado de activación de herramientas

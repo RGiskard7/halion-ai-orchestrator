@@ -1,7 +1,18 @@
+'''
+Este archivo es el orquestador central de herramientas. Gestiona tanto las tools estáticas como las dinámicas, 
+usando funciones utilitarias. Está perfecto en core, porque es una lógica de bajo nivel transversal al sistema.
+
+La lógica de la tool manager es la siguiente:
+
+1. Carga el estado de las herramientas desde el archivo .tool_status.json
+2. Carga todas las herramientas estáticas y dinámicas
+3. Devuelve las herramientas activas
+'''
+
 import importlib.util
 import os
 import json
-from app.core.dynamic_tool_registry import get_all_dynamic_tools, TOOLS_FOLDER, DEBUG_LOGS_FOLDER
+from app.core.tool_definition_registry import get_all_dynamic_tools, TOOLS_FOLDER, DEBUG_LOGS_FOLDER
 from datetime import datetime
 
 # Definir rutas absolutas basadas en la ubicación actual del script
@@ -33,34 +44,57 @@ def _load_tool_status():
     try:
         if os.path.exists(TOOL_STATUS_FILE):
             with open(TOOL_STATUS_FILE, 'r') as f:
-                _tool_status = json.load(f)
-        else:
-            # Si el archivo no existe en la nueva ubicación, comprobar la antigua
-            old_path = os.path.join(ROOT_DIR, ".tool_status.json")
-            if os.path.exists(old_path):
-                with open(old_path, 'r') as f:
-                    _tool_status = json.load(f)
-                # Migrar el archivo a la nueva ubicación
-                _save_tool_status()
-                # Eliminar el archivo antiguo para evitar confusiones
-                os.remove(old_path)
-            else:
+                loaded_data = json.load(f)
+                # Adaptar al nuevo formato: {"tool_name": {"active": bool, "postprocess": bool}}
+                # Mantener compatibilidad con el formato antiguo: {"tool_name": bool}
                 _tool_status = {}
-    except Exception:
+                for name, status in loaded_data.items():
+                    if isinstance(status, dict):
+                        _tool_status[name] = {
+                            "active": status.get("active", True), # Default active a True si falta
+                            "postprocess": status.get("postprocess", True) # Default postprocess a True si falta
+                        }
+                    elif isinstance(status, bool): # Formato antiguo
+                        _tool_status[name] = {
+                            "active": status,
+                            "postprocess": True # Asumir postprocess True para formato antiguo
+                        }
+        else:
+            _tool_status = {} # Si el archivo no existe, empezar vacío
+    except (json.JSONDecodeError, IOError) as e:
+        print(f"[ERROR] No se pudo cargar o parsear {TOOL_STATUS_FILE}: {e}")
         _tool_status = {}
 
 def _save_tool_status():
-    with open(TOOL_STATUS_FILE, 'w') as f:
-        json.dump(_tool_status, f, indent=2)
+    try:
+        with open(TOOL_STATUS_FILE, 'w') as f:
+            json.dump(_tool_status, f, indent=2)
+    except IOError as e:
+        print(f"[ERROR] No se pudo guardar {TOOL_STATUS_FILE}: {e}")
 
 def set_tool_status(tool_name: str, active: bool):
     """Activa o desactiva una herramienta específica"""
-    _tool_status[tool_name] = active
+    if tool_name not in _tool_status: # Inicializar si no existe
+        _tool_status[tool_name] = {"active": True, "postprocess": True}
+    _tool_status[tool_name]["active"] = active
     _save_tool_status()
 
 def is_tool_active(tool_name: str) -> bool:
     """Verifica si una herramienta está activa"""
-    return _tool_status.get(tool_name, True)  # Por defecto, las herramientas están activas
+    # Devuelve el valor 'active', default a True si la tool no está en el registro
+    return _tool_status.get(tool_name, {}).get("active", True)
+
+def set_tool_postprocess(tool_name: str, postprocess_active: bool):
+    """Activa o desactiva el postprocesado para una herramienta específica"""
+    if tool_name not in _tool_status: # Inicializar si no existe
+        _tool_status[tool_name] = {"active": True, "postprocess": True}
+    _tool_status[tool_name]["postprocess"] = postprocess_active
+    _save_tool_status()
+
+def get_tool_postprocess(tool_name: str) -> bool:
+    """Verifica si el postprocesado está activo para una herramienta"""
+    # Devuelve el valor 'postprocess', default a True si la tool no está en el registro
+    return _tool_status.get(tool_name, {}).get("postprocess", True)
 
 def load_all_tools():
     global _loaded_tools_cache, _tool_errors
@@ -98,7 +132,7 @@ def load_all_tools():
                     try:
                         spec = importlib.util.spec_from_file_location(module_name, path)
                         mod = importlib.util.module_from_spec(spec)
-                        debug_file.write(f"Ejecutando módulo: {module_name}...\n")
+                        # No ejecutar el módulo aquí directamente si no es necesario
                         spec.loader.exec_module(mod)
                         
                         debug_file.write(f"Atributos del módulo: {dir(mod)}\n")
@@ -106,10 +140,12 @@ def load_all_tools():
                         debug_file.write(f"¿Tiene función llamable?: {callable(getattr(mod, module_name, None))}\n")
 
                         if hasattr(mod, "schema") and callable(getattr(mod, module_name, None)):
+                            # Guardar el schema original y añadir el estado de postprocess
                             _loaded_tools_cache[mod.schema["name"]] = {
-                                "schema": mod.schema,
+                                "schema": mod.schema, # Schema original del archivo
                                 "func": getattr(mod, module_name)
                             }
+                            # El estado 'active' y 'postprocess' se consultan via is_tool_active/get_tool_postprocess
                             debug_file.write(f"Herramienta '{mod.schema['name']}' cargada correctamente\n")
                         else:
                             error_msg = "Falta 'schema' o función no encontrada"
@@ -137,7 +173,18 @@ def get_all_loaded_tools():
 def get_tools():
     """Devuelve solo las herramientas activas"""
     all_tools = {**_loaded_tools_cache, **get_all_dynamic_tools()}
-    return {name: tool for name, tool in all_tools.items() if is_tool_active(name)}
+    active_tools = {}
+    for name, tool in all_tools.items():
+        if is_tool_active(name):
+            # Devolver una copia del schema con el estado de postprocess actual
+            # para que la API de OpenAI lo reciba correctamente si es necesario.
+            current_schema = tool.get("schema", {}).copy()
+            current_schema["postprocess"] = get_tool_postprocess(name)
+            active_tools[name] = {
+                "schema": current_schema,
+                "func": tool.get("func")
+            }
+    return active_tools
 
 def get_loading_errors():
     return _tool_errors
@@ -159,7 +206,7 @@ def call_tool_by_name(tool_name: str, arguments: dict):
     """
     tools = get_tools()
     if tool_name not in tools:
-        raise ValueError(f"La herramienta '{tool_name}' no está registrada.")
+        raise ValueError(f"La herramienta '{tool_name}' no está registrada o no está activa.")
     
     func = tools[tool_name]["func"]
     return func(**arguments)

@@ -105,7 +105,7 @@ halion-ai-orchestrator/
 │   ├── components/           # Componentes de la interfaz Streamlit
 │   ├── controllers/          # Lógica de controladores
 │   ├── core/                 # Funcionalidades centrales
-│   │   ├── dynamic_tool_registry.py  # Registro de herramientas dinámicas
+│   │   ├── tool_definition_registry.py # Registro y gestión de archivos de tools
 │   │   ├── executor.py       # Orquestador de OpenAI
 │   │   ├── logger.py         # Sistema de logs
 │   │   └── tool_manager.py   # Gestión de herramientas

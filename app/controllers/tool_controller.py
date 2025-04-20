@@ -1,12 +1,18 @@
 import os
 import streamlit as st
 import time
-import json
+import traceback
 from app.core.tool_manager import (
     load_all_tools, get_all_loaded_tools, get_all_dynamic_tools, 
-    set_tool_status, is_tool_active, get_loading_errors
+    set_tool_status, is_tool_active, get_loading_errors,
+    set_tool_postprocess, get_tool_postprocess
 )
-from app.core.dynamic_tool_registry import register_tool, persist_tool_to_disk, TOOLS_FOLDER
+from app.core.tool_definition_registry import (
+    register_tool, persist_tool_to_disk, get_tool_code, save_tool_code, delete_tool_file,
+    get_all_dynamic_tools as core_get_all_dynamic_tools,
+    TOOLS_FOLDER
+)
+from app.services import tool_service
 
 # Ya no definimos TOOLS_FOLDER aquí, lo importamos directamente de dynamic_tool_registry
 # para asegurar consistencia en las rutas
@@ -79,17 +85,17 @@ def handle_tool_edit(tool_name):
     # Determinar si es dinámica o estática
     is_dynamic = tool_name in get_all_dynamic_tools()
     
-    # Cargar contenido del archivo para edición
-    tool_path = os.path.join(TOOLS_FOLDER, f"{tool_name}.py")
+    # Obtener código desde el core
+    tool_code = get_tool_code(tool_name)
     try:
-        with open(tool_path, "r") as file:
-            tool_code = file.read()
-        # Guardar en el estado para la edición
-        st.session_state.edit_tool = tool_name
-        st.session_state.edit_tool_code = tool_code
-        st.session_state.edit_tool_is_dynamic = is_dynamic
+        if tool_code is not None:
+            st.session_state.edit_tool = tool_name
+            st.session_state.edit_tool_code = tool_code
+            st.session_state.edit_tool_is_dynamic = is_dynamic
+        else:
+            st.error(f"No se pudo obtener el código para la herramienta '{tool_name}'.")
     except Exception as e:
-        st.error(f"No se pudo cargar el archivo: {str(e)}")
+        st.error(f"Error al preparar la edición de '{tool_name}': {e}")
 
 def handle_tool_delete(tool_name):
     """
@@ -133,7 +139,7 @@ def handle_tool_toggle(tool_name, active):
 
 def save_tool_edit(tool_name, edited_code, is_dynamic=False):
     """
-    Guarda los cambios de edición de una herramienta
+    Guarda los cambios de edición de una herramienta llamando al core.
     
     Args:
         tool_name: Nombre de la herramienta
@@ -143,35 +149,30 @@ def save_tool_edit(tool_name, edited_code, is_dynamic=False):
     Returns:
         bool: True si la operación fue exitosa
     """
-    tool_path = os.path.join(TOOLS_FOLDER, f"{tool_name}.py")
-    try:
-        # Guardar archivo
-        with open(tool_path, "w") as file:
-            file.write(edited_code)
-        
-        # Si es herramienta dinámica, también actualizar el registro
-        if is_dynamic:
-            try:
-                # Extraer metadatos
-                namespace = {}
-                exec(edited_code, namespace)
-                # Registrar de nuevo en el sistema
-                if "schema" in namespace:
-                    register_tool(tool_name, namespace["schema"], edited_code)
-                else:
-                    st.warning("No se encontró el schema en el código, la herramienta puede no funcionar correctamente")
-            except Exception as e:
-                st.warning(f"Se guardó el archivo pero hubo un error al registrar la herramienta: {str(e)}")
-        
-        # Recargar herramientas
-        load_all_tools()
-        # Actualizar el resumen de herramientas
-        update_tool_summary()
-        
-        return True
-    except Exception as e:
-        st.error(f"Error al guardar cambios: {str(e)}")
+    # Guardar archivo a través del core
+    if not save_tool_code(tool_name, edited_code):
+        st.error(f"Error al guardar el archivo para '{tool_name}'")
         return False
+
+    # Si es herramienta dinámica, re-registrarla para actualizar la función/schema en memoria
+    if is_dynamic:
+        try:
+            # El registro interno maneja exec y extracción de schema/func
+            namespace = {}
+            exec(edited_code, namespace)
+            # Usar el nombre del schema guardado, no el original por si cambió
+            schema_name = namespace["schema"].get("name", tool_name)
+            register_tool(tool_name, namespace["schema"], edited_code)
+            if schema_name != tool_name:
+                st.warning(f"El nombre en el schema ({schema_name}) no coincide con el nombre del archivo ({tool_name}). Se usará el nombre del schema.")
+        except Exception as e:
+            st.warning(f"Archivo guardado, pero hubo un error al re-registrar la herramienta dinámica '{tool_name}': {str(e)}")
+
+    # Recargar herramientas para asegurar consistencia general
+    load_all_tools()
+    update_tool_summary()
+
+    return True
 
 def confirm_tool_delete(tool_name):
     """
@@ -183,25 +184,20 @@ def confirm_tool_delete(tool_name):
     Returns:
         bool: True si la operación fue exitosa
     """
-    tool_path = os.path.join(TOOLS_FOLDER, f"{tool_name}.py")
-    try:
-        # Eliminar archivo
-        os.remove(tool_path)
-        # Marcar como inactiva
-        set_tool_status(tool_name, False)
-        # Recargar herramientas
-        load_all_tools()
-        # Actualizar el resumen de herramientas
-        update_tool_summary()
-        
-        return True
-    except Exception as e:
-        st.error(f"Error al eliminar herramienta: {str(e)}")
-        return False
+    # Eliminar archivo a través del core
+    if not delete_tool_file(tool_name):
+        st.warning(f"No se pudo eliminar el archivo para '{tool_name}' (quizás ya estaba borrado).", icon="⚠️")
+    # Marcar como inactiva
+    set_tool_status(tool_name, False)
+    # Recargar herramientas
+    load_all_tools()
+    update_tool_summary()
+    
+    return True
 
-def create_tool(name, schema, code):
+def _create_and_persist_tool(name, schema, code):
     """
-    Crea una nueva herramienta
+    Registra en memoria, persiste a disco y recarga. NO maneja env vars.
     
     Args:
         name: Nombre de la herramienta (puede no ser correcto)
@@ -215,28 +211,20 @@ def create_tool(name, schema, code):
         # Obtener el nombre correcto del schema
         tool_name = schema.get("name", name)
         
-        # Registrar herramienta en memoria - devuelve el nombre correcto
-        registered_name = register_tool(tool_name, schema, code)
+        # Intentar registrar en memoria primero (valida el código)
+        try:
+            registered_name = register_tool(tool_name, schema, code)
+        except Exception as reg_e:
+            st.error(f"Error al registrar la herramienta en memoria: {reg_e}")
+            return False
         
         # Guardar archivo en disco
         success = persist_tool_to_disk(registered_name, schema, code)
         
-        # Verificar que el archivo se haya creado
-        tool_path = os.path.join(TOOLS_FOLDER, f"{registered_name}.py")
-        file_exists = os.path.exists(tool_path)
-        
-        if not file_exists:
-            st.error(f"⚠️ Error: El archivo no se guardó correctamente en {tool_path}")
-            
-            # Intentar crear el directorio y guardar el archivo directamente
-            try:
-                os.makedirs(os.path.dirname(tool_path), exist_ok=True)
-                with open(tool_path, "w", encoding="utf-8") as f:
-                    f.write(code)
-                st.success(f"✅ Archivo creado manualmente en {tool_path}")
-                file_exists = True
-            except Exception as direct_e:
-                st.error(f"Error al crear manualmente: {str(direct_e)}")
+        if not success:
+            # Considerar revertir el registro en memoria si falla la persistencia?
+            st.error(f"Error al guardar el archivo para la herramienta '{registered_name}'. Ver logs para detalles.")
+            return False
         
         # Activar la herramienta
         set_tool_status(registered_name, True)
@@ -247,11 +235,11 @@ def create_tool(name, schema, code):
         # Actualizar el resumen de herramientas
         update_tool_summary()
         
-        return success and file_exists
+        return True
     except Exception as e:
         st.error(f"Error al crear la herramienta: {str(e)}")
-        import traceback
-        st.error(traceback.format_exc())
+        # Loggear el traceback completo para diagnóstico
+        print(f"[Controller Error] Traceback al crear tool: {traceback.format_exc()}")
         return False
 
 def handle_tool_postprocess_toggle(tool_name, postprocess_active):
@@ -262,87 +250,134 @@ def handle_tool_postprocess_toggle(tool_name, postprocess_active):
         tool_name: Nombre de la herramienta a modificar
         postprocess_active: True para activar postprocess, False para desactivarlo
     """
-    # Determinar si es dinámica o estática
-    is_dynamic = tool_name in get_all_dynamic_tools()
-    
-    # Cargar contenido del archivo para edición
-    tool_path = os.path.join(TOOLS_FOLDER, f"{tool_name}.py")
+    # Usar la nueva función del tool_manager para cambiar el estado
     try:
-        with open(tool_path, "r") as file:
-            tool_code = file.read()
-            
-        # Extraer información del código
-        namespace = {}
-        exec(tool_code, namespace)
-        
-        if "schema" in namespace:
-            # Modificar el valor de postprocess en el schema
-            schema = namespace["schema"]
-            old_value = schema.get("postprocess", True)
-            schema["postprocess"] = postprocess_active
-            
-            # Crear nuevo código con el schema actualizado
-            # Buscar dónde comienza la definición del schema
-            schema_lines = tool_code.split('\n')
-            schema_start_index = -1
-            for i, line in enumerate(schema_lines):
-                if line.strip().startswith("schema = {"):
-                    schema_start_index = i
-                    break
-            
-            if schema_start_index >= 0:
-                # Reemplazar el schema en el código
-                schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
-                schema_json_lines = [f'schema = {schema_json}']
-                
-                # Buscar donde termina el schema
-                schema_end_index = -1
-                bracket_count = 0
-                for i in range(schema_start_index, len(schema_lines)):
-                    line = schema_lines[i]
-                    if '{' in line:
-                        bracket_count += line.count('{')
-                    if '}' in line:
-                        bracket_count -= line.count('}')
-                    if bracket_count == 0 and '}' in line:
-                        schema_end_index = i
-                        break
-                
-                if schema_end_index >= 0:
-                    # Reemplazar las líneas del schema
-                    new_code_lines = schema_lines[:schema_start_index] + schema_json_lines + schema_lines[schema_end_index + 1:]
-                    new_code = '\n'.join(new_code_lines)
-                    
-                    # Guardar el archivo modificado
-                    with open(tool_path, "w") as file:
-                        file.write(new_code)
-                    
-                    # Si es herramienta dinámica, actualizar en memoria
-                    if is_dynamic:
-                        register_tool(tool_name, schema, new_code)
-                    
-                    # Recargar herramientas
-                    load_all_tools()
-                    update_tool_summary()
-                    
-                    # Mostrar mensaje
-                    if postprocess_active:
-                        st.success(f"✅ Postprocess activado para {tool_name}")
-                    else:
-                        st.warning(f"⚠️ Postprocess desactivado para {tool_name}")
-                    
-                    # Pequeña pausa para mostrar el mensaje
-                    time.sleep(0.3)
-                    
-                    # Recargar para aplicar cambios
-                    st.rerun()
-                else:
-                    st.error(f"No se pudo encontrar el final del schema en {tool_name}")
-            else:
-                st.error(f"No se pudo encontrar la definición de schema en {tool_name}")
+        set_tool_postprocess(tool_name, postprocess_active)
+        # Actualizar el resumen para reflejar el cambio si afecta a get_tools()
+        update_tool_summary()
+
+        # Mostrar mensaje (¿Debería estar en la vista? Por ahora aquí)
+        if postprocess_active:
+            st.success(f"✅ Postprocess activado para {tool_name}")
         else:
-            st.error(f"La herramienta {tool_name} no tiene un schema definido")
+            st.warning(f"⚠️ Postprocess desactivado para {tool_name}")
+
+        # Pequeña pausa y rerun (¿Debería estar en la vista? Por ahora aquí)
+        time.sleep(0.3)
+        st.rerun()
+
     except Exception as e:
-        st.error(f"Error al modificar postprocess para {tool_name}: {str(e)}")
+        st.error(f"Error al cambiar el estado de postprocess para '{tool_name}': {str(e)}")
         import traceback
-        st.error(traceback.format_exc()) 
+        print(f"[Controller Error] Traceback al cambiar postprocess: {traceback.format_exc()}")
+
+def handle_create_manual_tool(name: str, schema: dict, code: str):
+    """Maneja la creación de una tool definida manualmente por el usuario."""
+    return _create_and_persist_tool(name, schema, code)
+
+def handle_create_generated_tool(tool_name: str, schema: dict, code: str, env_vars_with_values: list[dict]):
+    """Maneja la creación de una tool generada por IA, incluyendo guardado de env vars."""
+    try:
+        # 1. Guardar variables de entorno detectadas (y posiblemente modificadas por el usuario)
+        if env_vars_with_values:
+            with st.spinner("Guardando variables de entorno detectadas..."):
+                saved_vars, unchanged_vars = tool_service.save_detected_env_vars(env_vars_with_values)
+            if saved_vars:
+                st.success(f"✅ Variables guardadas/actualizadas en .env: {', '.join(saved_vars)}")
+            if unchanged_vars:
+                st.info(f"ℹ️ Variables existentes sin cambios: {', '.join(unchanged_vars)}")
+            # Considerar mostrar error si save_detected_env_vars falla?
+
+        # 2. Crear y persistir la herramienta
+        with st.spinner(f"Creando y guardando herramienta '{tool_name}'..."):
+            success = _create_and_persist_tool(tool_name, schema, code)
+
+        if success:
+            st.success(f"✅ Herramienta '{tool_name}' creada y activada exitosamente.")
+            # Limpiar estado de generación AI en la sesión
+            if "ai_prompt" in st.session_state: st.session_state.ai_prompt = ""
+            if "generated_code" in st.session_state: del st.session_state.generated_code
+            if "generated_tool_name" in st.session_state: del st.session_state.generated_tool_name
+            if "generated_schema" in st.session_state: del st.session_state.generated_schema
+            if "generated_env_vars" in st.session_state: del st.session_state.generated_env_vars
+            if "generation_error" in st.session_state: del st.session_state.generation_error
+            return True
+        else:
+            # El error específico ya se mostró en _create_and_persist_tool
+            return False
+
+    except Exception as e:
+        st.error(f"Error general al procesar la herramienta generada: {e}")
+        import traceback
+        print(f"[Controller Error] Traceback al crear tool generada: {traceback.format_exc()}")
+        return False
+
+def handle_generate_tool_ai(description: str):
+    """
+    Orquesta la generación de código de tool con IA y la extracción de metadatos/env vars.
+    Actualiza st.session_state con los resultados o errores.
+    """
+    # Limpiar estado previo
+    st.session_state.generated_code = None
+    st.session_state.generated_tool_name = None
+    st.session_state.generated_schema = None
+    st.session_state.generated_env_vars = None
+    st.session_state.generation_error = None
+
+    try:
+        api_key = st.session_state.get("api_key")
+        model_config = st.session_state.get("model_config")
+        if not api_key:
+            st.error("❌ Falta la API Key de OpenAI en la configuración.")
+            st.session_state.generation_error = "API Key no configurada."
+            return
+
+        # Llamar al servicio para generar código
+        generated_code = tool_service.generate_tool_code_via_ai(description, api_key, model_config)
+        st.session_state.generated_code = generated_code
+
+        # Llamar al servicio para extraer metadatos y env vars
+        tool_name, schema, env_vars = tool_service.extract_tool_metadata_and_env_vars(generated_code)
+
+        if tool_name:
+            st.session_state.generated_tool_name = tool_name
+        if schema:
+            st.session_state.generated_schema = schema
+        if env_vars is not None: # Puede ser lista vacía
+            st.session_state.generated_env_vars = env_vars
+
+        if not tool_name or not schema:
+            st.warning("⚠️ No se pudieron extraer completamente el nombre o el schema del código generado.")
+            # No poner error aquí, permitir al usuario usarlo igualmente si quiere
+
+    except Exception as e:
+        st.error(f"❌ Error durante la generación o análisis: {e}")
+        st.session_state.generation_error = str(e)
+
+# --- Funciones para que la Vista obtenga datos --- #
+
+def get_static_tools_view() -> dict:
+    """Devuelve las herramientas estáticas cargadas."""
+    # Directamente desde tool_manager por ahora, ya que no hay lógica adicional aquí.
+    return get_all_loaded_tools()
+
+def get_dynamic_tools_view() -> dict:
+    """Devuelve las herramientas dinámicas registradas."""
+    # Directamente desde tool_definition_registry por ahora.
+    return core_get_all_dynamic_tools()
+
+def get_tool_state_view(tool_name: str) -> dict:
+    """Devuelve el estado (activo, postprocess) de una tool."""
+    return {
+        "active": is_tool_active(tool_name),
+        "postprocess": get_tool_postprocess(tool_name)
+    }
+
+def get_loading_errors_view() -> list:
+    """Devuelve la lista de errores de carga de herramientas."""
+    return get_loading_errors()
+
+def get_tool_code_view(tool_name: str) -> str | None:
+    """Devuelve el código fuente de una tool."""
+    # Llama a la función del core a través del registry
+    return get_tool_code(tool_name) 

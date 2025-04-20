@@ -1,13 +1,19 @@
+"""
+chat_services.py
+
+Servicio principal de interacción entre el modelo de OpenAI y las herramientas individuales registradas,
+utilizando la capacidad de "function calling" de OpenAI.
+
+Depende de:
+- tool_manager: para cargar y ejecutar tools.
+
+HALion, 2025
+"""
+
 import openai
 import json
 from app.core.logger import log_tool_call
-from app.core.tool_manager import get_tools
-
-
-# ✅ Importaciones necesarias para toolchains
-from app.models.toolchain_model import Toolchain
-from app.core.toolchain_loader import load_toolchains_from_file
-from app.services.toolchain_service import execute_toolchain
+from app.core.tool_manager import get_tools, call_tool_by_name
 
 def chat_with_tools(
     prompt: str, 
@@ -23,27 +29,8 @@ def chat_with_tools(
 ):
     """
     Función principal que coordina la interacción con el modelo de OpenAI y 
-    ejecuta herramientas según sea necesario. También permite detectar una
-    toolchain y ejecutarla directamente si se menciona explícitamente en el prompt.
+    ejecuta herramientas según sea necesario.
     """
-
-    # ✅ NUEVO: Interceptar prompt si incluye una toolchain explícita
-    if "toolchain:" in prompt.lower():
-        try:
-            # Extraer nombre de la toolchain
-            name = prompt.split("toolchain:")[1].strip().split()[0]
-            toolchains = load_toolchains_from_file()
-            selected = next((t for t in toolchains if t.name == name), None)
-
-            if selected:
-                # 🚧 Aquí puedes mejorar para extraer parámetros desde el prompt
-                result = execute_toolchain(selected, {
-                    "texto_original": "Texto de ejemplo",
-                    "idioma_destino": "fr"
-                })
-                return result if isinstance(result, str) else json.dumps(result, ensure_ascii=False)
-        except Exception as e:
-            return f"Error al ejecutar la toolchain: {str(e)}"
     
     # === Flujo habitual ===
     openai.api_key = api_key
@@ -90,7 +77,7 @@ def chat_with_tools(
 
         if func_name in all_tools:
             # Ejecutar tool
-            result = all_tools[func_name]["func"](**arguments)
+            result = call_tool_by_name(func_name, arguments)
             log_tool_call(func_name, arguments, result)
 
             # Convertir el resultado a string si no lo es ya

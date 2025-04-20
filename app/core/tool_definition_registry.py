@@ -1,3 +1,13 @@
+'''
+Este archivo es el encargado de registrar las herramientas dinámicas en memoria.
+
+La lógica de este archivo es la siguiente:
+
+1. Carga todas las herramientas dinámicas desde el directorio tools
+2. Registra cada herramienta dinámica en memoria
+3. Devuelve las herramientas dinámicas activas
+'''
+
 import os
 import json
 from datetime import datetime
@@ -18,6 +28,50 @@ os.makedirs(DEBUG_LOGS_FOLDER, exist_ok=True)
 # Asegurarse de que el directorio tools existe
 os.makedirs(TOOLS_FOLDER, exist_ok=True)
 
+# --- Funciones de gestión de archivos de herramientas --- #
+
+def get_tool_code(tool_name: str) -> str | None:
+    """Lee y devuelve el código fuente de un archivo de herramienta."""
+    tool_path = os.path.join(TOOLS_FOLDER, f"{tool_name}.py")
+    try:
+        if os.path.exists(tool_path):
+            with open(tool_path, "r", encoding="utf-8") as f:
+                return f.read()
+        else:
+            return None # O lanzar FileNotFoundError?
+    except IOError as e:
+        print(f"[ERROR] No se pudo leer el archivo {tool_path}: {e}")
+        return None # O lanzar excepción
+
+def save_tool_code(tool_name: str, code: str) -> bool:
+    """Guarda o sobrescribe el código fuente de un archivo de herramienta."""
+    tool_path = os.path.join(TOOLS_FOLDER, f"{tool_name}.py")
+    try:
+        os.makedirs(os.path.dirname(tool_path), exist_ok=True)
+        with open(tool_path, "w", encoding="utf-8") as f:
+            f.write(code)
+        return True
+    except IOError as e:
+        print(f"[ERROR] No se pudo guardar el archivo {tool_path}: {e}")
+        return False
+
+def delete_tool_file(tool_name: str) -> bool:
+    """Elimina el archivo .py de una herramienta."""
+    tool_path = os.path.join(TOOLS_FOLDER, f"{tool_name}.py")
+    try:
+        if os.path.exists(tool_path):
+            os.remove(tool_path)
+            print(f"[INFO] Archivo eliminado: {tool_path}")
+            return True
+        else:
+            print(f"[WARN] El archivo a eliminar no existe: {tool_path}")
+            return False # Indicar que no se hizo nada porque no existía?
+    except OSError as e:
+        print(f"[ERROR] No se pudo eliminar el archivo {tool_path}: {e}")
+        return False
+
+# --- Funciones de registro y persistencia existentes --- #
+
 def register_tool(name: str, schema: dict, func_code: str):
     # Ruta al archivo de logs
     debug_log_path = os.path.join(DEBUG_LOGS_FOLDER, "file_creation_debug.log")
@@ -36,7 +90,7 @@ def register_tool(name: str, schema: dict, func_code: str):
         debug_file.write(f"Existe TOOLS_FOLDER: {os.path.exists(TOOLS_FOLDER)}\n")
         debug_file.write(f"Schema: {json.dumps(schema, indent=2, ensure_ascii=False)}\n")
         debug_file.write(f"Longitud de func_code: {len(func_code)} caracteres\n")
-        debug_file.write(f"Primeras líneas de func_code: {func_code.split('\\n')[:3]}\n")
+        debug_file.write(f"Primeras líneas de func_code: {repr(func_code.splitlines()[:3])}\n")
         
         try:
             namespace = {}
@@ -185,6 +239,10 @@ def persist_tool_to_disk(name: str, schema: dict, func_code: str):
                 except Exception as list_e:
                     debug_file.write(f"Error al listar archivos: {str(list_e)}\n")
                 
+                # Devolver True si el archivo existe después de intentar escribir
+                if not exists:
+                     print(f"[ERROR] Falló la escritura del archivo {path}")
+
                 return exists
                 
             except Exception as e:
@@ -197,4 +255,4 @@ def persist_tool_to_disk(name: str, schema: dict, func_code: str):
             debug_file.write(f"ERROR GENERAL: {str(outer_e)}\n")
             import traceback
             debug_file.write(f"TRACEBACK GENERAL: {traceback.format_exc()}\n")
-            return False
+            return False 

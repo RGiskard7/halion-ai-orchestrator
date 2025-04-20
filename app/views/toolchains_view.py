@@ -1,12 +1,10 @@
 # app/views/toolchains_view.py
 
 import streamlit as st
-import os
-import json
+# Importar el controlador
+from app.controllers import toolchain_controller as tc_controller
 from app.models.toolchain_model import Toolchain, ToolchainStep
-from app.core.toolchain_loader import load_toolchains_from_file, TOOLCHAINS_FILE
-from app.core.tool_manager import get_tools
-import time
+# La vista ya no necesita importar tool_manager, os, json, time, ai_generation
 
 def render():
     """
@@ -14,8 +12,8 @@ def render():
     """
     st.subheader("🔁 Gestión de Toolchains")
 
-    # Recarga desde archivo
-    toolchains = load_toolchains_from_file()
+    # Recarga desde archivo -> ahora a través del controlador
+    toolchains = tc_controller.get_all_toolchains_view()
 
     # Listado con ejecución y control
     with st.expander("📜 Toolchains Disponibles", expanded=True):
@@ -30,7 +28,7 @@ def render():
     # Creación manual o por IA
     render_manual_creator()
     render_toolchain_editor(toolchains) # 🔧 Editor (si hay edición activa)
-    render_ai_creator()  # Placeholder por ahora
+    render_ai_creator()
     render_toolchain_modals(toolchains)
 
 
@@ -51,110 +49,93 @@ def render_toolchains_list(toolchains):
                 st.markdown("**Pasos:**")
                 for i, step in enumerate(tc.steps, 1):
                     st.markdown(f"{i}. `{step.tool_name}` ← {step.input_map}")
-            with col2:
-                if st.button("▶️ Ejecutar", key=f"exec_{tc.name}"):
-                    st.session_state.run_toolchain = tc.name
-                if st.button("✏️ Editar", key=f"edit_{tc.name}"):
-                    st.session_state.edit_toolchain = tc.name
-                if st.button("🗑️ Borrar", key=f"delete_{tc.name}"):
-                    st.session_state.delete_toolchain = tc.name
+            with col2: # Usar el controlador para gestionar el estado
+                st.button("▶️ Ejecutar", key=f"exec_{tc.name}", on_click=tc_controller.set_toolchain_to_run, args=(tc.name,))
+                st.button("✏️ Editar", key=f"edit_{tc.name}", on_click=tc_controller.set_toolchain_to_edit, args=(tc.name,))
+                st.button("🗑️ Borrar", key=f"delete_{tc.name}", on_click=tc_controller.set_toolchain_to_delete, args=(tc.name,))
 
     # Ver si se quiere ejecutar
     if "run_toolchain" in st.session_state:
-        selected = next((t for t in toolchains if t.name == st.session_state.run_toolchain), None)
+        # Obtener la toolchain a través del controlador podría ser más seguro si la lista cambió
+        selected_name = st.session_state.run_toolchain
+        selected = tc_controller.get_toolchain_view(selected_name)
+
         if selected:
             st.markdown("---")
             st.markdown(f"### 🚀 Ejecutar Toolchain: `{selected.name}`")
 
+            # Determinar las claves iniciales necesarias
             initial_keys = set()
             for step in selected.steps:
                 initial_keys.update(step.input_map.values())
 
             inputs = {}
             for k in sorted(initial_keys):
-                inputs[k] = st.text_input(f"Input: {k}", key=f"input_{selected.name}_{k}")
+                # Usar claves únicas en session_state para los inputs
+                input_key = f"input_{selected.name}_{k}"
+                inputs[k] = st.text_input(f"Input: {k}", key=input_key)
 
             col1, col2 = st.columns(2)
             with col1:
                 launch = st.button("▶️ Lanzar Toolchain", key=f"launch_{selected.name}")
             with col2:
-                cancel = st.button("❌ Cancelar", key=f"cancel_run_{selected.name}")
-
-            if cancel:
-                del st.session_state.run_toolchain
-                st.rerun()
+                # Usar el controlador para cancelar/limpiar estado
+                cancel = st.button("❌ Cancelar", key=f"cancel_run_{selected.name}", on_click=tc_controller.clear_toolchain_to_run)
 
             if launch:
-                try:
-                    tools = get_tools()
-                    context = inputs.copy()
+                # Llamar al controlador para manejar la ejecución
+                with st.spinner(f"Ejecutando toolchain '{selected.name}'..."):
+                    tc_controller.handle_run_toolchain(selected.name, inputs)
 
+                # Mostrar resultados/errores desde el estado de sesión poblado por el controlador
+                if st.session_state.get("toolchain_run_error"):
+                    st.error(f"❌ Error en la ejecución: {st.session_state.toolchain_run_error}")
+                if st.session_state.get("toolchain_run_steps_log"):
                     st.markdown("## 🧪 Ejecución paso a paso")
-                    for i, step in enumerate(selected.steps):
-                        st.markdown(f"### 🔹 Paso {i + 1}: `{step.tool_name}`")
-
-                        inputs_for_step = {
-                            param: context.get(source_key, None)
-                            for param, source_key in step.input_map.items()
-                        }
-
+                    for log_entry in st.session_state.toolchain_run_steps_log:
+                        st.markdown(f"### 🔹 Paso {log_entry['step']}: `{log_entry['tool_name']}`")
                         st.markdown("**Inputs:**")
-                        st.json(inputs_for_step)
-
-                        func = tools.get(step.tool_name, {}).get("func")
-                        if not func:
-                            st.error(f"❌ La herramienta `{step.tool_name}` no está disponible.")
-                            break
-
-                        try:
-                            t0 = time.time()
-                            output = func(**inputs_for_step)
-                            t1 = time.time()
-                            duration = t1 - t0
-
-                            if not isinstance(output, dict):
-                                output = {"result": output}
-
-                            context.update(output)
-
-                            st.success(f"✅ Ejecutado correctamente en {duration:.2f} segundos")
+                        st.json(log_entry['inputs'])
+                        if log_entry['status'] == 'SUCCESS':
+                            st.success(f"✅ Ejecutado correctamente en {log_entry['duration_seconds']:.4f} segundos")
                             st.markdown("**Output:**")
-                            st.json(output)
+                            st.json(log_entry['output'])
+                        elif log_entry['status'] == 'ERROR':
+                            st.error(f"❌ Error: {log_entry['error']}")
+                        st.caption(f"Duración: {log_entry['duration_seconds']:.4f}s")
 
-                        except Exception as e:
-                            st.error(f"❌ Error al ejecutar `{step.tool_name}`: {str(e)}")
-                            break
+                if st.session_state.get("toolchain_run_result") is not None:
+                     st.markdown("---")
+                     st.markdown("## 🧾 Contexto final")
+                     st.json(st.session_state.toolchain_run_result)
 
-                    st.markdown("---")
-                    st.markdown("## 🧾 Resultado final")
-                    st.json(context)
+                # Limpiar el estado de ejecución después de mostrar los resultados
+                # Esto podría hacerse automáticamente si el flujo lo requiere,
+                # o mantenerlo hasta que el usuario cancele explícitamente.
+                # Por ahora, lo limpiamos aquí para permitir nuevas ejecuciones.
+                # tc_controller.clear_toolchain_to_run() # Comentado: dejar que Cancelar lo haga explícitamente
 
-                    del st.session_state.run_toolchain
-
-                except Exception as e:
-                    st.error(f"❌ Error general en la ejecución: {str(e)}")
+        else:
+            # Si selected es None, significa que la toolchain marcada para correr ya no existe.
+            # Limpiar el estado.
+            st.warning(f"La toolchain '{st.session_state.run_toolchain}' ya no existe.")
+            tc_controller.clear_toolchain_to_run()
 
 def render_manual_creator():
     """
     Formulario de creación manual de nuevas toolchains, con actualización dinámica de pasos.
     """
     with st.expander("✏️ Crear Toolchain Manualmente", expanded=False):
-        # Callback para limpiar el formulario
-        def clear_manual_form():
-            # Resetear número de pasos
-            st.session_state.new_tc_steps = 1
-            # Limpiar todos los campos de pasos
-            for i in range(10):  # Usar un máximo razonable
-                if f"new_tool_{i}" in st.session_state:
-                    st.session_state[f"new_tool_{i}"] = ""
-                if f"new_map_{i}" in st.session_state:
-                    st.session_state[f"new_map_{i}"] = ""
-            # Limpiar nombre y descripción si existen
-            if "new_tc_name" in st.session_state:
-                st.session_state.new_tc_name = ""
-            if "new_tc_desc" in st.session_state:
-                st.session_state.new_tc_desc = ""
-        
+        # La limpieza ahora la maneja el controlador después de guardar con éxito.
+        # Podemos mantener una limpieza simple de UI si el usuario quiere cancelar.
+        def clear_ui_manual_form():
+            st.session_state.new_tc_name = ""
+            st.session_state.new_tc_desc = ""
+            st.session_state.new_tc_steps = 1 # Resetear número de pasos
+            for i in range(st.session_state.get("manual_steps_count", 1)): # Limpiar solo los campos visibles
+                 st.session_state[f"new_tool_{i}"] = ""
+                 st.session_state[f"new_map_{i}"] = ""
+
         st.markdown("### Crear Nueva Toolchain")
             
         # Inicializar número de pasos
@@ -193,51 +174,16 @@ def render_manual_creator():
             )
             raw_steps.append((tool_name, map_text))
 
-        # Definir callback para guardar
-        def save_toolchain_callback():
-            try:
-                steps = []
-                for tool_name, raw_map in raw_steps:
-                    input_map = {}
-                    for line in raw_map.strip().splitlines():
-                        if ':' in line:
-                            k, v = line.split(':', 1)
-                            input_map[k.strip()] = v.strip()
-                    steps.append(ToolchainStep(tool_name=tool_name.strip(), input_map=input_map))
-
-                nueva = Toolchain(name=name.strip(), description=desc.strip(), steps=steps)
-
-                if os.path.exists(TOOLCHAINS_FILE):
-                    with open(TOOLCHAINS_FILE, "r") as f:
-                        existing = json.load(f)
-                else:
-                    existing = []
-
-                existing.append({
-                    "name": nueva.name,
-                    "description": nueva.description,
-                    "steps": [
-                        {"tool_name": s.tool_name, "input_map": s.input_map}
-                        for s in nueva.steps
-                    ]
-                })
-
-                with open(TOOLCHAINS_FILE, "w") as f:
-                    json.dump(existing, f, indent=2, ensure_ascii=False)
-
-                st.success(f"✅ Toolchain `{nueva.name}` guardada correctamente.")
-                clear_manual_form()
-                st.rerun()
-
-            except Exception as e:
-                st.error(f"❌ Error al guardar la Toolchain: {str(e)}")
-                
         # Botones con callbacks
         col1, col2 = st.columns(2)
         with col1:
-            st.button("💾 Guardar Toolchain", key="guardar_toolchain", on_click=save_toolchain_callback, disabled=not name)
+            # Llamar al controlador para guardar
+            st.button("💾 Guardar Toolchain", key="guardar_toolchain",
+                      on_click=tc_controller.handle_save_new_toolchain,
+                      args=(name, desc, raw_steps),
+                      disabled=not name)
         with col2:
-            st.button("🧹 Limpiar Campos", key="limpiar_campos_toolchain", on_click=clear_manual_form)
+            st.button("🧹 Limpiar Campos", key="limpiar_campos_toolchain", on_click=clear_ui_manual_form)
 
 def render_toolchain_editor(toolchains):
     """
@@ -248,10 +194,11 @@ def render_toolchain_editor(toolchains):
         return
 
     target_name = st.session_state.edit_toolchain
-    selected = next((t for t in toolchains if t.name == target_name), None)
-
+    selected = tc_controller.get_toolchain_view(target_name)
     if not selected:
-        st.error(f"No se encontró la Toolchain `{target_name}`.")
+        st.error(f"No se encontró la Toolchain '{target_name}' para editar.")
+        # Limpiar el estado si la toolchain ya no existe
+        tc_controller.clear_toolchain_to_edit()
         return
 
     # Estado único por Toolchain
@@ -286,78 +233,33 @@ def render_toolchain_editor(toolchains):
     
     # Callback para cancelar edición
     def cancel_edit_form():
-        del st.session_state.edit_toolchain
-        if step_key in st.session_state:
-            del st.session_state[step_key]
-        # Limpiar campos adicionales
-        for key in ["edit_tc_name", "edit_tc_desc"]:
-            if key in st.session_state:
-                del st.session_state[key]
-        # Limpiar campos de pasos
-        for i in range(10):
-            for prefix in ["edit_tool_", "edit_map_"]:
-                key = f"{prefix}{i}"
-                if key in st.session_state:
-                    del st.session_state[key]
+        # Usar el controlador para limpiar el estado
+        tc_controller.clear_toolchain_to_edit()
         st.rerun()
     
     # Callback para guardar cambios
     def save_edited_toolchain():
-        try:
-            edited_steps = []
-            for i in range(st.session_state[step_key]):
-                key_tool = f"edit_tool_{i}"
-                key_map = f"edit_map_{i}"
-                
-                if key_tool in st.session_state and key_map in st.session_state:
-                    tool_name = st.session_state[key_tool]
-                    raw_map = st.session_state[key_map]
-                    
-                    input_map = {}
-                    for line in raw_map.strip().splitlines():
-                        if ':' in line:
-                            k, v = line.split(':', 1)
-                            input_map[k.strip()] = v.strip()
-                    
-                    edited_steps.append(ToolchainStep(tool_name=tool_name.strip(), input_map=input_map))
-                
-            updated = Toolchain(
-                name=st.session_state.edit_tc_name.strip(), 
-                description=st.session_state.edit_tc_desc.strip(), 
-                steps=edited_steps
-            )
-
-            # Reemplazar en archivo
-            updated_data = []
-            for t in toolchains:
-                if t.name == target_name:
-                    updated_data.append({
-                        "name": updated.name,
-                        "description": updated.description,
-                        "steps": [
-                            {"tool_name": s.tool_name, "input_map": s.input_map}
-                            for s in updated.steps
-                        ]
-                    })
-                else:
-                    updated_data.append({
-                        "name": t.name,
-                        "description": t.description,
-                        "steps": [
-                            {"tool_name": s.tool_name, "input_map": s.input_map}
-                            for s in t.steps
-                        ]
-                    })
-
-            with open(TOOLCHAINS_FILE, "w") as f:
-                json.dump(updated_data, f, indent=2, ensure_ascii=False)
-
-            st.success(f"✅ Toolchain `{updated.name}` actualizada correctamente.")
-            cancel_edit_form()  # Limpiar y cerrar
-
-        except Exception as e:
-            st.error(f"❌ Error al actualizar la Toolchain: {str(e)}")
+        # Recolectar los valores actuales de nombre, descripción y los pasos raw del formulario
+        current_name = st.session_state.get(f"edit_tc_name_{target_name}", selected.name)
+        current_desc = st.session_state.get(f"edit_tc_desc_{target_name}", selected.description)
+        
+        current_raw_steps = []
+        for i in range(st.session_state[step_key]):
+            tool_name_val = st.session_state.get(f"edit_tool_{target_name}_{i}", "")
+            map_text_val = st.session_state.get(f"edit_map_{target_name}_{i}", "")
+            current_raw_steps.append((tool_name_val, map_text_val))
             
+        # Llamar al controlador con los datos crudos
+        tc_controller.handle_save_edited_toolchain(
+            original_name=target_name, # Pasar el nombre original
+            new_name=current_name,
+            new_description=current_desc,
+            raw_steps=current_raw_steps
+        )
+        # La lógica de éxito/error y limpieza de estado la maneja el controlador
+        # Podríamos añadir un rerun aquí si el controlador no lo hace
+        st.rerun() # Añadido para asegurar refresco después de guardar
+
     # Sección de edición
     with st.expander(f"✏️ Editando Toolchain: {target_name}", expanded=True):
         st.markdown("### 🔄 Edición de Toolchain")
@@ -366,61 +268,57 @@ def render_toolchain_editor(toolchains):
             label="Cantidad de pasos",
             min_value=1,
             max_value=10,
-            value=st.session_state[step_key],
+            value=st.session_state[step_key], # Usar el valor actual
             step=1,
-            key=f"input_steps_{target_name}"
+            key=f"editor_num_steps_{target_name}" # Clave única para el number_input
         )
 
-        num_steps = st.session_state[step_key]
+        # Título del formulario
+        st.markdown(f"### 🔧 Editando: {selected.name}")
 
-        # Inicializar valores por defecto para el formulario
-        if "edit_tc_name" not in st.session_state:
-            st.session_state.edit_tc_name = selected.name
-        if "edit_tc_desc" not in st.session_state:
-            st.session_state.edit_tc_desc = selected.description
-        
-        # Campos de edición directamente (sin st.form)
-        name = st.text_input("Nuevo nombre de la Toolchain", key="edit_tc_name")
-        desc = st.text_area("Descripción", key="edit_tc_desc")
-
-        for i in range(num_steps):
-            # Preparar valores por defecto
-            if i < len(selected.steps):
-                existing_step = selected.steps[i]
-                default_tool = existing_step.tool_name
-                default_map = "\n".join([f"{k}:{v}" for k, v in existing_step.input_map.items()])
-                # Inicializar estado si no existe
-                key_tool = f"edit_tool_{i}"
-                key_map = f"edit_map_{i}"
-                if key_tool not in st.session_state:
-                    st.session_state[key_tool] = default_tool
-                if key_map not in st.session_state:
-                    st.session_state[key_map] = default_map
-            else:
-                # Para pasos nuevos
-                key_tool = f"edit_tool_{i}"
-                key_map = f"edit_map_{i}"
-                if key_tool not in st.session_state:
-                    st.session_state[key_tool] = ""
-                if key_map not in st.session_state:
-                    st.session_state[key_map] = ""
-
-            st.markdown(f"**Paso {i + 1}**")
-            st.text_input(f"Tool del Paso {i + 1}", key=key_tool)
-            st.text_area(
-                f"Input map (clave:valor por línea)",
-                key=key_map,
-                placeholder="Ejemplo:\ntexto: resumen\nidioma: idioma_destino"
+        # Campos de nombre y descripción con claves corregidas
+        new_name = st.text_input(
+            "Nombre", 
+            key=f"edit_tc_name_{target_name}", 
+            value=st.session_state.get(f"edit_tc_name_{target_name}", selected.name)
+        )
+        new_desc = st.text_area(
+            "Descripción", 
+            key=f"edit_tc_desc_{target_name}",
+            value=st.session_state.get(f"edit_tc_desc_{target_name}", selected.description)
             )
 
-        # Botones con callbacks
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.button("💾 Guardar", key="guardar_edit_toolchain", on_click=save_edited_toolchain, disabled=not name)
-        with col2:
-            st.button("🧹 Restaurar Valores", key="restaurar_edit_toolchain", on_click=clear_edit_form)
-        with col3:
-            st.button("❌ Cancelar", key="cancelar_edit_toolchain", on_click=cancel_edit_form)
+        st.markdown("**Pasos de la Toolchain**")
+        raw_steps = []
+        for i in range(st.session_state[step_key]):
+            # Usar claves con sufijo también para los pasos
+            step_tool_key = f"edit_tool_{target_name}_{i}"
+            step_map_key = f"edit_map_{target_name}_{i}"
+
+            # Inicializar si es necesario (cuando se añaden pasos)
+            if step_tool_key not in st.session_state:
+                 st.session_state[step_tool_key] = ""
+            if step_map_key not in st.session_state:
+                 st.session_state[step_map_key] = ""
+                 
+            st.markdown(f"**Paso {i + 1}**")
+            tool_name = st.text_input(f"Tool del Paso {i + 1}", key=step_tool_key)
+            map_text = st.text_area(
+                f"Input map (clave:valor por línea)",
+                key=step_map_key,
+                placeholder="Ejemplo:\ntexto: resumen\nidioma: idioma_destino"
+            )
+            # Recolectar los valores actuales de los inputs para pasar al controlador
+            raw_steps.append((tool_name, map_text))
+    
+    # Botones fuera del formulario si usamos reactividad directa
+    col1, col2, col3 = st.columns([2,1,1])
+    with col1:
+        st.button("💾 Guardar Cambios", key=f"save_edit_{target_name}", on_click=save_edited_toolchain, disabled=not new_name)
+    with col2:
+        st.button("🔄 Restaurar", key=f"reset_edit_{target_name}", on_click=clear_edit_form) # Renombrado para claridad
+    with col3:
+        st.button("❌ Cancelar Edición", key=f"cancel_edit_{target_name}", on_click=cancel_edit_form)
 
 def render_ai_creator():
     """
@@ -428,62 +326,33 @@ def render_ai_creator():
     """
     with st.expander("🤖 Generar Toolchain con IA", expanded=False):
         # Callback para limpiar el formulario
-        def clear_ai_form():
+        def clear_ui_ai_form():
             if "tc_ai_description" in st.session_state:
                 st.session_state.tc_ai_description = ""
             if "generated_toolchain" in st.session_state:
                 del st.session_state.generated_toolchain
-        
+            if "generation_error" in st.session_state:
+                 del st.session_state.generation_error
+
         # Callback para generar toolchain
         def generate_toolchain_callback():
-            api_key = st.session_state.get("api_key", "")
-            if not api_key:
-                st.error("❌ No hay API key configurada")
-                return
+            # El controlador ahora maneja la obtención de API key y config
+            # y almacena el resultado/error en session_state
+            description = st.session_state.get("tc_ai_description", "")
+            if description:
+                with st.spinner("Generando Toolchain con IA..."):
+                    tc_controller.handle_generate_toolchain_ai(description)
+            else:
+                st.warning("Por favor, introduce una descripción para la IA.")
 
-            model_config = st.session_state.get("model_config", {
-                "model": "gpt-4",
-                "temperature": 0.7
-            })
-
-            with st.spinner("Generando Toolchain con IA..."):
-                try:
-                    from app.utils.ai_generation import generate_toolchain_with_ai
-                    toolchain_json = generate_toolchain_with_ai(
-                        st.session_state.tc_ai_description,
-                        api_key,
-                        model=model_config["model"],
-                        temperature=model_config["temperature"]
-                    )
-
-                    # Mostrar resultado en la UI
-                    st.session_state.generated_toolchain = toolchain_json
-                    st.success("✅ Toolchain generada")
-                    
-                except Exception as e:
-                    st.error(f"❌ Error generando la Toolchain: {str(e)}")
-        
         # Callback para guardar toolchain generada
         def save_generated_toolchain():
-            try:
-                toolchain = st.session_state.generated_toolchain
-                if os.path.exists(TOOLCHAINS_FILE):
-                    with open(TOOLCHAINS_FILE, "r") as f:
-                        existing = json.load(f)
-                else:
-                    existing = []
+            # Llamar al controlador para guardar
+            if "generated_toolchain" in st.session_state and st.session_state.generated_toolchain:
+                tc_controller.handle_save_generated_toolchain(st.session_state.generated_toolchain)
+            else:
+                st.warning("No hay toolchain generada para guardar.")
 
-                existing.append(toolchain)
-                with open(TOOLCHAINS_FILE, "w") as f:
-                    json.dump(existing, f, indent=2, ensure_ascii=False)
-
-                st.success(f"✅ Toolchain `{toolchain['name']}` guardada correctamente.")
-                clear_ai_form()
-                st.rerun()
-
-            except Exception as e:
-                st.error(f"❌ Error al guardar Toolchain generada: {str(e)}")
-        
         st.markdown("### Generación de Toolchain con IA")
         
         # Inicializar descripción en el estado si no existe
@@ -500,24 +369,31 @@ def render_ai_creator():
         # Botones de acción
         col1, col2 = st.columns(2)
         with col1:
-            st.button("✨ Generar Toolchain", key="generar_toolchain", 
-                      on_click=generate_toolchain_callback, 
+            st.button("✨ Generar Toolchain", key="generar_toolchain",
+                      on_click=generate_toolchain_callback,
                       disabled=not descripcion)
         with col2:
-            st.button("🧹 Limpiar Campos", key="limpiar_ai_campos", on_click=clear_ai_form)
+            st.button("🧹 Limpiar Campos", key="limpiar_ai_campos", on_click=clear_ui_ai_form)
+
+        # Mostrar error de generación si existe
+        if "generation_error" in st.session_state and st.session_state.generation_error:
+            st.error(f"❌ Error generando: {st.session_state.generation_error}")
 
         # Mostrar resultado si hay Toolchain generada
         if "generated_toolchain" in st.session_state:
-            toolchain = st.session_state.generated_toolchain
-            st.json(toolchain)
-            
-            # Botones para gestionar la toolchain generada
-            col1, col2 = st.columns(2)
-            with col1:
-                st.button("💾 Guardar Toolchain", key="guardar_toolchain_generada", 
-                          on_click=save_generated_toolchain)
-            with col2:
-                st.button("❌ Descartar", key="descartar_generada", on_click=clear_ai_form)
+            generated_data = st.session_state.generated_toolchain
+            if generated_data:
+                st.success("✅ Toolchain generada por IA:")
+                st.json(generated_data)
+
+                # Botones para gestionar la toolchain generada
+                col_save, col_discard = st.columns(2)
+                with col_save:
+                    st.button("💾 Guardar Toolchain Generada", key="guardar_toolchain_generada",
+                              on_click=save_generated_toolchain)
+                with col_discard:
+                    # Usar la limpieza de UI que también limpia el resultado generado
+                    st.button("❌ Descartar Generación", key="descartar_generada", on_click=clear_ui_ai_form)
 
 def render_toolchain_modals(toolchains):
     """
@@ -528,27 +404,12 @@ def render_toolchain_modals(toolchains):
         st.warning(f"¿Eliminar la Toolchain `{name}` permanentemente?")
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("✅ Confirmar eliminación"):
-                try:
-                    new_data = [t for t in toolchains if t.name != name]
-                    with open(TOOLCHAINS_FILE, "w") as f:
-                        json.dump([
-                            {
-                                "name": t.name,
-                                "description": t.description,
-                                "steps": [
-                                    {"tool_name": s.tool_name, "input_map": s.input_map}
-                                    for s in t.steps
-                                ]
-                            }
-                            for t in new_data
-                        ], f, indent=2, ensure_ascii=False)
-                    st.success(f"✅ Toolchain `{name}` eliminada.")
-                    del st.session_state.delete_toolchain
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"❌ Error al eliminar: {str(e)}")
+            # Llamar al controlador para eliminar
+            if st.button("✅ Confirmar eliminación", key=f"confirm_delete_{name}"):
+                tc_controller.handle_delete_toolchain(name)
+                st.rerun() # Forzar refresco después de la acción
         with col2:
-            if st.button("❌ Cancelar eliminación"):
-                del st.session_state.delete_toolchain
+            # Llamar al controlador para limpiar el estado de eliminación
+            if st.button("❌ Cancelar eliminación", key=f"cancel_delete_{name}"):
+                tc_controller.clear_toolchain_to_delete()
                 st.rerun()

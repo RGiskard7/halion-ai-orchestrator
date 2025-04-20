@@ -1,20 +1,74 @@
 {
-  "search_in_duckduckgo": false,
-  "buscar_en_internet": true,
-  "fetch_instant_answer": false,
-  "internet_search_tool": false,
-  "get_movie_info": false,
-  "Dict": true,
-  "Optional": true,
-  "get_book_info": true,
-  "obtener_info_libro": true,
-  "obtener_informacion_libro": false,
-  "resumir_texto": true,
-  "fetch_movie_info": true,
-  "fetch_relevant_news": false,
-  "get_current_weather": false,
-  "get_hotel_info": false,
-  "get_latest_news": true,
-  "navigate_app_screen": false,
-  "recommend_movie_by_genre": false
+  "search_in_duckduckgo": {
+    "active": false,
+    "postprocess": true
+  },
+  "buscar_en_internet": {
+    "active": true,
+    "postprocess": true
+  },
+  "fetch_instant_answer": {
+    "active": false,
+    "postprocess": true
+  },
+  "internet_search_tool": {
+    "active": false,
+    "postprocess": true
+  },
+  "get_movie_info": {
+    "active": false,
+    "postprocess": true
+  },
+  "Dict": {
+    "active": true,
+    "postprocess": true
+  },
+  "Optional": {
+    "active": true,
+    "postprocess": true
+  },
+  "get_book_info": {
+    "active": true,
+    "postprocess": true
+  },
+  "obtener_info_libro": {
+    "active": true,
+    "postprocess": true
+  },
+  "obtener_informacion_libro": {
+    "active": false,
+    "postprocess": true
+  },
+  "resumir_texto": {
+    "active": true,
+    "postprocess": true
+  },
+  "fetch_movie_info": {
+    "active": true,
+    "postprocess": true
+  },
+  "fetch_relevant_news": {
+    "active": false,
+    "postprocess": true
+  },
+  "get_current_weather": {
+    "active": true,
+    "postprocess": true
+  },
+  "get_hotel_info": {
+    "active": false,
+    "postprocess": true
+  },
+  "get_latest_news": {
+    "active": true,
+    "postprocess": true
+  },
+  "navigate_app_screen": {
+    "active": false,
+    "postprocess": true
+  },
+  "recommend_movie_by_genre": {
+    "active": false,
+    "postprocess": true
+  }
 }
