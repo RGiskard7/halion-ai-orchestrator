@@ -17,24 +17,25 @@
 <details>
 <summary>📖 Índice de Contenidos</summary>
 
-- [🌟 Características Principales](#-características-principales)
-- [✨ HALion en Acción (Interfaz Gráfica)](#-halion-en-acción-interfaz-gráfica)
-- [✨ ¿Qué es HALion?](#-qué-es-halion)
-- [🧠 Cómo funciona](#-cómo-funciona)
-- [🛠️🧠 Generar herramientas con IA](#️-generar-herramientas-con-ia)
-- [🛠️ Instalación](#️-instalación)
-- [🚀 Uso Rápido](#-uso-rápido)
-- [🧭 Guía de Navegación](#-guía-de-navegación)
-  - [💬 Chat con Herramientas](#-chat-con-herramientas)
-  - [⚙️ Administración](#️-administración)
-  - [🧠 Herramientas Generadas con IA](#-herramientas-generadas-con-ia)
-- [🧰 Estructura del Proyecto](#-estructura-del-proyecto)
-- [🎯 Casos de Uso](#-casos-de-uso)
-- [🔄 Mantenimiento y Mejora](#-mantenimiento-y-mejora)
-- [📚 Recursos Clave](#-recursos-clave)
-- [🤝 Cómo Contribuir](#-cómo-contribuir)
-- [📞 Contacto](#-contacto)
-- [📄 Licencia](#-licencia)
+- [HALion – Modular Intelligence Orchestrator](#halion--modular-intelligence-orchestrator)
+  - [🌟 Características Principales](#-características-principales)
+  - [✨ ¿Qué es HALion?](#-qué-es-halion)
+  - [🧠 Cómo funciona](#-cómo-funciona)
+  - [🛠️🧠 Generar herramientas con IA](#️-generar-herramientas-con-ia)
+  - [✨ HALion en Acción (Interfaz Gráfica)](#-halion-en-acción-interfaz-gráfica)
+  - [🛠️ Instalación](#️-instalación)
+  - [🚀 Uso Rápido](#-uso-rápido)
+  - [🧭 Guía de Navegación](#-guía-de-navegación)
+    - [💬 Chat con Herramientas](#-chat-con-herramientas)
+    - [⚙️ Administración](#️-administración)
+    - [🧠 Herramientas Generadas con IA](#-herramientas-generadas-con-ia)
+  - [🧰 Estructura del Proyecto](#-estructura-del-proyecto)
+  - [🎯 Casos de Uso](#-casos-de-uso)
+  - [🔄 Mantenimiento y Mejora](#-mantenimiento-y-mejora)
+  - [📚 Recursos Clave](#-recursos-clave)
+  - [🤝 Cómo Contribuir](#-cómo-contribuir)
+  - [📞 Contacto](#-contacto)
+  - [📄 Licencia](#-licencia)
 
 </details>
 
@@ -145,38 +146,65 @@ Abre tu navegador en [http://localhost:8501](http://localhost:8501).
 
 ```
 halion-ai-orchestrator/
-├── app/                      # Código principal de la aplicación
-│   ├── components/           # Componentes de la interfaz Streamlit
-│   ├── controllers/          # Lógica de controladores
-│   ├── core/                 # Funcionalidades centrales
-│   │   ├── tool_definition_registry.py # Registro y gestión de archivos de tools
-│   │   ├── executor.py       # Orquestador de OpenAI
-│   │   ├── logger.py         # Sistema de logs
-│   │   └── tool_manager.py   # Gestión de herramientas
-│   ├── debug_logs/           # Logs específicos de la aplicación
-│   │   ├── file_creation_debug.log
-│   │   └── tool_calls.log
-│   ├── config/               # Configuraciones persistentes
-│   │   └── .tool_status.json # Estado de activación de herramientas
-│   ├── models/               # Modelos de datos
-│   ├── tools/                # Herramientas disponibles
-│   ├── utils/                # Utilidades generales
-│   │   └── ai_generation.py  # Generación de herramientas con IA
-│   ├── views/                # Vistas de la aplicación
-│   │   ├── admin_view.py     # Panel de administración
-│   │   ├── chat_view.py      # Interfaz de chat
-│   │   └── tools_view.py     # Gestión de herramientas
-│   └── main.py               # Punto de entrada de la aplicación
-├── docs/                     # Documentación
-│   ├── assets/               # Recursos visuales (imágenes, iconos)
-│   └── images/               # Imágenes para documentación
-├── .env                      # Variables de entorno (privado)
-├── .env.example              # Plantilla de variables de entorno
-├── requirements.txt          # Dependencias del proyecto
-├── pyproject.toml            # Configuración del proyecto
-├── run.py                    # Script de ejecución simplificado
-├── main_context.md           # Arquitectura y contexto técnico
-└── roadmap.md                # Plan de desarrollo
+├── app/                                # Código principal de la aplicación Streamlit
+│   ├── components/                     # Componentes reutilizables de la interfaz (Streamlit)
+│   │   ├── tool_card.py                #   Ejemplo: Tarjeta para mostrar información de una tool
+│   │   └── __init__.py
+│   ├── config/                         # Archivos de configuración generados por la aplicación
+│   │   ├── .tool_status.json           #   Estado (activo/inactivo, postproceso) de las tools
+│   │   └── toolchains.json             #   Definiciones de las toolchains guardadas
+│   ├── controllers/                    # Controladores (MVC): median entre vistas y lógica de negocio/core
+│   │   ├── tool_controller.py          #   Controlador para la gestión de tools
+│   │   ├── toolchain_controller.py     #   Controlador para la gestión de toolchains
+│   │   └── __init__.py
+│   ├── core/                           # Lógica central y fundamental de la aplicación
+│   │   ├── tool_definition_registry.py #   Registro y gestión de archivos .py de las tools
+│   │   ├── tool_manager.py             #   Gestión del estado en memoria y ejecución de tools individuales
+│   │   ├── toolchain_registry.py       #   Registro y gestión de la persistencia de las toolchains
+│   │   ├── env_manager.py              #   Gestión de variables de entorno (.env)
+│   │   ├── logger.py                   #   Sistema de logging para eventos de la aplicación
+│   │   └── __init__.py
+│   ├── models/                         # Modelos de datos Pydantic
+│   │   ├── toolchain_model.py          #   Modelo para las toolchains
+│   │   └── __init__.py
+│   ├── services/                       # Servicios (MVC): encapsulan la lógica de negocio
+│   │   ├── chat_service.py             #   Servicio para la interacción con el chat (llamadas a OpenAI, etc.)
+│   │   ├── tool_service.py             #   Servicio para la lógica de negocio de las tools (generación AI, etc.)
+│   │   ├── toolchain_service.py        #   Servicio para la lógica de negocio de las toolchains (ejecución, etc.)
+│   │   └── __init__.py
+│   ├── tools/                          # Directorio donde se almacenan los archivos .py de las tools dinámicas
+│   │   ├── ejemplo_tool.py             #   (Contiene ejemplos de herramientas como buscar_en_internet.py, etc.)
+│   │   └── __init__.py
+│   ├── utils/                          # Utilidades compartidas y helpers
+│   │   ├── ai_generation.py            #   Utilidades para la generación de código mediante IA
+│   │   ├── env_detection.py            #   Utilidades para la detección de variables de entorno en código
+│   │   └── __init__.py
+│   ├── views/                          # Vistas (MVC): scripts de Streamlit que renderizan la UI
+│   │   ├── admin_view.py               #   Vista para la administración general
+│   │   ├── chat_view.py                #   Vista para la interfaz de chat
+│   │   ├── env_view.py                 #   Vista para la gestión de variables de entorno
+│   │   ├── logs_view.py                #   Vista para visualizar los logs
+│   │   ├── toolchains_view.py          #   Vista para la gestión de toolchains
+│   │   ├── tools_view.py               #   Vista para la gestión de tools
+│   │   └── __init__.py
+│   ├── main.py                         # Punto de entrada principal de la aplicación Streamlit, gestiona la navegación
+│   └── __init__.py                     # Hace que 'app' sea un paquete Python
+├── docs/                               # Documentación del proyecto
+│   ├── assets/                         # Recursos visuales para la documentación (ej: banners)
+│   └── images/                         # Capturas de pantalla y otros diagramas
+├── tests/                              # Pruebas unitarias y de integración
+├── .env                                # Variables de entorno locales (privado, gitignored)
+├── .env.example                        # Plantilla para el archivo .env
+├── .gitignore                          # Especifica archivos y directorios ignorados por Git
+├── ARCHITECTURE.md                     # Descripción detallada de la arquitectura del sistema
+├── CHANGELOG.md                        # Registro de cambios del proyecto
+├── LICENSE.md                          # Información de licencia del proyecto
+├── README.md                           # Este archivo: información general del proyecto
+├── requirements.txt                    # Dependencias de Python del proyecto
+├── pyproject.toml                      # Archivo de configuración del proyecto (ej: para Poetry o Hatch)
+├── run.py                              # Script de conveniencia para ejecutar la aplicación
+├── main_context.md                     # Contexto general del proyecto (duplicado/similar a README o ARCHITECTURE)
+└── roadmap.md                          # Plan de desarrollo futuro y funcionalidades pendientes
 ```
 
 ## 🎯 Casos de Uso
