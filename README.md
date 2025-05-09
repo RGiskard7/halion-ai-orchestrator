@@ -14,6 +14,30 @@
 
 > "No es un chatbot. Es una plataforma de acciones orquestadas por IA."
 
+<details>
+<summary>📖 Índice de Contenidos</summary>
+
+- [🌟 Características Principales](#-características-principales)
+- [✨ HALion en Acción (Interfaz Gráfica)](#-halion-en-acción-interfaz-gráfica)
+- [✨ ¿Qué es HALion?](#-qué-es-halion)
+- [🧠 Cómo funciona](#-cómo-funciona)
+- [🛠️🧠 Generar herramientas con IA](#️-generar-herramientas-con-ia)
+- [🛠️ Instalación](#️-instalación)
+- [🚀 Uso Rápido](#-uso-rápido)
+- [🧭 Guía de Navegación](#-guía-de-navegación)
+  - [💬 Chat con Herramientas](#-chat-con-herramientas)
+  - [⚙️ Administración](#️-administración)
+  - [🧠 Herramientas Generadas con IA](#-herramientas-generadas-con-ia)
+- [🧰 Estructura del Proyecto](#-estructura-del-proyecto)
+- [🎯 Casos de Uso](#-casos-de-uso)
+- [🔄 Mantenimiento y Mejora](#-mantenimiento-y-mejora)
+- [📚 Recursos Clave](#-recursos-clave)
+- [🤝 Cómo Contribuir](#-cómo-contribuir)
+- [📞 Contacto](#-contacto)
+- [📄 Licencia](#-licencia)
+
+</details>
+
 ## 🌟 Características Principales
 
 - 🧩 **Arquitectura modular**: añade herramientas en Python como si fueran plugins.
@@ -48,6 +72,26 @@ Simplemente describe la herramienta que necesitas. Ejemplo:
 > "Necesito una herramienta que calcule el IMC dado el peso en kg y la altura en metros"
 
 HALion generará el código, lo validará, lo guardará en disco y lo activará automáticamente.
+
+## ✨ HALion en Acción (Interfaz Gráfica)
+
+A continuación, se muestran algunas capturas de pantalla de la aplicación HALion en funcionamiento y su interfaz gráfica:
+
+<p align="center">
+  <img src="./docs/images/img_1.png" alt="HALion Imagen 1" width="45%"/>
+  <img src="./docs/images/img_2.png" alt="HALion Imagen 2" width="45%"/> 
+</p>
+<p align="center">
+  <img src="./docs/images/img_3.png" alt="HALion Imagen 3" width="45%"/>
+  <img src="./docs/images/img_4.png" alt="HALion Imagen 4" width="45%"/>
+</p>
+<p align="center">
+  <img src="./docs/images/img_5.png" alt="HALion Imagen 5" width="45%"/>
+  <img src="./docs/images/img_6.png" alt="HALion Imagen 6" width="45%"/>
+</p>
+<p align="center">
+  <img src="./docs/images/img_7.png" alt="HALion Imagen 7" width="45%"/>
+</p>
 
 ## 🛠️ Instalación
 
@@ -170,9 +214,13 @@ Consulta el [CHANGELOG.md](./CHANGELOG.md) para más detalles.
 
 Para sugerencias, errores o mejoras, abre un issue o contáctame directamente.
 
+## 📄 Licencia
+
+Este proyecto está licenciado bajo los términos de la licencia Apache 2.0. Consulta el archivo [LICENSE.md](./LICENSE.md) para más detalles sobre derechos, limitaciones y condiciones de uso.
+
 ---
 
 <p align="center">
-  <small>Desarrollado por <b>RGiskard7</b> ⚡ impulsado por HALion – IA modular y orquestada.</small>
+  <small>Desarrollado por <b>Edu Díaz</b> a.k.a <b>RGiskard7</b> ⚡ impulsado por HALion – IA modular y orquestada.</small>
 </p>
 

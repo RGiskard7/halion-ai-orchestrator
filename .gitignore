@@ -1,5 +1,37 @@
-__pycache__/
-.env
-tool_calls.log
+# Archivos de Log
+*.log
+
+# Entornos virtuales
+venv/
+.venv/
+
+# Archivos de configuración de IDE
+.idea/
+.vscode/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de Python compilados
 *.pyc
+__pycache__/
+
+# Archivos de variables de entorno locales
+.env
+
+# Cobertura
+.coverage
+htmlcov/
+
+# Bases de datos SQLite (si se usan localmente)
+*.sqlite3
+
+# Documentación generada (Sphinx, etc.)
+_build/
+
+# Archivos de caché de pytest
+.pytest_cache/
+
+tool_calls.log
 tools/*.yaml
