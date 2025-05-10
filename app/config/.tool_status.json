@@ -5,7 +5,7 @@
   },
   "buscar_en_internet": {
     "active": true,
-    "postprocess": true
+    "postprocess": false
   },
   "fetch_instant_answer": {
     "active": false,
@@ -69,6 +69,10 @@
   },
   "recommend_movie_by_genre": {
     "active": false,
+    "postprocess": true
+  },
+  "obtener_fase_lunar": {
+    "active": true,
     "postprocess": true
   }
 }
