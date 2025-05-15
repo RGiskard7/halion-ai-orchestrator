@@ -6,7 +6,6 @@ from app.controllers.tool_controller import (
     handle_tool_postprocess_toggle, # Acción tarjeta
     handle_generate_tool_ai, handle_create_generated_tool, # Generación AI
     handle_create_manual_tool, # Creación manual
-    # Nuevas funciones para obtener datos para la vista:
     get_static_tools_view, get_dynamic_tools_view, get_tool_state_view,
     get_loading_errors_view, get_tool_code_view,
     save_tool_edit, confirm_tool_delete
@@ -175,92 +174,92 @@ def render_ai_generator():
     """Renderiza la sección de generación de herramientas con IA"""
     # Definir callback para limpiar
     def clear_ai_form():
-        st.session_state.ai_prompt = ""
-        # Limpiar el estado de generación en la sesión
-        st.session_state.generated_code = None
-        st.session_state.generated_tool_name = None
-        st.session_state.generated_schema = None
-        st.session_state.generated_env_vars = None
-        st.session_state.generation_error = None
-        st.session_state.expander_ai_generator_open = False
-    
+        if "ai_prompt" in st.session_state:
+            del st.session_state["ai_prompt"]
+        
+        # Limpiar el estado de generación en la sesión con claves prefijadas
+        st.session_state.ai_tool_code = None
+        st.session_state.ai_tool_name = None
+        st.session_state.ai_tool_schema = None
+        st.session_state.ai_tool_env_vars = None
+        st.session_state.generation_error = None # Este es específico de AI, se mantiene
+        st.session_state.expander_ai_generator_open = False # Control de UI
+
     st.markdown("#### Generador de Herramientas con IA")
-    
     # Inicializar ai_prompt si no existe
     if "ai_prompt" not in st.session_state:
         st.session_state.ai_prompt = ""
-    
     ai_prompt = st.text_area(
         "Describe la herramienta que necesitas",
         key="ai_prompt",
         help="Describe en lenguaje natural qué quieres que haga la herramienta. Por ejemplo: 'Necesito una herramienta que traduzca texto a código morse y viceversa'",
         placeholder="Ejemplo: Una herramienta que calcule el IMC dado el peso en kg y la altura en metros..."
     )
-    
     # Definir callback para generar código
     def generate_code_callback():
-        # Llamar al controlador para manejar la generación y actualización del estado
         with st.spinner("Generando y analizando código..."):
-            handle_generate_tool_ai(st.session_state.ai_prompt)
+            handle_generate_tool_ai(st.session_state.ai_prompt) # El controlador poblará las claves ai_tool_*
         st.session_state.expander_ai_generator_open = True
-
     # Mostrar error de generación si existe (poblado por el controlador)
     if st.session_state.get("generation_error"):
         st.error(f"❌ Error en Generación: {st.session_state.generation_error}")
-    
     col1, col2 = st.columns(2)
     with col1:
         st.button("🔍 Generar Código", disabled=not ai_prompt, key="generar_codigo", on_click=generate_code_callback)
     with col2:
-        st.button("🧹 Limpiar Campos", on_click=clear_ai_form, key="limpiar_campos_interno_generador")
-    
+        st.button("🧹 Limpiar Campos", on_click=lambda: (clear_ai_form(), st.rerun()), key="limpiar_campos_interno_generador")
     # Mostrar el código generado
-    generated_code = st.session_state.get("generated_code")
-    if generated_code:
-        st.code(generated_code, language="python")
-
+    generated_code_val = st.session_state.get("ai_tool_code") # Usar nueva clave
+    if generated_code_val:
+        st.code(generated_code_val, language="python")
         # Mostrar metadatos extraídos (si existen)
-        tool_name = st.session_state.get("generated_tool_name")
-        schema = st.session_state.get("generated_schema")
-        env_vars = st.session_state.get("generated_env_vars")
+        tool_name_val = st.session_state.get("ai_tool_name") # Usar nueva clave
+        schema_val = st.session_state.get("ai_tool_schema") # Usar nueva clave
+        env_vars_val = st.session_state.get("ai_tool_env_vars") # Usar nueva clave
 
-        if tool_name and schema:
-            # Asegurar que schema es un dict antes de acceder a .get
-            schema_dict = schema
-            if isinstance(schema, str):
+        if tool_name_val and schema_val:
+            schema_dict = schema_val
+            if isinstance(schema_val, str):
                 try:
-                    schema_dict = json.loads(schema)
+                    schema_dict = json.loads(schema_val)
                 except Exception:
                     schema_dict = {}
-            st.success(f"✅ Código generado para la herramienta '{tool_name}'.")
+            st.success(f"✅ Código generado para la herramienta '{tool_name_val}'.")
             st.write(f"**Descripción:** {schema_dict.get('description', 'No disponible')}")
         else:
             st.warning("⚠️ Código generado, pero no se pudo extraer nombre/schema. Revísalo manualmente.")
-
-        # Renderizar sección para configurar env vars detectadas
-        render_detected_env_vars(env_vars if env_vars else [])
-        
-        # Botón para Usar/Crear la herramienta
+        render_detected_env_vars(env_vars_val if env_vars_val else [], "ai") # Pasar prefijo "ai"
         st.write("--- --- ---")
         if st.button("✨ Crear Herramienta Generada", key="usar_herramienta_generada"):
-            # Verificar que tenemos lo mínimo necesario (código)
-            if generated_code:
-                # El schema puede ser None si falló la extracción, el controlador lo manejará
-                # Pasar las env_vars tal como están en el estado (pueden haber sido modificadas por el usuario)
-                current_env_vars = st.session_state.get("generated_env_vars", [])
-                handle_create_generated_tool(
-                    tool_name if tool_name else "generated_tool", # Usar un nombre por defecto si no se extrajo
-                    schema if schema else {}, # Pasar schema vacío si no se extrajo
-                    generated_code,
+            if generated_code_val:
+                current_env_vars = st.session_state.get("ai_tool_env_vars", [])
+                
+                creation_success, final_tool_name = handle_create_generated_tool(
+                    tool_name_val if tool_name_val else "generated_tool",
+                    schema_val if schema_val else "{}", 
+                    generated_code_val,
                     current_env_vars
                 )
+                
+                if creation_success:
+                    toast_message_content = ""
+                    if final_tool_name:
+                        toast_message_content = f"Herramienta '{final_tool_name}' creada exitosamente!"
+                    else: 
+                        toast_message_content = f"Herramienta creada exitosamente!"
+                    
+                    st.toast(f"✅ {toast_message_content}", icon="🎉")
+                    
+                    clear_ai_form() 
+                    st.rerun() # Añadimos rerun aquí
+                # Si no hay creation_success, el controlador ya habrá mostrado un st.error.
             else:
                 st.error("No hay código generado para crear la herramienta.")
-        # Botón para reiniciar (limpiar todo)
         if st.button("🔄 Descartar Generación", key="descartar_generacion"):
             clear_ai_form()
+            st.rerun() # Añadimos rerun aquí
 
-def render_detected_env_vars(env_vars):
+def render_detected_env_vars(env_vars, form_type_prefix): # Añadir form_type_prefix
     """Renderiza la sección de variables de entorno detectadas"""
     if not env_vars:
         return
@@ -286,7 +285,7 @@ def render_detected_env_vars(env_vars):
     
     for i, var in enumerate(env_vars):
         # Usamos una clave única para el input
-        input_key = f"env_var_input_{var['name']}"
+        input_key = f"env_var_input_{form_type_prefix}_{var['name']}" # Usar prefijo en la key
         new_value = st.text_input(
             f"Valor para {var['name']}",
             value=var.get("value", ""), # Mostrar valor si ya existe en el estado
@@ -298,10 +297,14 @@ def render_detected_env_vars(env_vars):
         # Guardar valor en la estructura si cambia
         if new_value != var.get("value", ""):
             # Buscar el índice correcto en la lista del estado
-            for idx, state_var in enumerate(st.session_state.generated_env_vars):
-                if state_var['name'] == var['name']:
-                    st.session_state.generated_env_vars[idx]['value'] = new_value
-                    break
+            # Esta parte necesita ajustarse para que actualice la clave de session_state correcta
+            # Por ejemplo, st.session_state[f"{form_type_prefix}_tool_env_vars"]
+            env_vars_key = f"{form_type_prefix}_tool_env_vars"
+            if env_vars_key in st.session_state:
+                for idx, state_var in enumerate(st.session_state[env_vars_key]):
+                    if state_var['name'] == var['name']:
+                        st.session_state[env_vars_key][idx]['value'] = new_value
+                        break
             var['value'] = new_value
         
         # Separador entre variables
@@ -315,9 +318,9 @@ def render_manual_creation():
     """Renderiza la sección de creación manual de herramientas"""
     # Definir callback para limpiar el formulario
     def clear_manual_form():
-        st.session_state.generated_name = ""
-        st.session_state.generated_desc = ""
-        st.session_state.generated_schema = """{
+        st.session_state.manual_tool_name = ""
+        st.session_state.manual_tool_desc = ""
+        st.session_state.manual_tool_schema = """{
             "type": "object",
             "properties": {
                 "param1": {
@@ -327,24 +330,32 @@ def render_manual_creation():
             },
             "required": ["param1"]
         }"""
-        st.session_state.generated_code = """def nueva_herramienta(param1):
+        # Asegurar que el schema sea string para el widget
+        if not isinstance(st.session_state.manual_tool_schema, str):
+            try:
+                st.session_state.manual_tool_schema = json.dumps(st.session_state.manual_tool_schema, indent=2, ensure_ascii=False)
+            except Exception:
+                st.session_state.manual_tool_schema = "{}"
+
+        st.session_state.manual_tool_code = """def nueva_herramienta(param1):
             '''
             Documentación de la herramienta
             '''
             return f"Procesando: {param1}"
         """
-        st.session_state.generated_postprocess = True
-        st.session_state.expander_manual_creation_open = False
+        st.session_state.manual_tool_postprocess = True
+        st.session_state.expander_manual_creation_open = False # Control de UI
+        # No es necesario st.rerun() aquí si el botón que lo llama ya lo hace o no se necesita recarga inmediata
     
     st.markdown("#### Crear Nueva Herramienta Manualmente")
             
-    # Inicializar valores por defecto si no existen
-    if "generated_name" not in st.session_state:
-        st.session_state.generated_name = ""
-    if "generated_desc" not in st.session_state:
-        st.session_state.generated_desc = ""
-    if "generated_schema" not in st.session_state:
-        st.session_state.generated_schema = """{
+    # Inicializar valores por defecto si no existen, usando prefijo 'manual_'
+    if "manual_tool_name" not in st.session_state:
+        st.session_state.manual_tool_name = ""
+    if "manual_tool_desc" not in st.session_state:
+        st.session_state.manual_tool_desc = ""
+    if "manual_tool_schema" not in st.session_state:
+        st.session_state.manual_tool_schema = """{
             "type": "object",
             "properties": {
                 "param1": {
@@ -354,103 +365,108 @@ def render_manual_creation():
             },
             "required": ["param1"]
         }"""
-    if "generated_code" not in st.session_state:
-        st.session_state.generated_code = """def nueva_herramienta(param1):
+    if "manual_tool_code" not in st.session_state:
+        st.session_state.manual_tool_code = """def nueva_herramienta(param1):
             '''
             Documentación de la herramienta
             '''
             return f"Procesando: {param1}"
         """
-    if "generated_postprocess" not in st.session_state:
-        st.session_state.generated_postprocess = True
+    if "manual_tool_postprocess" not in st.session_state:
+        st.session_state.manual_tool_postprocess = True
             
     # Crear inputs fuera del formulario para poder manipularlos con callbacks
     col1, col2, col3 = st.columns([2,2,1])
     with col1:
         name = st.text_input(
             "Nombre",
-            key="generated_name",
+            key="manual_tool_name", # Usar nueva clave
             help="Nombre único para la herramienta"
         )
     with col2:
         desc = st.text_input(
             "Descripción",
-            key="generated_desc",
+            key="manual_tool_desc", # Usar nueva clave
             help="Breve descripción de su función"
         )
     with col3:
         postprocess = st.toggle(
             "Post-procesado",
-            key="generated_postprocess",
+            key="manual_tool_postprocess", # Usar nueva clave
             help="Si está activado, la IA procesará el resultado. Si está desactivado, se mostrará el resultado directo de la herramienta."
         )
     
-    # --- Forzar que session_state.generated_schema sea siempre string ---
-    if isinstance(st.session_state.generated_schema, dict):
-        st.session_state.generated_schema = json.dumps(st.session_state.generated_schema, indent=2, ensure_ascii=False)
-    elif st.session_state.generated_schema is None:
-        st.session_state.generated_schema = ""
-    # --- FIN forzado ---
-    
-    json_schema = st.text_area(
+    # Siempre usar string como value en el text_area, nunca key, usando la nueva clave
+    schema_val_manual = st.session_state.get("manual_tool_schema", "")
+    if not isinstance(schema_val_manual, str):
+        try:
+            schema_val_manual = json.dumps(schema_val_manual, indent=2, ensure_ascii=False)
+        except Exception:
+            schema_val_manual = "{}" # Default a JSON vacío y válido
+
+    json_schema_widget_val = st.text_area(
         "Esquema JSON (parámetros)",
+        value=schema_val_manual,
         height=150,
-        key="generated_schema",
+        key="manual_tool_schema_widget", # Clave de widget diferente si es necesario, o manejar con `on_change`
         help="Define los parámetros que acepta la herramienta"
     )
+    # Sincronizar el valor del widget de vuelta a la clave de estado correcta
+    st.session_state.manual_tool_schema = json_schema_widget_val
 
-    # --- Validación visual de JSON en tiempo real ---
-    is_json_valid = True
-    json_error_msg = ""
-    try:
-        json.loads(st.session_state.generated_schema)
-    except Exception as e:
-        is_json_valid = False
-        json_error_msg = str(e)
-    if not is_json_valid:
-        st.error(f"❌ El esquema JSON no es válido: {json_error_msg}")
-    # --- FIN validación visual ---
-    
     code = st.text_area(
         "Código Python",
         height=200,
-        key="generated_code",
+        key="manual_tool_code", # Usar nueva clave
         help="Implementación de la herramienta"
     )
     
     # Definir callback para crear herramienta
     def create_tool_callback():
-        # Validar y parsear JSON del schema aquí en la vista
+        # Validar y parsear JSON del schema aquí en la vista, usando las claves 'manual_'
+        schema_json_string = st.session_state.manual_tool_schema.strip() # Aplicar strip()
         try:
-            params = json.loads(st.session_state.generated_schema)
+            params = json.loads(schema_json_string) # Parsear el string con strip()
             schema = {
-                "name": st.session_state.generated_name.strip(),
-                "description": st.session_state.generated_desc.strip(),
-                "parameters": params,
-                "postprocess": st.session_state.generated_postprocess # Este se obtiene del manager ahora
+                "name": st.session_state.manual_tool_name.strip(),
+                "description": st.session_state.manual_tool_desc.strip(),
+                "parameters": params, # params es el objeto de parámetros parseado
+                "postprocess": st.session_state.manual_tool_postprocess
             }
-            code = st.session_state.generated_code
+            code_content = st.session_state.manual_tool_code # Renombrar para claridad
 
             # Llamar al controlador para manejar la creación
-            if handle_create_manual_tool(schema["name"], schema, code): # Usar nombre del schema
-                st.success(f"✅ Herramienta '{schema['name']}' creada exitosamente")
+            if handle_create_manual_tool(schema["name"], schema, code_content): 
+                st.toast(f"✅ Herramienta '{schema['name']}' creada exitosamente!", icon="🎉") # Usar st.toast
                 # Limpiar el formulario
-                clear_manual_form()
-                st.session_state.expander_manual_creation_open = True
+                clear_manual_form() # Esta función ahora limpia las claves 'manual_'
+                st.session_state.expander_manual_creation_open = True # Mantener abierto el expander
+                st.rerun() # Asegurar recarga para reflejar cambios y limpieza
             else:
-                st.error("❌ No se pudo crear la herramienta")
+                # El controlador ya debería poner un st.error, pero por si acaso
+                if not st.session_state.get("error_message_manual_tool"): 
+                    st.error("❌ No se pudo crear la herramienta. Revisa los logs o mensajes anteriores.")
             
         except json.JSONDecodeError as json_e:
-            st.error(f"❌ Error en el formato JSON del schema: {json_e}")
+            st.error(
+                f"❌ Error en el formato JSON del schema: {json_e}. "
+                f"Por favor, verifica que el contenido del campo 'Esquema JSON' sea un único objeto JSON válido. "
+                f"Contenido problemático (primeros 100 chars): '{schema_json_string[:100]}...'"
+            )
         except Exception as e: # Otros errores
             st.error(f"❌ Error al crear la herramienta: {str(e)}")
     
     # Botones con callbacks
     col1, col2 = st.columns(2)
     with col1:
-        st.button("✨ Crear Herramienta", on_click=create_tool_callback, disabled=not name or not is_json_valid)
+        st.button(
+            "✨ Crear Herramienta", 
+            on_click=create_tool_callback, 
+            disabled=not st.session_state.manual_tool_name or not isinstance(st.session_state.manual_tool_schema, str),
+            key="create_manual_tool_button" # Clave única para el botón
+        )
     with col2:
-        st.button("🧹 Limpiar Campos", on_click=clear_manual_form, key="limpiar_campos_interno")
+        st.button("🧹 Limpiar Campos", on_click=clear_manual_form, key="limpiar_campos_manual") # Clave única
 
 def render_tool_modals():
     """Renderiza los modales para ver, editar y eliminar herramientas"""
@@ -461,7 +477,6 @@ def render_tool_modals():
         
         # Obtener código exclusivamente desde el controlador
         tool_code = get_tool_code_view(tool_name)
-        # TODO: Crear get_tool_code_view() en el controlador
 
         st.info(f"📄 Visualizando código de `{tool_name}` ({'dinámica' if is_dynamic else 'estática'})")
         try:

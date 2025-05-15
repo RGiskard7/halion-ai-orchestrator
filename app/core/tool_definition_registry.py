@@ -212,8 +212,9 @@ def persist_tool_to_disk(name: str, schema: dict, func_code: str):
                     with open(path, "w", encoding="utf-8") as f:
                         f.write(func_code.strip() + "\n\n")
                         f.write("schema = ")
-                        json_schema = json.dumps(schema, indent=2, ensure_ascii=False)
-                        f.write(json_schema + "\n")
+                        # Usar repr() para obtener una representación de string Python válida del schema
+                        python_repr_schema = repr(schema)
+                        f.write(python_repr_schema + "\n")
                 
                 # Verificar que el archivo se creó correctamente
                 exists = os.path.exists(path)

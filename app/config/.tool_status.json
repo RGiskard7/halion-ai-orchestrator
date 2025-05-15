@@ -74,5 +74,17 @@
   "obtener_fase_lunar": {
     "active": true,
     "postprocess": true
+  },
+  "obtener_fase_lunar2": {
+    "active": true,
+    "postprocess": true
+  },
+  "obtener_fase_lunar_actual": {
+    "active": false,
+    "postprocess": true
+  },
+  "get_current_lunar_phase": {
+    "active": false,
+    "postprocess": true
   }
 }

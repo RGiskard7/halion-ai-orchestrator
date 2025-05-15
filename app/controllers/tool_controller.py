@@ -2,6 +2,7 @@ import os
 import streamlit as st
 import time
 import traceback
+import json
 from app.core.tool_manager import (
     load_all_tools, get_all_loaded_tools, get_all_dynamic_tools, 
     set_tool_status, is_tool_active, get_loading_errors,
@@ -13,9 +14,6 @@ from app.core.tool_definition_registry import (
     TOOLS_FOLDER
 )
 from app.services import tool_service
-
-# Ya no definimos TOOLS_FOLDER aquí, lo importamos directamente de dynamic_tool_registry
-# para asegurar consistencia en las rutas
 
 # Asegurarse de que el directorio tools existe
 os.makedirs(TOOLS_FOLDER, exist_ok=True)
@@ -201,30 +199,48 @@ def _create_and_persist_tool(name, schema, code):
     
     Args:
         name: Nombre de la herramienta (puede no ser correcto)
-        schema: Schema JSON de la herramienta
+        schema: Schema JSON de la herramienta (puede ser dict o str JSON)
         code: Código de la herramienta
         
     Returns:
         bool: True si la operación fue exitosa
     """
+    schema_dict: dict
     try:
-        # Obtener el nombre correcto del schema
-        tool_name = schema.get("name", name)
+        # Asegurarse de que el schema sea un diccionario
+        if isinstance(schema, str):
+            try:
+                schema_dict = json.loads(schema)
+            except json.JSONDecodeError as e:
+                st.error(f"Error al decodificar el JSON del schema: {e}. Schema recibido: {schema}")
+                return False, name # Devolver el nombre original como intentado
+        elif isinstance(schema, dict):
+            schema_dict = schema
+        else:
+            st.error(f"El schema proporcionado no es ni un string JSON válido ni un diccionario. Tipo recibido: {type(schema)}")
+            return False, name # Devolver el nombre original como intentado
+
+        # Obtener el nombre correcto del schema_dict
+        tool_name = schema_dict.get("name", name)
         
         # Intentar registrar en memoria primero (valida el código)
+        registered_name: str | None = None
         try:
-            registered_name = register_tool(tool_name, schema, code)
+            registered_name = register_tool(tool_name, schema_dict, code) # Usar schema_dict
         except Exception as reg_e:
             st.error(f"Error al registrar la herramienta en memoria: {reg_e}")
-            return False
+            return False, tool_name # Nombre que se intentó registrar
         
+        if not registered_name: # Por si register_tool devuelve None en algún caso no esperado
+            st.error("Error interno: El registro de la herramienta no devolvió un nombre.")
+            return False, tool_name
+
         # Guardar archivo en disco
-        success = persist_tool_to_disk(registered_name, schema, code)
+        success_persist = persist_tool_to_disk(registered_name, schema_dict, code) # Usar schema_dict
         
-        if not success:
-            # Considerar revertir el registro en memoria si falla la persistencia?
+        if not success_persist:
             st.error(f"Error al guardar el archivo para la herramienta '{registered_name}'. Ver logs para detalles.")
-            return False
+            return False, registered_name
         
         # Activar la herramienta
         set_tool_status(registered_name, True)
@@ -235,12 +251,11 @@ def _create_and_persist_tool(name, schema, code):
         # Actualizar el resumen de herramientas
         update_tool_summary()
         
-        return True
+        return True, registered_name # Éxito
     except Exception as e:
         st.error(f"Error al crear la herramienta: {str(e)}")
-        # Loggear el traceback completo para diagnóstico
         print(f"[Controller Error] Traceback al crear tool: {traceback.format_exc()}")
-        return False
+        return False, name # Nombre original en caso de excepción mayor
 
 def handle_tool_postprocess_toggle(tool_name, postprocess_active):
     """
@@ -277,6 +292,9 @@ def handle_create_manual_tool(name: str, schema: dict, code: str):
 
 def handle_create_generated_tool(tool_name: str, schema: dict, code: str, env_vars_with_values: list[dict]):
     """Maneja la creación de una tool generada por IA, incluyendo guardado de env vars."""
+    # El tipo de retorno ahora es Tuple[bool, Optional[str]]
+    # (éxito, nombre_final_de_herramienta)
+    final_tool_name_on_failure: str | None = tool_name # Nombre a devolver si falla antes de _create_and_persist_tool
     try:
         # 1. Guardar variables de entorno detectadas (y posiblemente modificadas por el usuario)
         if env_vars_with_values:
@@ -286,73 +304,108 @@ def handle_create_generated_tool(tool_name: str, schema: dict, code: str, env_va
                 st.success(f"✅ Variables guardadas/actualizadas en .env: {', '.join(saved_vars)}")
             if unchanged_vars:
                 st.info(f"ℹ️ Variables existentes sin cambios: {', '.join(unchanged_vars)}")
-            # Considerar mostrar error si save_detected_env_vars falla?
+            # Considerar mostrar error si save_detected_env_vars falla y retornar False, tool_name?
 
         # 2. Crear y persistir la herramienta
         with st.spinner(f"Creando y guardando herramienta '{tool_name}'..."):
-            success = _create_and_persist_tool(tool_name, schema, code)
+            # _create_and_persist_tool espera el nombre potencial y el schema (que puede ser str o dict)
+            # tool_name aquí es el nombre sugerido por la IA o "generated_tool"
+            creation_success, final_tool_name = _create_and_persist_tool(tool_name, schema, code)
+            final_tool_name_on_failure = final_tool_name # Actualizar el nombre a devolver en caso de fallo posterior
 
-        if success:
-            st.success(f"✅ Herramienta '{tool_name}' creada y activada exitosamente.")
-            # Limpiar estado de generación AI en la sesión
-            if "ai_prompt" in st.session_state: st.session_state.ai_prompt = ""
-            if "generated_code" in st.session_state: del st.session_state.generated_code
-            if "generated_tool_name" in st.session_state: del st.session_state.generated_tool_name
-            if "generated_schema" in st.session_state: del st.session_state.generated_schema
-            if "generated_env_vars" in st.session_state: del st.session_state.generated_env_vars
-            if "generation_error" in st.session_state: del st.session_state.generation_error
-            return True
+        if creation_success:
+            # st.toast(f"✅ Herramienta '{final_tool_name}' creada y activada exitosamente.", icon="🎉") # ELIMINAR TOAST DE AQUÍ
+            # Limpiar estado de generación AI en la sesión con prefijos ai_
+            # La clave ai_prompt será limpiada por clear_ai_form() en la vista.
+            if "ai_tool_code" in st.session_state: del st.session_state.ai_tool_code
+            if "ai_tool_name" in st.session_state: del st.session_state.ai_tool_name
+            if "ai_tool_schema" in st.session_state: del st.session_state.ai_tool_schema
+            if "ai_tool_env_vars" in st.session_state: del st.session_state.ai_tool_env_vars
+            if "generation_error" in st.session_state: del st.session_state.generation_error # Error específico de IA
+            return True, final_tool_name # Devolver éxito y el nombre final
         else:
             # El error específico ya se mostró en _create_and_persist_tool
-            return False
+            return False, final_tool_name # Devolver fallo y el nombre que se intentó
 
     except Exception as e:
         st.error(f"Error general al procesar la herramienta generada: {e}")
-        import traceback
         print(f"[Controller Error] Traceback al crear tool generada: {traceback.format_exc()}")
-        return False
+        return False, final_tool_name_on_failure # Devolver fallo y el último nombre conocido
 
 def handle_generate_tool_ai(description: str):
     """
     Orquesta la generación de código de tool con IA y la extracción de metadatos/env vars.
     Actualiza st.session_state con los resultados o errores.
     """
-    # Limpiar estado previo
-    st.session_state.generated_code = None
-    st.session_state.generated_tool_name = None
-    st.session_state.generated_schema = None
-    st.session_state.generated_env_vars = None
-    st.session_state.generation_error = None
+    # Limpiar estado previo de las claves de IA y el error específico
+    st.session_state.ai_tool_code = None
+    st.session_state.ai_tool_name = None
+    st.session_state.ai_tool_schema = None
+    st.session_state.ai_tool_env_vars = None
+    st.session_state.generation_error = None # Error específico de este flujo
 
     try:
-        api_key = st.session_state.get("api_key")
-        model_config = st.session_state.get("model_config")
+        # Obtener API key y configuración del modelo desde st.session_state
+        # Estos deberían ser establecidos por la vista de chat/configuración.
+        api_key = st.session_state.get("api_key") 
+        model_config = st.session_state.get("model_config", {})
+
         if not api_key:
-            st.error("❌ Falta la API Key de OpenAI en la configuración.")
-            st.session_state.generation_error = "API Key no configurada."
+            error_msg = "API Key de OpenAI no configurada. Por favor, configúrala en la sección de Chat o Administración."
+            st.session_state.generation_error = error_msg
+            st.error(error_msg)
+            st.session_state.expander_ai_generator_open = True
+            return # No se puede continuar sin API Key
+
+        # Paso 1: Generar el código de la herramienta usando el servicio
+        generated_code = tool_service.generate_tool_code_via_ai(description, api_key, model_config)
+        
+        if not generated_code:
+            # Si el servicio de generación de código devuelve None o vacío, es un error.
+            error_msg = "La generación de código no produjo ningún resultado."
+            st.session_state.generation_error = error_msg
+            st.error(error_msg)
+            st.session_state.expander_ai_generator_open = True
             return
 
-        # Llamar al servicio para generar código
-        generated_code = tool_service.generate_tool_code_via_ai(description, api_key, model_config)
-        st.session_state.generated_code = generated_code
+        st.session_state.ai_tool_code = generated_code # Guardar el código generado
 
-        # Llamar al servicio para extraer metadatos y env vars
+        # Paso 2: Extraer metadatos (nombre, schema) y variables de entorno del código generado
         tool_name, schema, env_vars = tool_service.extract_tool_metadata_and_env_vars(generated_code)
-
-        if tool_name:
-            st.session_state.generated_tool_name = tool_name
-        if schema:
-            st.session_state.generated_schema = schema
-        if env_vars is not None: # Puede ser lista vacía
-            st.session_state.generated_env_vars = env_vars
+        
+        # Poblar el estado de la sesión con los resultados extraídos
+        st.session_state.ai_tool_name = tool_name
+        
+        if isinstance(schema, dict):
+            try:
+                st.session_state.ai_tool_schema = json.dumps(schema, indent=2, ensure_ascii=False)
+            except Exception:
+                st.session_state.ai_tool_schema = str(schema) # Fallback a string
+        elif isinstance(schema, str): # Si ya es un string JSON
+             st.session_state.ai_tool_schema = schema
+        else:
+            st.session_state.ai_tool_schema = "{}" # Default si no es dict ni str
+        
+        st.session_state.ai_tool_env_vars = env_vars if env_vars is not None else []
 
         if not tool_name or not schema:
-            st.warning("⚠️ No se pudieron extraer completamente el nombre o el schema del código generado.")
-            # No poner error aquí, permitir al usuario usarlo igualmente si quiere
+            st.warning("⚠️ No se pudieron extraer completamente el nombre o el schema del código generado. Revisa el código y complétalo manualmente si es necesario.")
+            # No es un error fatal, el usuario puede editar.
+
+        st.session_state.expander_ai_generator_open = True # Mantener expander abierto para mostrar resultados
+
+    except ValueError as ve: # Capturar ValueError específico de la falta de API key en el servicio
+        st.session_state.generation_error = str(ve)
+        st.error(str(ve))
+        st.session_state.expander_ai_generator_open = True
 
     except Exception as e:
-        st.error(f"❌ Error durante la generación o análisis: {e}")
-        st.session_state.generation_error = str(e)
+        # Manejar otras excepciones inesperadas durante el proceso
+        detailed_error = f"Error durante la generación o análisis de la herramienta: {str(e)}"
+        st.session_state.generation_error = detailed_error
+        st.session_state.expander_ai_generator_open = True # Mantener expander abierto
+        st.error(detailed_error) # Mostrar error inmediatamente
+        print(f"[Controller Error] Traceback en handle_generate_tool_ai: {traceback.format_exc()}")
 
 # --- Funciones para que la Vista obtenga datos --- #
 

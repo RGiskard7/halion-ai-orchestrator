@@ -25,10 +25,6 @@ CONFIG_DIR = os.path.join(APP_DIR, "config") # Directorio app/config/
 if not os.path.exists(CONFIG_DIR):
     os.makedirs(CONFIG_DIR, exist_ok=True)
 
-# Ya no definimos TOOLS_FOLDER aquí, lo importamos directamente de dynamic_tool_registry
-# para asegurar consistencia en las rutas
-# TOOLS_FOLDER = os.path.join(APP_DIR, "tools")
-# DEBUG_LOGS_FOLDER = os.path.join(APP_DIR, "debug_logs")
 TOOL_STATUS_FILE = os.path.join(CONFIG_DIR, ".tool_status.json")
 
 # Asegurarse de que existan los directorios necesarios
